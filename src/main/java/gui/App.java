@@ -1,5 +1,5 @@
 package gui;
-
+import model.*;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,6 +23,8 @@ public class App extends Application {
         }
         var playerA = new Player();
         var playerB = new Player();
+        
+        
         gameScene.setOnKeyPressed(ev -> {
             switch (ev.getCode()) {
                 case CONTROL:
@@ -55,7 +57,7 @@ public class App extends Application {
                     break;
             }
         });
-        var court = new Court(playerA, playerB, 1000, 600);
+        var court = new TimeMode(playerA, playerB, 1000, 600, 10);
         var gameView = new GameView(court, root, 1.0);
         primaryStage.setScene(gameScene);
         primaryStage.show();

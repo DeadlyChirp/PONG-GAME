@@ -1,11 +1,16 @@
 package gui;
 
+import javax.swing.JPanel;
+
+import javafx.scene.text.*;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import model.Court;
+import model.TimeMode;
 
 public class GameView {
     // class parameters
@@ -17,6 +22,9 @@ public class GameView {
     // children of the game main node
     private final Rectangle racketA, racketB;
     private final Circle ball;
+    private Text chrono, scoreA, scoreB;
+
+  
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
@@ -51,10 +59,28 @@ public class GameView {
         ball.setRadius(court.getBallRadius());
         ball.setFill(Color.BLACK);
 
-        ball.setCenterX(court.getBallX() * scale + xMargin);
-        ball.setCenterY(court.getBallY() * scale);
+        chrono = new Text(String.valueOf(TimeMode.getTmp()));
+        chrono.setX(500);
+        chrono.setY(50);
 
-        gameRoot.getChildren().addAll(racketA, racketB, ball);
+        scoreA = new Text(String.valueOf(TimeMode.getScoreA()));
+        scoreA.setX(30);
+        scoreA.setY(50);
+
+        scoreB = new Text(String.valueOf(TimeMode.getScoreB()));
+        scoreB.setX(1050);
+        scoreB.setY(50);
+       
+        chrono.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
+        scoreA.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        scoreB.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        scoreA.setFill(Color.BLUE);
+        scoreB.setFill(Color.BLUE);
+
+
+
+
+        gameRoot.getChildren().addAll(racketA, racketB, ball, chrono, scoreA, scoreB);
 
 
     }
@@ -75,6 +101,11 @@ public class GameView {
                 racketB.setY(court.getRacketB() * scale);
                 ball.setCenterX(court.getBallX() * scale + xMargin);
                 ball.setCenterY(court.getBallY() * scale);
+                chrono.setText(String.valueOf(TimeMode.getTmp()));
+                scoreA.setText(String.valueOf(TimeMode.getScoreA()));
+                scoreB.setText(String.valueOf(TimeMode.getScoreB()));
+
+
             }
         }.start();
     }

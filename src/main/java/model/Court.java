@@ -96,8 +96,10 @@ public class Court {
             ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
         } else if (nextBallX < 0) {
+            TimeMode.setScoreB(TimeMode.getScoreB()+1);
             return true;
         } else if (nextBallX > width) {
+            TimeMode.setScoreA(TimeMode.getScoreA()+1);
             return true;
         }
         ballX = nextBallX;
@@ -109,7 +111,7 @@ public class Court {
         return ballRadius;
     }
 
-    void reset() {
+    public void reset() {
         this.racketA = height / 2;
         this.racketB = height / 2;
         this.ballSpeedX = 200.0;
