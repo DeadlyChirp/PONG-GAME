@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Court;
+import model.Feature;
 import model.RacketController;
 
 public class App extends Application {
@@ -23,6 +24,9 @@ public class App extends Application {
         }
         var playerA = new Player();
         var playerB = new Player();
+        var playerC = new Player();
+        var playerD = new Player();
+        
         gameScene.setOnKeyPressed(ev -> {
             switch (ev.getCode()) {
                 case CONTROL:
@@ -36,6 +40,18 @@ public class App extends Application {
                     break;
                 case DOWN:
                     playerB.state = RacketController.State.GOING_DOWN;
+                    break;
+                case Z:
+                    playerC.state = RacketController.State.GOING_UP;
+                    break;
+                case S:
+                    playerC.state = RacketController.State.GOING_DOWN;
+                    break;
+                case E:
+                    playerD.state = RacketController.State.GOING_UP;
+                    break;
+                case D:
+                    playerD.state = RacketController.State.GOING_DOWN;
                     break;
             }
         });
@@ -53,9 +69,21 @@ public class App extends Application {
                 case DOWN:
                     if (playerB.state == RacketController.State.GOING_DOWN) playerB.state = RacketController.State.IDLE;
                     break;
+                case Z:
+                    if (playerC.state == RacketController.State.GOING_UP) playerC.state = RacketController.State.IDLE;
+                    break;
+                case S:
+                    if (playerC.state == RacketController.State.GOING_DOWN) playerC.state = RacketController.State.IDLE;
+                    break;
+                case E:
+                    if (playerD.state == RacketController.State.GOING_UP) playerD.state = RacketController.State.IDLE;
+                    break;
+                case D:
+                    if (playerD.state == RacketController.State.GOING_DOWN) playerD.state = RacketController.State.IDLE;
+                    break;
             }
         });
-        var court = new Court(playerA, playerB, 1000, 600);
+        var court = new Court(playerA, playerB, playerC, playerD, 1000, 600);
         var gameView = new GameView(court, root, 1.0);
         primaryStage.setScene(gameScene);
         primaryStage.show();
