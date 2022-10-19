@@ -55,20 +55,20 @@ public class GameView {
        
        if (f.getDeuxcontredeux()) {
 		    racketC = new Rectangle();
-		    racketC.setWidth(court.getRacketSize() * scale);
-		    racketC.setHeight(racketThickness);
-		    racketC.setFill(Color.RED);
+		    racketC.setHeight(court.getRacketSize() * scale);
+		    racketC.setWidth(racketThickness);
+		    racketC.setFill(e.getColor());
 		
-		    racketC.setX(500);
-		    racketC.setY(300);
+		    racketC.setX(xMargin - racketThickness);
+		    racketC.setY(court.getRacketC() * scale);
 		    
 		    racketD = new Rectangle();
-		    racketD.setWidth(court.getRacketSize() * scale);
-		    racketD.setHeight(racketThickness);
-		    racketD.setFill(e.getColor());
+		    racketD.setHeight(court.getRacketSize() * scale);
+		    racketD.setWidth(racketThickness);
+		    racketD.setFill(Color.RED);
 		
-		    racketD.setX(500);
-		    racketD.setY(0);
+		    racketD.setX(court.getWidth() * scale + xMargin);
+		    racketD.setY(court.getRacketB() * scale);
 		    
        }else {
         	racketC = new Rectangle();
