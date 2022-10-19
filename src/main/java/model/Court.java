@@ -2,7 +2,7 @@ package model;
 
 public class Court {
     // instance parameters
-    private final RacketController playerA, playerB;
+    private final RacketController playerA, playerB, playerC, playerD;
     private final double width, height; // m
     private final double racketSpeed = 300.0; // m/s
     private final double racketSize = 100.0; // m
@@ -10,12 +10,16 @@ public class Court {
     // instance state
     private double racketA; // m
     private double racketB; // m
+    private double racketC; // m
+    private double racketD; // m
     private double ballX, ballY; // m
     private double ballSpeedX, ballSpeedY; // m
 
-    public Court(RacketController playerA, RacketController playerB, double width, double height) {
+    public Court(RacketController playerA, RacketController playerB, RacketController playerC, RacketController playerD, double width, double height) {
         this.playerA = playerA;
         this.playerB = playerB;
+        this.playerC = playerC;
+        this.playerD = playerD;
         this.width = width;
         this.height = height;
         reset();
@@ -39,6 +43,14 @@ public class Court {
 
     public double getRacketB() {
         return racketB;
+    }
+    
+    public double getRacketC() {
+        return racketC;
+    }
+    
+    public double getRacketD() {
+        return racketD;
     }
 
     public double getBallX() {
@@ -75,6 +87,30 @@ public class Court {
                 if (racketB + racketSize > height) racketB = height - racketSize;
                 break;
         }
+        switch (playerC.getState()) {
+        	case GOING_UP:
+	            racketC -= racketSpeed * deltaT;
+	            if (racketC < 0.0) racketC = 0.0;
+	            break;
+        	case IDLE:
+        		break;
+        	case GOING_DOWN:
+        		racketC += racketSpeed * deltaT;
+        		if (racketC + racketSize > height) racketC = height - racketSize;
+        		break;
+        }
+        switch (playerD.getState()) {
+	        case GOING_UP:
+	            racketD -= racketSpeed * deltaT;
+	            if (racketD < 0.0) racketD = 0.0;
+	            break;
+	        case IDLE:
+	            break;
+	        case GOING_DOWN:
+	            racketD += racketSpeed * deltaT;
+	            if (racketD + racketSize > height) racketD = height - racketSize;
+	            break;
+    }
         if (updateBall(deltaT)) reset();
     }
 
@@ -92,7 +128,9 @@ public class Court {
             nextBallY = ballY + deltaT * ballSpeedY;
         }
         if ((nextBallX < 0 && nextBallY > racketA && nextBallY < racketA + racketSize)
-                || (nextBallX > width && nextBallY > racketB && nextBallY < racketB + racketSize)) {
+        		|| (nextBallX < 0 && nextBallY > racketC && nextBallY < racketC + racketSize)
+                || (nextBallX > width && nextBallY > racketB && nextBallY < racketB + racketSize)
+                || (nextBallX > width && nextBallY > racketD && nextBallY < racketD + racketSize)) {
             ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
         } else if (nextBallX < 0) {
