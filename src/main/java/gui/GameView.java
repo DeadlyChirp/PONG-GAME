@@ -1,9 +1,8 @@
 package gui;
 
-import javax.swing.plaf.basic.BasicBorders.MarginBorder;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
+import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -13,22 +12,36 @@ import javafx.scene.shape.Line;
 import model.Court;
 
 public class GameView {
+
     // class parameters
     private final Court court;
     private final Pane gameRoot; // main node of the game
     private final double scale;
     private final double Margin = 100.0, racketThickness = 10.0, Interface = 100.0; // pixels
 
-    // double getMargin(){
-    //     return Margin;
-    // }
-    // double Interface(){
-    //     return Interface;
-    // }
-
     // children of the game main node
     private final Rectangle racketA, racketB;
     private final Circle ball;
+
+    private Text scoreP1, scoreP2;
+    public boolean finGame = false;
+    public boolean Pause = true;
+
+    int Timer = 60; //1sec
+
+    void setFin(boolean b){
+        finGame = b;
+    }
+    boolean getFin(){
+        return finGame;
+    }
+    void setPause(boolean b){
+        Pause = b;
+    }
+    boolean getPause(){
+        return Pause;
+    }
+
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
@@ -51,7 +64,7 @@ public class GameView {
             racketA.setFill(Color.valueOf("#375745"));
 
             racketA.setX(Margin - racketThickness);
-            racketA.setY(court.getRacketA() * scale + Margin);
+            racketA.setY(court.getRacketA() * scale + Interface + Margin/2);
 
             racketB = new Rectangle();
             racketB.setHeight(court.getRacketSize() * scale);
@@ -59,14 +72,14 @@ public class GameView {
             racketB.setFill(Color.valueOf("#375745"));
 
             racketB.setX(court.getWidth() * scale + Margin);
-            racketB.setY(court.getRacketB() * scale + Margin);
+            racketB.setY(court.getRacketB() * scale + Interface + Margin/2);
 
             ball = new Circle();
             ball.setRadius(court.getBallRadius());
             ball.setFill(Color.valueOf("#375745"));
 
             ball.setCenterX(court.getBallX() * scale + Margin);
-            ball.setCenterY(court.getBallY() * scale);
+            ball.setCenterY(court.getBallY() * scale + Interface +  Margin/2);
 
 
         //Affichage de l'interface
@@ -82,7 +95,13 @@ public class GameView {
                 cadre.setStrokeWidth(5);
                 cadre.setFill(null);      
 
-            inter.getChildren().addAll(cadre);
+                court.score.s1.setX(30);
+                court.score.s1.setY(59);
+    
+                court.score.s2.setX(1050);
+                court.score.s2.setY(50);
+
+            inter.getChildren().addAll(cadre, court.score.s1, court.score.s2);
 
             Line l1 = new Line();
             l1.setStartX(Margin/2);
@@ -106,29 +125,38 @@ public class GameView {
             zoneDeJeu.setWidth(court.getWidth());
             zoneDeJeu.setHeight(court.getHeight());
             zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
-
         
         gameRoot.getChildren().addAll(zoneDeJeu, l1, l2, racketA, racketB, ball, inter);
 
     }
 
     public void animate() {
+
         new AnimationTimer() {
             long last = 0;
 
             @Override
             public void handle(long now) {
-                if (last == 0) { // ignore the first tick, just compute the first deltaT
+                if(!Pause && !finGame){
+
+                    if (last == 0) { // ignore the first tick, just compute the first deltaT
+                        last = now;
+                        return;
+                    }
+                    
+                    court.update((now - last) * 1.0e-9); // convert nanoseconds to seconds
                     last = now;
-                    return;
+                    racketA.setY(court.getRacketA() * scale + Margin/2 + Interface);
+                    racketB.setY(court.getRacketB() * scale + Margin/2 + Interface);
+                    ball.setCenterX(court.getBallX() * scale + Margin);
+                    ball.setCenterY(court.getBallY() * scale + Margin/2 + Interface);
                 }
-                court.update((now - last) * 1.0e-9); // convert nanoseconds to seconds
-                last = now;
-                racketA.setY(court.getRacketA() * scale + Margin/2 + Interface);
-                racketB.setY(court.getRacketB() * scale + Margin/2 + Interface);
-                ball.setCenterX(court.getBallX() * scale + Margin);
-                ball.setCenterY(court.getBallY() * scale + Margin/2 + Interface);
+                Timer--;
+                if(Timer == 0){
+                    Pause = false;
+                }
             }
         }.start();
     }
+    
 }
