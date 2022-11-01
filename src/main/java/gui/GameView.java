@@ -17,11 +17,21 @@ public class GameView {
     // children of the game main node
     private final Rectangle racketA, racketB;
     private final Circle ball;
+    // private Text scoreP1, scoreP2;
+
+    public boolean finGame = false;
+
+    public boolean Pause = true;
+
+    int Timer = 180; // 3sec
 
     /**
-     * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
-     * @param root  le nœud racine dans la scène JavaFX dans lequel le jeu sera affiché
-     * @param scale le facteur d'échelle entre les distances du modèle et le nombre de pixels correspondants dans la vue
+     * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout
+     *              ce qu'il y a dessus)
+     * @param root  le nœud racine dans la scène JavaFX dans lequel le jeu sera
+     *              affiché
+     * @param scale le facteur d'échelle entre les distances du modèle et le nombre
+     *              de pixels correspondants dans la vue
      */
     public GameView(Court court, Pane root, double scale) {
         this.court = court;
@@ -32,7 +42,7 @@ public class GameView {
         root.setMinHeight(court.getHeight() * scale);
 
         racketA = new Rectangle();
-        racketA.setHeight(court.getRacketSize() * scale);
+        racketA.setHeight(court.getRacketSize() * scale + 20);
         racketA.setWidth(racketThickness);
         racketA.setFill(Color.BLACK);
 
@@ -54,27 +64,58 @@ public class GameView {
         ball.setCenterX(court.getBallX() * scale + xMargin);
         ball.setCenterY(court.getBallY() * scale);
 
-        gameRoot.getChildren().addAll(racketA, racketB, ball);
+        // scoreP1 = new Text();
+        // scoreP2 = new Text();
 
+        court.scoreVie.s1.setX(1050); // player 1
+        court.scoreVie.s1.setY(50);
+
+        court.scoreVie.s2.setX(30); // player 2
+        court.scoreVie.s2.setY(50);
+
+        // scoreP1.setX(30);
+        // scoreP1.setY(50);
+        //
+        // scoreP2.setX(1050);
+        // scoreP2.setY(50);
+        //
+        //
+        // scoreP1.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,
+        // 40));
+        // scoreP2.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,
+        // 40));
+        // scoreP1.setFill(Color.RED);
+        // scoreP2.setFill(Color.BLUE);
+
+        gameRoot.getChildren().addAll(racketA, racketB, ball, court.scoreVie.s1, court.scoreVie.s2);
 
     }
 
     public void animate() {
-        new AnimationTimer() {
+        new AnimationTimer() { // generer seulement DeltaT
             long last = 0;
 
             @Override
             public void handle(long now) {
-                if (last == 0) { // ignore the first tick, just compute the first deltaT
+
+                // PAUSE game
+                if (!Pause) {
+                    if (last == 0) { // ignore the first tick, just compute the first deltaT
+                        last = now;
+                        return;
+                    }
+                    // ERROR FAIT +1 POINT POUR PLAYER 1
+                    court.update((now - last) * 1.0e-9); // convert nanoseconds to seconds
                     last = now;
-                    return;
+                    racketA.setY(court.getRacketA() * scale);
+                    racketB.setY(court.getRacketB() * scale);
+                    ball.setCenterX(court.getBallX() * scale + xMargin);
+                    ball.setCenterY(court.getBallY() * scale);
                 }
-                court.update((now - last) * 1.0e-9); // convert nanoseconds to seconds
-                last = now;
-                racketA.setY(court.getRacketA() * scale);
-                racketB.setY(court.getRacketB() * scale);
-                ball.setCenterX(court.getBallX() * scale + xMargin);
-                ball.setCenterY(court.getBallY() * scale);
+                Timer--;
+                if (Timer == 0) {
+                    Pause = false;
+                }
             }
         }.start();
     }
