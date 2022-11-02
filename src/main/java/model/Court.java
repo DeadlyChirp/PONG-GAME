@@ -1,20 +1,21 @@
 package model;
 
+import model.CompteurVie;
 import gui.GameView;
 
 public class Court {
     // instance parameters
     private final RacketController playerA, playerB;
-    private final double width, height; // size of the application
-    private double racketSpeed = 300.0; // m/s
-    private double racketSize = 100.0; // m
-    private double ballRadius = 10.0; // ball radius/ size
+    public static double width, height; // size of the application
+    public static double racketSpeed = 300.0; // m/s
+    public static double racketSize = 100.0; // m
+    public static double ballRadius = 10.0; // ball radius/ size
     // instance state
-    private double racketA; // playerOnePos.Y
-    private double racketB; // playerOnePos.Y
-    private double ballX, ballY; // position de la balle
-    private double ballSpeedX = 1;
-    private double ballSpeedY = 1; // declare to 1
+    public static double racketA; // playerOnePos.Y
+    public static double racketB; // playerOnePos.Y
+    public static double ballX, ballY; // position de la balle
+    public static double ballSpeedX = 1;
+    public static double ballSpeedY = 1; // declare to 1
 
     // need player Height about 100
     private static final int Player_Height = 100;
@@ -144,7 +145,7 @@ public class Court {
             // clip.play();
             // } catch (MalformedURLException murle) {
             // System.out.println(murle);
-            // }
+            //
 
             scoreVie.addCompteurVie1();
             return true;
@@ -154,6 +155,8 @@ public class Court {
             // racket size reduce size if loose
             return true;
 
+        } else if ((CompteurVie.s2.getText().equals("0") || CompteurVie.s1.getText().equals("0"))) {
+            scoreVie.LimiteVie();
         }
         // increase speed of the ball
         // BIG PROBLEM IN THE MIDDLE AUTO RESET THE GAME
@@ -176,12 +179,12 @@ public class Court {
         return ballRadius;
     }
 
-    void reset() {
-        this.racketA = height / 2;
-        this.racketB = height / 2;
-        this.ballSpeedX = 200.0;
-        this.ballSpeedY = 200.0;
-        this.ballX = width / 2;
-        this.ballY = height / 2;
+    static void reset() {
+        racketA = height / 2;
+        racketB = height / 2;
+        ballSpeedX = 200.0;
+        ballSpeedY = 200.0;
+        ballX = width / 2;
+        ballY = height / 2;
     }
 }

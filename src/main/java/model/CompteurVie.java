@@ -1,10 +1,12 @@
 package model;
 
+import gui.GameView;
+import model.Court;
 import javafx.scene.text.Text;
 
 public class CompteurVie {
-    public Text s1;
-    public Text s2;
+    public static Text s1;
+    public static Text s2;
 
     public int limiteVie;
 
@@ -22,8 +24,9 @@ public class CompteurVie {
     }
 
     public void LimiteVie() {
-        if (s2.getText().equals("0")) {
-
+        if (s2.getText().equals("0") || s1.getText().equals("0")) {
+            s1.setText("3");
+            s2.setText("3");
         }
     }
 }

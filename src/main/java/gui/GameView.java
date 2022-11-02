@@ -21,9 +21,9 @@ public class GameView {
 
     public boolean finGame = false;
 
-    public boolean Pause = true;
+    public static boolean Pause = true;
 
-    int Timer = 180; // 3sec
+    public static int Timer = 180; // 3sec
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout
@@ -42,7 +42,7 @@ public class GameView {
         root.setMinHeight(court.getHeight() * scale);
 
         racketA = new Rectangle();
-        racketA.setHeight(court.getRacketSize() * scale + 20);
+        racketA.setHeight(court.getRacketSize() * scale);
         racketA.setWidth(racketThickness);
         racketA.setFill(Color.BLACK);
 
