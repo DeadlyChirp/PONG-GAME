@@ -201,7 +201,7 @@ fi
 
 set -- \
         -classpath "$CLASSPATH" \
-        gui.App \
+        gui.Start \
         "$@"
 
 # Stop when "xargs" is not available.

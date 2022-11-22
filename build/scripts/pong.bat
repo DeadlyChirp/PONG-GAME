@@ -71,7 +71,7 @@ set CLASSPATH=%APP_HOME%\lib\pong-1.0-SNAPSHOT.jar;%APP_HOME%\lib\javafx-control
 
 
 @rem Execute pong
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %PONG_OPTS%  -classpath "%CLASSPATH%" gui.App %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %PONG_OPTS%  -classpath "%CLASSPATH%" gui.Start %*
 
 :end
 @rem End local scope for the variables with windows NT shell
