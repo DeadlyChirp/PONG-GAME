@@ -2,6 +2,7 @@ package model;
 
 import gui.GameView;
 import model.Court;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class CompteurVie {
@@ -28,5 +29,8 @@ public class CompteurVie {
             s1.setText("3");
             s2.setText("3");
         }
+    }
+
+    public void setFill(Color valueOf) {
     }
 }

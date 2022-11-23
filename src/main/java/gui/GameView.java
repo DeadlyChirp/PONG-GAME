@@ -1,29 +1,51 @@
 package gui;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
+import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
 import model.Court;
 
+/* ------------------------------------------------------------------------------------------------------*/
+
+//Modification du terrain de jeu, nouvelles délimitations du terrain, etc
+
 public class GameView {
+
     // class parameters
     private final Court court;
     private final Pane gameRoot; // main node of the game
     private final double scale;
-    private final double xMargin = 50.0, racketThickness = 10.0; // pixels
+    private final double Margin = 100.0, racketThickness = 10.0, Interface = 100.0; // pixels
 
     // children of the game main node
     private final Rectangle racketA, racketB;
     private final Circle ball;
-    // private Text scoreP1, scoreP2;
+    public static boolean finGame;
+    public boolean pause;
 
-    public boolean finGame = false;
+    int Timer = 60; // 2sec
 
-    public static boolean Pause = true;
+    void setFin(boolean b) {
+        finGame = b;
+    }
 
-    public static int Timer = 180; // 3sec
+    public static boolean getFin() {
+        return finGame;
+    }
+
+    void setPause(boolean b) {
+        pause = b;
+    }
+
+    boolean getPause() {
+        return pause;
+    }
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout
@@ -37,85 +59,118 @@ public class GameView {
         this.court = court;
         this.gameRoot = root;
         this.scale = scale;
+        this.pause = false;
+        this.finGame = false;
 
-        root.setMinWidth(court.getWidth() * scale + 2 * xMargin);
-        root.setMinHeight(court.getHeight() * scale);
+        root.setMinWidth(court.getWidth() * scale + 2 * Margin);
+        root.setMinHeight(court.getHeight() * scale + Margin + Interface);
+
+        // Affichage de la balle et des raquettes
 
         racketA = new Rectangle();
         racketA.setHeight(court.getRacketSize() * scale);
         racketA.setWidth(racketThickness);
-        racketA.setFill(Color.BLACK);
+        racketA.setFill(Color.valueOf("#375745"));
 
-        racketA.setX(xMargin - racketThickness);
-        racketA.setY(court.getRacketA() * scale);
+        racketA.setX(Margin - racketThickness);
+        racketA.setY(court.getRacketA() * scale + Interface + Margin / 2);
 
         racketB = new Rectangle();
         racketB.setHeight(court.getRacketSize() * scale);
         racketB.setWidth(racketThickness);
-        racketB.setFill(Color.BLACK);
+        racketB.setFill(Color.valueOf("#375745"));
 
-        racketB.setX(court.getWidth() * scale + xMargin);
-        racketB.setY(court.getRacketB() * scale);
+        racketB.setX(court.getWidth() * scale + Margin);
+        racketB.setY(court.getRacketB() * scale + Interface + Margin / 2);
 
         ball = new Circle();
         ball.setRadius(court.getBallRadius());
-        ball.setFill(Color.BLACK);
+        ball.setFill(Color.valueOf("#375745"));
 
-        ball.setCenterX(court.getBallX() * scale + xMargin);
-        ball.setCenterY(court.getBallY() * scale);
+        ball.setCenterX(court.getBallX() * scale + Margin);
+        ball.setCenterY(court.getBallY() * scale + Interface + Margin / 2);
 
-        // scoreP1 = new Text();
-        // scoreP2 = new Text();
+        // Affichage de l'interface
 
-        court.scoreVie.s1.setX(1050); // player 1
-        court.scoreVie.s1.setY(50);
+        Group inter = new Group();
 
-        court.scoreVie.s2.setX(30); // player 2
-        court.scoreVie.s2.setY(50);
+        Rectangle cadre = new Rectangle();
+        cadre.setX(Margin / 2);
+        cadre.setY(Margin / 4);
+        cadre.setWidth(court.getWidth() + Margin);
+        cadre.setHeight(Interface);
+        cadre.setStroke(Color.valueOf("#375745"));
+        cadre.setStrokeWidth(5);
+        cadre.setFill(null);
+        inter.getChildren().addAll(cadre);
 
-        // scoreP1.setX(30);
-        // scoreP1.setY(50);
-        //
-        // scoreP2.setX(1050);
-        // scoreP2.setY(50);
-        //
-        //
-        // scoreP1.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,
-        // 40));
-        // scoreP2.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,
-        // 40));
-        // scoreP1.setFill(Color.RED);
-        // scoreP2.setFill(Color.BLUE);
+        Line l1 = new Line();
+        l1.setStartX(Margin / 2);
+        l1.setStartY(Interface + Margin / 2 - ball.getRadius());
+        l1.setEndX(Margin + Margin / 2 + court.getWidth());
+        l1.setEndY(Interface + Margin / 2 - ball.getRadius());
+        l1.setStroke(Color.valueOf("#375745"));
+        l1.setStrokeWidth(5);
 
-        gameRoot.getChildren().addAll(racketA, racketB, ball, court.scoreVie.s1, court.scoreVie.s2);
+        Line l2 = new Line();
+        l2.setStartX(Margin / 2);
+        l2.setStartY(Interface + Margin / 2 + court.getHeight() + ball.getRadius());
+        l2.setEndX(Margin + Margin / 2 + court.getWidth());
+        l2.setEndY(Interface + Margin / 2 + court.getHeight() + ball.getRadius());
+        l2.setStroke(Color.valueOf("#375745"));
+        l2.setStrokeWidth(5);
+
+        Rectangle zoneDeJeu = new Rectangle();
+        zoneDeJeu.setX(Margin);
+        zoneDeJeu.setY(Interface + Margin / 2);
+        zoneDeJeu.setWidth(court.getWidth());
+        zoneDeJeu.setHeight(court.getHeight());
+        zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
+        // Player1
+        court.getScore().getS1().setStyle("-fx-font: 60 arial;");
+        court.getScore().getS1().setX(1030);
+        court.getScore().getS1().setY(95);
+        court.scoreVie.s1.setStyle("-fx-font: 60 arial;");
+        court.scoreVie.s1.setX(1100); // player 1
+        court.scoreVie.s1.setY(95);
+        court.scoreVie.s1.setFill(Color.valueOf("RED"));
+        // Player2
+        court.getScore().getS2().setStyle("-fx-font: 60 arial;");
+        court.getScore().getS2().setX(130);
+        court.getScore().getS2().setY(95);
+        court.scoreVie.s2.setStyle("-fx-font: 60 arial;");
+        court.scoreVie.s2.setX(60); // player 2
+        court.scoreVie.s2.setY(95);
+        court.scoreVie.s2.setFill(Color.valueOf("RED"));
+
+        gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA,
+                racketB, ball, inter, court.scoreVie.s1, court.scoreVie.s2);
 
     }
 
     public void animate() {
-        new AnimationTimer() { // generer seulement DeltaT
+        new AnimationTimer() {
             long last = 0;
 
             @Override
             public void handle(long now) {
+                if (!pause && !finGame) {
 
-                // PAUSE game
-                if (!Pause) {
                     if (last == 0) { // ignore the first tick, just compute the first deltaT
                         last = now;
                         return;
                     }
-                    // ERROR FAIT +1 POINT POUR PLAYER 1
+
                     court.update((now - last) * 1.0e-9); // convert nanoseconds to seconds
                     last = now;
-                    racketA.setY(court.getRacketA() * scale);
-                    racketB.setY(court.getRacketB() * scale);
-                    ball.setCenterX(court.getBallX() * scale + xMargin);
-                    ball.setCenterY(court.getBallY() * scale);
+                    racketA.setY(court.getRacketA() * scale + Margin / 2 + Interface);
+                    racketB.setY(court.getRacketB() * scale + Margin / 2 + Interface);
+                    ball.setCenterX(court.getBallX() * scale + Margin);
+                    ball.setCenterY(court.getBallY() * scale + Margin / 2 + Interface);
+                } else {
+                    last = 0;
                 }
                 Timer--;
-                if (Timer == 0) {
-                    Pause = false;
-                }
             }
         }.start();
     }

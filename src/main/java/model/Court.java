@@ -1,42 +1,79 @@
 package model;
 
-import model.CompteurVie;
 import gui.GameView;
+import javafx.scene.image.ImageView;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import model.Court;
+import model.RacketController;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import javafx.scene.image.*;
+import javafx.scene.effect.ImageInput;
 
 public class Court {
     // instance parameters
     private final RacketController playerA, playerB;
-    public static double width, height; // size of the application
-    public static double racketSpeed = 300.0; // m/s
-    public static double racketSize = 100.0; // m
-    public static double ballRadius = 10.0; // ball radius/ size
+    private final double width, height; // size of the application
+    private double racketSpeed = 300.0; // m/s
+    private double racketSize = 100.0; // m
+    private double ballRadius = 10.0; // ball radius/ size
     // instance state
-    public static double racketA; // playerOnePos.Y
-    public static double racketB; // playerOnePos.Y
-    public static double ballX, ballY; // position de la balle
-    public static double ballSpeedX = 1;
-    public static double ballSpeedY = 1; // declare to 1
+    private double racketA; // playerOnePos.Y
+    private double racketB; // playerOnePos.Y
+    private double ballX, ballY; // position de la balle
+    private double ballSpeedX, ballSpeedY;
+    private Score score;
+    public CompteurVie scoreVie;
 
-    // need player Height about 100
-    private static final int Player_Height = 100;
+    public Score getScore() {
+        return this.score;
+    }
 
-    // need player width about 15
-    private static final int Player_Width = 15;
-    // score p1 p2
-    // private static int scoreP1 = 0;
-    // private static int scoreP2 = 0;
-    private final int racketThickness = 10;
+    public Score getPlayerA() {
+        return (Score) this.playerA;
+    }
 
-    // TEST AVEC SAMI ISMA<3
-    public CompteurVie scoreVie; // score class
-
-    public Court(RacketController playerA, RacketController playerB, double width, double height) {
+    public Court(RacketController playerA, RacketController playerB, double width, double height, int limit) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.width = width;
         this.height = height;
+        this.score = new Score(limit);
         this.scoreVie = new CompteurVie();
         reset();
+    }
+
+    public void setBallX(double ballX) {
+        this.ballX = ballX;
+    }
+
+    public void setBallY(double ballY) {
+        this.ballY = ballY;
+    }
+
+    public double getBallSpeedX() {
+        return ballSpeedX;
+    }
+
+    public double getBallSpeedY() {
+        return ballSpeedY;
+    }
+
+    public void setBallSpeedX(double ballSpeedX) {
+        this.ballSpeedX = ballSpeedX;
+    }
+
+    public void setBallSpeedY(double ballSpeedY) {
+        this.ballSpeedY = ballSpeedY;
+    }
+
+    public double getRacketSpeed() {
+        return this.racketSpeed;
     }
 
     public double getWidth() {
@@ -71,16 +108,16 @@ public class Court {
 
         switch (playerA.getState()) {
             case GOING_UP:
-                racketA -= racketSpeed * deltaT; // la vitesse de la racket * delta
+                racketA -= racketSpeed * deltaT;
                 if (racketA < 0.0)
-                    racketA = 0.0; // position racket Y axis 0 cao nhat
+                    racketA = 0.0;
                 break;
             case IDLE:
                 break;
             case GOING_DOWN:
                 racketA += racketSpeed * deltaT;
                 if (racketA + racketSize > height)
-                    racketA = height - racketSize; //
+                    racketA = height - racketSize;
                 break;
         }
         switch (playerB.getState()) {
@@ -104,72 +141,59 @@ public class Court {
     /**
      * @return true if a player lost
      */
+    static Image fin = new Image("file:src/Pictures/WinJ22.png");
+    public static ImageView finJ2 = new ImageView(fin);
+    static Image fin1 = new Image("file:src/Pictures/WinJ11.png");
+    public static ImageView finJ1 = new ImageView(fin1);
+    static Image smoke = new Image("file:src/Pictures/whitesmoke.png");
+    public static ImageView whitesmoke = new ImageView(smoke);
+
     private boolean updateBall(double deltaT) {
         // first, compute possible next position if nothing stands in the way
         double nextBallX = ballX + deltaT * ballSpeedX;
         double nextBallY = ballY + deltaT * ballSpeedY;
         // next, see if the ball would meet some obstacle
         if (nextBallY < 0 || nextBallY > height) {
-            ballSpeedY = -ballSpeedY; // rebondir
+            ballSpeedY = -ballSpeedY;
             nextBallY = ballY + deltaT * ballSpeedY;
-            // nextBallY = ballY + deltaT * ballSpeedY + ((ballY <
-            // 0)?(-100*Math.random()):(100*Math.random())); //eviter que la balle depasse
-            // en haut ou en bas
-        } // ? = if
-        /*-------------------------------------------------------------------------width
-        *
-        *
-        *
-        * -racket A tete
-        *
-        *
-        *
-        *
-        * -racket A + racket Size bottom of the racket
-        *
-        *
-        * y */
-        if ((nextBallX < 0 && nextBallY > racketA && nextBallY < racketA + racketSize) //
+        }
+
+        if ((nextBallX < 0 && nextBallY > racketA && nextBallY < racketA + racketSize)
                 || (nextBallX > width && nextBallY > racketB && nextBallY < racketB + racketSize)) {
-            ballSpeedX = -ballSpeedX; // rebondir ball x balle tombe dans la raquette
+            ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
-            // nextball = new vitesse next position
-        } else if (nextBallX < 0) { // if en haut une des condition est fausse, balle a pas touche la raquette
-            // player 1
-
-            // SFX SOUND ???
-
-            // try {
-            // AudioClip clip = Applet.newAudioClip(
-            // new URL("/home/pain/Downloads/Paddle-sfx.wav"));
-            // clip.play();
-            // } catch (MalformedURLException murle) {
-            // System.out.println(murle);
-            //
-
+        } else if (nextBallX < 0) {
             scoreVie.addCompteurVie1();
-            return true;
-        } else if (nextBallX > width) { // player 2
+            score.addScore1();
 
+            if (score.endGame() == 1) {
+                GameView.finGame = true;
+                gui.App.root.getChildren().add(whitesmoke);
+                gui.App.root.getChildren().add(finJ2);
+                gui.App.Quitter.setLayoutX(370);
+                gui.App.Recommencer.setLayoutX(695);
+                gui.App.Recommencer.setLayoutY(400);
+                gui.App.Quitter.setLayoutY(390);
+                gui.App.root.getChildren().addAll(gui.App.Quitter, gui.App.Recommencer);
+            }
+            return true;
+        } else if (nextBallX > width) {
             scoreVie.addCompteurVie2();
-            // racket size reduce size if loose
+            score.addScore2();
+            if (score.endGame() == 1) {
+                GameView.finGame = true;
+                gui.App.root.getChildren().add(whitesmoke);
+                gui.App.root.getChildren().add(finJ1);
+                gui.App.Quitter.setLayoutX(370);
+                gui.App.Recommencer.setLayoutX(695);
+                gui.App.Recommencer.setLayoutY(400);
+                gui.App.Quitter.setLayoutY(390);
+                gui.App.root.getChildren().addAll(gui.App.Quitter, gui.App.Recommencer);
+            }
             return true;
-
         } else if ((CompteurVie.s2.getText().equals("0") || CompteurVie.s1.getText().equals("0"))) {
             scoreVie.LimiteVie();
         }
-        // increase speed of the ball
-        // BIG PROBLEM IN THE MIDDLE AUTO RESET THE GAME
-        // if( ((ballX + ballRadius > racketA) && ballY >= racketB && ballY <= racketB +
-        // racketSize) ||
-        // ((ballX < racketA + racketThickness) && ballY >= racketA && ballY <= racketA
-        // + racketThickness)) {
-        // ballSpeedY += 1 * Math.signum(ballSpeedY);
-        // ballSpeedX += 1 * Math.signum(ballSpeedX);
-        // ballSpeedY *= -1;
-        // ballSpeedY *= -1;
-        // }
-        // la ga fait rebondir la balle
         ballX = nextBallX;
         ballY = nextBallY;
         return false;
@@ -179,12 +203,12 @@ public class Court {
         return ballRadius;
     }
 
-    static void reset() {
-        racketA = height / 2;
-        racketB = height / 2;
-        ballSpeedX = 200.0;
-        ballSpeedY = 200.0;
-        ballX = width / 2;
-        ballY = height / 2;
+    public void reset() {
+        this.racketA = height / 2;
+        this.racketB = height / 2;
+        this.ballSpeedX = 200.0;
+        this.ballSpeedY = 200.0;
+        this.ballX = width / 2;
+        this.ballY = height / 2;
     }
 }
