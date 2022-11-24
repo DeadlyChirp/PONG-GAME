@@ -26,6 +26,10 @@ public class Score {
         this.limitePoint = limit ; 
     }
 
+    public int getLimit(){
+        return this.limitePoint;
+    }
+
     public void addScore1(){
         s1.setText(String.valueOf(Integer.valueOf(s1.getText())+1));
     }
@@ -34,19 +38,14 @@ public class Score {
         s2.setText(String.valueOf(Integer.valueOf(s2.getText())+1));
     }
 
-    public boolean endGame() {
-        if (Integer.valueOf(s1.getText()) == limitePoint || Integer.valueOf(s2.getText()) == limitePoint) return true;
-        return false; 
-    }
-
-    public int getLimitPoint() {
-        return limitePoint;
+    public int endGame() {
+        if (Integer.valueOf(s1.getText()) == limitePoint) return 1 ; 
+        if (Integer.valueOf(s2.getText()) == limitePoint) return 1 ; 
+        return -1 ; 
     }
 
     public void reset(){
         s1.setText("0");
         s2.setText("0");
     }
-
-    
 }

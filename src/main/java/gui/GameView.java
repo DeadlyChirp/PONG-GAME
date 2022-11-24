@@ -2,8 +2,8 @@ package gui;
 import javafx.scene.text.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
-import javafx.scene.text.Text;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,11 +18,13 @@ import model.*;
 
 public class GameView {
 
+   
     // class parameters
     private final Court court;
     private final Pane gameRoot; // main node of the game
     private final double scale;
     private final double Margin = 100.0, racketThickness = 10.0, Interface = 100.0; // pixels
+    public static String theme ; 
 
     // children of the game main node
     private final Rectangle racketA, racketB;
@@ -35,8 +37,9 @@ public class GameView {
     void setFin(boolean b){
         finGame = b;
     }
-    
-    boolean getFin(){
+
+
+    public static boolean getFin(){
         return finGame;
     }
     void setPause(boolean b){
@@ -46,20 +49,19 @@ public class GameView {
         return pause;
     }
 
-    
-
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
      * @param root  le nœud racine dans la scène JavaFX dans lequel le jeu sera affiché
      * @param scale le facteur d'échelle entre les distances du modèle et le nombre de pixels correspondants dans la vue
      */
-    public GameView(Court court, Pane root, double scale) {
+    public GameView(Court court, Pane root, double scale ) {
         this.court = court;
         this.gameRoot = root;
-        this.scale = scale;
-        this.pause = false ;
-        this.finGame = false ; 
+        this.scale = scale; 
+
+        pause = false ; 
+        finGame = false ; 
 
         root.setMinWidth(court.getWidth() * scale + 2 * Margin);
         root.setMinHeight(court.getHeight() * scale + Margin + Interface);
@@ -137,15 +139,33 @@ public class GameView {
 
                 if (court instanceof TimeMode) {
                     TimeMode t = (TimeMode)court;
-                    t.getTmp().setStyle("-fx-font: 60 arial;");
-                    t.getTmp().setX(515);
+                    Text afficheT = new Text("Temps : ");
+
+                   afficheT.setStyle("-fx-font: 40 arial;");
+                    afficheT.setX(215);
+                    afficheT.setY(95);
+
+                    t.getTmp().setStyle("-fx-font: 40 arial;");
+                    t.getTmp().setX(415);
                     t.getTmp().setY(95);
 
+                    Text t1 = new Text("Manche : ");
+
+                    t1.setStyle("-fx-font: 40 arial;");
+                    t1.setX(600);
+                    t1.setY(95);
+
+                    t.getNbManche().setStyle("-fx-font: 40 arial;");
+                    t.getNbManche().setX(800);
+                    t.getNbManche().setY(95);
+
+
+
         
-                    t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
+                    t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
             
 
-                    gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA, racketB, ball, inter, t.getTmp());
+                    gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA, racketB, ball, inter, t.getTmp(), t1, t.getNbManche(), afficheT);
                     
 
                 } else {
@@ -153,10 +173,23 @@ public class GameView {
 
                 }
 
-               
+
     }
 
-   
+    public static void endGame (int player) {
+        Image fin = new Image((player==1)?"file:src/Pictures/WinJ22.png":(player ==2)?"file:src/Pictures/WinJ11.png":"lol");
+        ImageView finJ = new ImageView(fin);
+        Image smoke = new Image("file:src/Pictures/whitesmoke.png");
+        ImageView whitesmoke = new ImageView(smoke);
+        App.root.getChildren().add(whitesmoke);
+        App.root.getChildren().add(finJ);
+        App.Quitter.setLayoutX(370);
+        App.Recommencer.setLayoutX(695);
+        App.Recommencer.setLayoutY(400);
+        App.Quitter.setLayoutY(390);
+        App.root.getChildren().addAll(gui.App.Quitter, gui.App.Recommencer);
+    }
+
     public void animate() {
         new AnimationTimer() {
             long last = 0;

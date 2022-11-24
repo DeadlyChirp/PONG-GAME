@@ -1,8 +1,11 @@
 package model;
 
 import java.util.*;
-import javafx.scene.layout.Pane;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import gui.App;
 import gui.GameView;
 import javafx.scene.text.*;
 
@@ -16,7 +19,7 @@ public class TimeMode extends Court {
   private int limit;
   private Score scoreFinal;
   private Score scoreManche;
-  private int nbManche;
+  private Text nbManche;
   private int nbMancheInitial;
  
 
@@ -27,16 +30,53 @@ public class TimeMode extends Court {
     limit = t;
     timer = new Timer();
    
-    this.nbManche = nbManche;
+    this.nbManche = new Text("1");
     this.nbMancheInitial = nbManche;
    
     scoreManche = this.getScore();
     scoreFinal = new Score();
     commencerTimer();
-
-
-
   }
+  
+@Override
+public boolean updateBall(double deltaT) {
+          if (Integer.valueOf(nbManche.getText()) == nbMancheInitial+1) {
+            GameView.finGame = true;
+            GameView.endGame(winner());
+            timer.cancel();
+          }
+          // first, compute possible next position if nothing stands in the way
+          double nextBallX = getBallX() + deltaT * getBallSpeedX();
+          double nextBallY = getBallY() + deltaT * getBallSpeedY();
+          double ballX = getBallX() ; 
+          double ballY = getBallY() ; 
+          double ballSpeedX = getBallSpeedX() ; 
+          double ballSpeedY = getBallSpeedY() ; 
+
+          // next, see if the ball would meet some obstacle
+          if (nextBallY < 0 || nextBallY > getHeight()) {
+              ballSpeedY = -ballSpeedY ;
+              setBallSpeedY(ballSpeedY);
+              nextBallY = ballY + deltaT * ballSpeedY ;
+              nextBallX = ballX + ((ballSpeedX<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedX)); 
+          }
+  
+          if ((nextBallX < 0 && nextBallY > getRacketA() && nextBallY < getRacketA() + getRacketSize())  || (nextBallX > getWidth() && nextBallY > getRacketB() && nextBallY < getRacketB() + getRacketSize())) { 
+              ballSpeedX = -ballSpeedX; 
+              setBallSpeedX(ballSpeedX);
+              nextBallX = ballX + deltaT * ballSpeedX ;
+              nextBallY = ballY +  ((ballSpeedY<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedY)); 
+          }else if (nextBallX < 0) { 
+              getScore().addScore1();
+              return true;
+          }else if (nextBallX > getWidth()) { 
+              getScore().addScore2();
+              return true;
+          }
+          setBallX(nextBallX);
+          setBallY(nextBallY);
+          return false;
+}
 
   public void commencerTimer() {
     timer.cancel();
@@ -47,13 +87,7 @@ public class TimeMode extends Court {
       public void run() {
         int n = Integer.valueOf(tmp.getText());
          if (!GameView.finGame) {
-            if (getNbManche() == 0) {
-              GameView.finGame = true;
-              System.out.println(winner());
-              timer.cancel();
-    
-            }
-            else if (!GameView.pause) {
+            if (!GameView.pause) {
               if (n != 0) tmp.setText(String.valueOf(n-1));
               else {
                 tmp.setText(String.valueOf(limit));
@@ -67,10 +101,13 @@ public class TimeMode extends Court {
       };
 
    timer.scheduleAtFixedRate(a, 1000, 1000);
+      
   }
 
+  
+
   public void resetNbManche() {
-    nbManche = nbMancheInitial;
+    nbManche.setText(String.valueOf("1"));
   }
 
 
@@ -78,9 +115,10 @@ public class TimeMode extends Court {
     return limit;
   }
 
-  public int getNbManche() {
+  public Text getNbManche() {
     return nbManche;
   }
+
 
   public void closeTimer() {
     timer.cancel();
@@ -90,15 +128,16 @@ public class TimeMode extends Court {
     return tmp;
   }
 
-  public String winner() {
+  public int winner() {
     int s1 = Integer.valueOf(scoreFinal.getS1().getText());
     int s2 = Integer.valueOf(scoreFinal.getS2().getText());
+    if (s1 == s2) return 0;
 
-    if (s1 > s2) return "Le gagnant est le joueur 1 avec un score de "+scoreFinal.getS1().getText()+" à "+scoreFinal.getS2().getText();
-    else if (s1 < s2) return "Le gagnant est le joueur 2 avec un score de "+scoreFinal.getS2().getText()+" à "+scoreFinal.getS1().getText();
-    return "Egalité avec un score de "+scoreFinal.getS2().getText()+" à "+scoreFinal.getS1().getText();
-
+    return (Math.max(s1, s2)==s1)?1:2; 
+    
   }
+
+
 
   public void finManche() {
     int s1 = Integer.valueOf(scoreManche.getS1().getText());
@@ -111,19 +150,10 @@ public class TimeMode extends Court {
       scoreFinal.addScore2();
     }
     scoreManche.reset();
-    nbManche--;
+    nbManche.setText(String.valueOf(Integer.valueOf(nbManche.getText()) +1));
+
+    
   }
-
-
-  // public void afficheVictoire() {
-  //   Text a = new Text(winner());
-  //   a.setStyle("-fx-font: 60 arial;");
-  //   a.setX(getWidth() /2);
-  //   a.setY(getHeight() /2);
-  //   root.getChildren().addAll(a); 
-  // }
-  
-
 
 
 }
