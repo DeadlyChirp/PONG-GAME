@@ -142,21 +142,21 @@ public class GameView {
                     Text afficheT = new Text("Temps : ");
 
                    afficheT.setStyle("-fx-font: 40 arial;");
-                    afficheT.setX(215);
+                    afficheT.setX(265);
                     afficheT.setY(95);
 
                     t.getTmp().setStyle("-fx-font: 40 arial;");
-                    t.getTmp().setX(415);
+                    t.getTmp().setX(455);
                     t.getTmp().setY(95);
 
                     Text t1 = new Text("Manche : ");
 
                     t1.setStyle("-fx-font: 40 arial;");
-                    t1.setX(600);
+                    t1.setX(655);
                     t1.setY(95);
 
                     t.getNbManche().setStyle("-fx-font: 40 arial;");
-                    t.getNbManche().setX(800);
+                    t.getNbManche().setX(855);
                     t.getNbManche().setY(95);
 
 

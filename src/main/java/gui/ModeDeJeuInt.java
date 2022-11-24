@@ -192,8 +192,16 @@ public class ModeDeJeuInt extends Application {
                 boolean b = false;
                 while(!b) {
                     try {
-                        Integer.valueOf(limit);
-                        b = true;
+                       int a =  Integer.valueOf(limit);
+                       if (a > 0) b = true;
+                       else {
+                            Alert alert = new Alert(AlertType.INFORMATION);
+                            alert.setTitle("Erreur de saisie");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Vous devez saisir un chiffre positif.");
+                            alert.showAndWait();
+                            return;
+                       }
                      } catch (NumberFormatException e) {
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Erreur de saisie");
@@ -217,8 +225,16 @@ public class ModeDeJeuInt extends Application {
                 boolean c = false;
                 while(!c) {
                     try {
-                        Integer.valueOf(time);
-                        c = true;
+                        int d = Integer.valueOf(time);
+                        if (d > 0)  c = true;
+                        else {
+                            Alert alert = new Alert(AlertType.INFORMATION);
+                            alert.setTitle("Erreur de saisie");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Vous devez saisir un chiffre positif.");
+                            alert.showAndWait();
+                            return;
+                        }
                      } catch (NumberFormatException e) {
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Erreur de saisie");
