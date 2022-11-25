@@ -1,6 +1,5 @@
 package gui;
 
-import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ImageInput;
@@ -8,33 +7,18 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 
-import javafx.scene.layout.*;
-
 import javafx.scene.image.ImageView;
-import java.io.File; 
 
-
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
+
+import javax.sound.sampled.*;;
 /* ------------------------------------------------------------------------------------------------------*/
 
 //Menu principale du Jeu 
 
 
-public class Menu extends Application{
+public class Menu {
 
     public Pane root;
     public Scene gameScene;
@@ -51,7 +35,6 @@ public class Menu extends Application{
         ImageView imageView = new ImageView(image);
         imageView.setLayoutX(350);
         imageView.setLayoutY(10);
-        
 
         //Bouton Play
         Button play = new Button("play") ;
@@ -93,12 +76,18 @@ public class Menu extends Application{
         primaryStage.getIcons().add(new Image("file:src/Pictures/pong1.png")) ;
         primaryStage.setTitle("Pong");
 
+        
+
         //Ajout des boutons sur le stage
         
         root.getChildren().addAll(imageView, play, option, quitter, Easter) ;
         primaryStage.setScene(gameScene);
-        primaryStage.show(); 
-
+        Audio son = new Audio();
+        son.start();
+        primaryStage.show();
+        
+        
+        
         //Action du bouton option
         option.setOnAction(ev2 ->{
             root.getChildren().removeAll(play, option, quitter);
@@ -173,6 +162,7 @@ public class Menu extends Application{
         
         //Action du bouton Quitter
         quitter.setOnAction(ev3 ->{
+            son.interrupt();
             System.exit(0);
         });
        

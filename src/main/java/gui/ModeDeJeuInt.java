@@ -1,73 +1,21 @@
 package gui;
 import java.util.*;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.event.ActionEvent;
-import javafx.application.Application;
-import javafx.event.Event;
 import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
-import model.Court;
-import model.RacketController;
-import java.io.InputStream;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import java.util.Optional;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.Stage;
-import java.io.File; 
-import java.io.IOException; 
-import java.util.Scanner;
-
-
-import javafx.application.Application;
-import javafx.event.Event;
-import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.effect.ImageInput;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
-import model.Court;
-import model.RacketController;
-import java.io.InputStream;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.Stage;
-import java.io.File; 
-import java.io.IOException; 
-import java.util.Scanner;
-
 
 /*********************************************************************************************************************** */
 
 
 //Menu pour les différents modes de jeu interne. Il reste timer mode, fire mode et un autre mode à implémenter
 
-public class ModeDeJeuInt extends Application {
+public class ModeDeJeuInt {
 
     public Pane root;
     public Scene gameScene;
@@ -109,14 +57,14 @@ public class ModeDeJeuInt extends Application {
         //Bouton SpeedMode
         Button speedmode = new Button("Speed Mode");
         speedmode.setLayoutX(520);
-        speedmode.setLayoutY(200);
+        speedmode.setLayoutY(400);
         speedmode.setEffect(new ImageInput(new Image("file:src/Pictures/speedmode.png")));
         speedmode.setSkin(new MyButtonSkin(speedmode));
 
         //Bouton ScoreMode
         Button scoreMode = new Button("Score Mode");
         scoreMode.setLayoutX(520);
-        scoreMode.setLayoutY(400);
+        scoreMode.setLayoutY(200);
         scoreMode.setEffect(new ImageInput(new Image("file:src/Pictures/scoremode.png")));
         scoreMode.setSkin(new MyButtonSkin(scoreMode));
 
@@ -210,7 +158,49 @@ public class ModeDeJeuInt extends Application {
         });
 
         obstaclemode.setOnAction(ev1->{
-
+            TextInputDialog dialog = new TextInputDialog("1");
+            dialog.initOwner(primaryStage);
+            dialog.setTitle("Choix Du Score");
+            dialog.setHeaderText("Vous Pouvez choisir le nombre de points à atteindre !");
+            dialog.setContentText("Veuillez entrer un score valide : \n" + 
+            "Tapez 'infini' si vous voulez pas de limite !");
+            dialog.setResizable(false);
+            
+            int limit = 0 ; 
+            Optional<String> result = dialog.showAndWait() ; 
+            if (result.isPresent()){
+                if (result.get().equals("infini")){
+                    limit = -1 ; 
+                }else{
+                    try {
+                        limit = Integer.valueOf(result.get().strip()) ; 
+                    } catch (NumberFormatException e) {
+                       dialog.setContentText("Veuillez entrer un nombre !");
+                       limit = 0 ; 
+                    }
+                }
+                if (limit == -1 || limit >0) {
+                    TextInputDialog di = new TextInputDialog() ; 
+                    di.setTitle("Choix Des Options");
+                    di.initOwner(primaryStage);
+                    GridPane gp = new GridPane() ;
+                    gp.add(new Label("Veuillez choisir vos options de jeu"), 0, 0);
+                    CheckBox vitesse = new CheckBox("Vitese") ; 
+                    gp.add(vitesse, 0, 1);
+                    di.getDialogPane().setContent(gp);
+                    if (di.showAndWait().isPresent()) {
+                        Pane root1 = new Pane() ; 
+                        gameScene.setRoot(root1);
+                        App app = new App(root1, gameScene, limit) ; 
+                        if (vitesse.isSelected()){             
+                            app.startObstacles(primaryStage, true);
+                        }else{
+                            app.startObstacles(primaryStage, false);
+                        }
+                    }
+                }
+            }
+                        
             //Utilser obstaclemode de Samy
         });
 
@@ -257,9 +247,6 @@ public class ModeDeJeuInt extends Application {
         
         });
         
-       
-        primaryStage.setScene(gameScene);
-        primaryStage.show(); 
         }
 
 }
