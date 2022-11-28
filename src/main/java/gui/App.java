@@ -13,6 +13,8 @@ import model.RacketController;
 import javafx.scene.layout.*;
 import javafx.scene.effect.ImageInput;
 import model.TimeMode;
+import javax.sound.sampled.*;
+
 
 
 
@@ -49,6 +51,9 @@ public class App {
     public static Button Quitter= new Button("Quitter") ;
     public static Button Reprendre= new Button("Reprendre") ;
     public static Button Recommencer= new Button("Recommencer") ;
+    public static Button up = new Button("UP");
+    public static Button down = new Button("DOWN");
+
 
 
 
@@ -89,13 +94,24 @@ public class App {
                     Reprendre.setMinSize(80, 80);
                     Reprendre.setEffect(new ImageInput(new Image("file:src/Pictures/play.png")));
                     Reprendre.setSkin(new MyButtonSkin(Reprendre));
-                   
 
                     Recommencer.setLayoutX(695);
                     Recommencer.setLayoutY(350);
                     Recommencer.setMinSize(80, 80);
                     Recommencer.setEffect(new ImageInput(new Image("file:src/Pictures/recommencer.png")));
                     Recommencer.setSkin(new MyButtonSkin(Recommencer));
+
+                    down.setLayoutX(740);
+                    down.setLayoutY(220);
+                    down.setEffect(new ImageInput(new Image("file:src/Pictures/Down.png")));
+                    down.setSkin(new MyButtonSkin(down));
+
+                    
+                    up.setLayoutX(810);
+                    up.setLayoutY(220);
+                    up.setEffect(new ImageInput(new Image("file:src/Pictures/Up.png")));
+                    up.setSkin(new MyButtonSkin(up));
+                   
                   
                     //Switch pour les boutons de jeu, in-game.
                     gameScene.setOnKeyPressed(ev -> {
@@ -112,11 +128,11 @@ public class App {
                         } else if(s == "ESCAPE"){
                             if(!GameView.pause && !GameView.finGame){
                                 root.getChildren().add(imageV);
-                                root.getChildren().addAll(Quitter, Reprendre, Recommencer);
+                                root.getChildren().addAll(Quitter, Reprendre, Recommencer, up, down);
                                 GameView.pause = true;
                            }else{
                                 if(!GameView.finGame){
-                                    root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+                                    root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
                                     GameView.pause = false ; 
                                 }
                             }    
@@ -153,9 +169,25 @@ public class App {
 
                     //Action du bouton Reprendre
                     Reprendre.setOnAction(ev1 ->{
-                        root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+                        root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
                         GameView.pause = false ; 
                     });
+
+                    Menu.gainControl = (FloatControl) Start.son.line.getControl(FloatControl.Type.MASTER_GAIN);
+                    down.setOnAction(ev1 ->{
+                        if(Menu.gainControl.getValue() > -80){
+                            float cVol = Menu.gainControl.getValue();
+                            cVol -= 10f;
+                            Menu.gainControl.setValue(cVol);
+                        }
+                     });
+                     up.setOnAction(ev1 ->{
+                        if(Menu.gainControl.getValue() < -3){
+                            float cVol1 = Menu.gainControl.getValue();
+                            cVol1 += 10f;
+                            Menu.gainControl.setValue(cVol1);    
+                        }
+                     });
 
                     //Action du bouton Recommencer
                     Recommencer.setOnAction(ev1 ->{
@@ -168,11 +200,13 @@ public class App {
                             root.getChildren().remove(root.getChildren().size()-3) ; 
                             root.getChildren().remove(root.getChildren().size()-3) ;  
                         } 
-                        root.getChildren().removeAll(Quitter, Reprendre, Recommencer);
+                        root.getChildren().removeAll(Quitter, Reprendre, Recommencer, up, down);
                         court.refresh(); 
                         GameView.pause = false ; 
                         GameView.finGame = false;
                     });			
+
+                    
 
     }
     
@@ -220,6 +254,19 @@ public class App {
          Recommencer.setMinSize(80, 80);
          Recommencer.setEffect(new ImageInput(new Image("file:src/Pictures/recommencer.png")));
          Recommencer.setSkin(new MyButtonSkin(Recommencer));
+
+         
+         down.setLayoutX(740);
+         down.setLayoutY(220);
+         down.setEffect(new ImageInput(new Image("file:src/Pictures/Down.png")));
+         down.setSkin(new MyButtonSkin(down));
+
+         
+         up.setLayoutX(810);
+         up.setLayoutY(220);
+         up.setEffect(new ImageInput(new Image("file:src/Pictures/Up.png")));
+         up.setSkin(new MyButtonSkin(up));
+        
     
         //Switch pour les boutons de jeu, in-game.
         gameScene.setOnKeyPressed(ev -> {
@@ -236,10 +283,10 @@ public class App {
                 } else if(s == "ESCAPE"){
                    if(!GameView.pause && !GameView.finGame){
                     root.getChildren().add(imageV);
-                    root.getChildren().addAll(Quitter, Reprendre, Recommencer);
+                    root.getChildren().addAll(Quitter, Reprendre, Recommencer, up, down);
                     GameView.pause = true;
                    }else if(!GameView.finGame){
-                    root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+                    root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
                     GameView.pause = false ; 
                    }
             }
@@ -279,9 +326,25 @@ public class App {
 
         //Action du bouton Reprendre
         Reprendre.setOnAction(ev1 ->{
-            root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+            root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
             GameView.pause = false ; 
         });
+
+        Menu.gainControl = (FloatControl) Start.son.line.getControl(FloatControl.Type.MASTER_GAIN);
+        down.setOnAction(ev1 ->{
+            if(Menu.gainControl.getValue() > -80){
+                float cVol = Menu.gainControl.getValue();
+                cVol -= 10f;
+                Menu.gainControl.setValue(cVol);
+            }
+         });
+         up.setOnAction(ev1 ->{
+            if(Menu.gainControl.getValue() < -3){
+                float cVol1 = Menu.gainControl.getValue();
+                cVol1 += 10f;
+                Menu.gainControl.setValue(cVol1);    
+            }
+         });
 
         //Action du bouton Recommencer
         Recommencer.setOnAction(ev1 ->{
@@ -294,7 +357,7 @@ public class App {
                 root.getChildren().remove(root.getChildren().size()-3) ; 
                 root.getChildren().remove(root.getChildren().size()-3) ;  
             }           
-            root.getChildren().removeAll(Quitter, Reprendre, Recommencer);
+            root.getChildren().removeAll(Quitter, Reprendre, Recommencer, up, down);
             court.reset() ;  
            court.getScore().reset();
            GameView.pause = false ; 
@@ -349,6 +412,18 @@ public class App {
         Recommencer.setEffect(new ImageInput(new Image("file:src/Pictures/recommencer.png")));
         Recommencer.setSkin(new MyButtonSkin(Recommencer));
       
+        
+        down.setLayoutX(740);
+        down.setLayoutY(220);
+        down.setEffect(new ImageInput(new Image("file:src/Pictures/Down.png")));
+        down.setSkin(new MyButtonSkin(down));
+
+        
+        up.setLayoutX(810);
+        up.setLayoutY(220);
+        up.setEffect(new ImageInput(new Image("file:src/Pictures/Up.png")));
+        up.setSkin(new MyButtonSkin(up));
+       
         //Switch pour les boutons de jeu, in-game.
         gameScene.setOnKeyPressed(ev -> {
             String s = ev.getCode().toString();
@@ -364,10 +439,10 @@ public class App {
                 } else if(s == "ESCAPE"){
                    if(!GameView.pause && !GameView.finGame){
                     root.getChildren().add(imageV);
-                    root.getChildren().addAll(Quitter, Reprendre, Recommencer);
+                    root.getChildren().addAll(Quitter, Reprendre, Recommencer, up, down);
                     GameView.pause = true;
                    }else if(!GameView.finGame){
-                    root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+                    root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
                     GameView.pause = false ; 
                    }
             }
@@ -403,9 +478,25 @@ public class App {
 
         //Action du bouton Reprendre
         Reprendre.setOnAction(ev1 ->{
-            root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+            root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
             GameView.pause = false ; 
         });
+
+        Menu.gainControl = (FloatControl) Start.son.line.getControl(FloatControl.Type.MASTER_GAIN);
+        down.setOnAction(ev1 ->{
+            if(Menu.gainControl.getValue() > -80){
+                float cVol = Menu.gainControl.getValue();
+                cVol -= 10f;
+                Menu.gainControl.setValue(cVol);
+            }
+         });
+         up.setOnAction(ev1 ->{
+            if(Menu.gainControl.getValue() < -3){
+                float cVol1 = Menu.gainControl.getValue();
+                cVol1 += 10f;
+                Menu.gainControl.setValue(cVol1);    
+            }
+         });
 
         //Action du bouton Recommencer
         Recommencer.setOnAction(ev1 ->{
@@ -418,7 +509,7 @@ public class App {
                 root.getChildren().remove(root.getChildren().size()-3) ; 
                 root.getChildren().remove(root.getChildren().size()-3) ;  
             } 
-            root.getChildren().removeAll(Quitter, Reprendre, Recommencer);
+            root.getChildren().removeAll(Quitter, Reprendre, Recommencer, up, down);
             court.refresh();
             GameView.pause = false ; 
             GameView.finGame = false;
@@ -470,6 +561,19 @@ public class App {
         Recommencer.setMinSize(80, 80);
         Recommencer.setEffect(new ImageInput(new Image("file:src/Pictures/recommencer.png")));
         Recommencer.setSkin(new MyButtonSkin(Recommencer));
+
+        
+        down.setLayoutX(740);
+        down.setLayoutY(220);
+        down.setEffect(new ImageInput(new Image("file:src/Pictures/Down.png")));
+        down.setSkin(new MyButtonSkin(down));
+
+        
+        up.setLayoutX(810);
+        up.setLayoutY(220);
+        up.setEffect(new ImageInput(new Image("file:src/Pictures/Up.png")));
+        up.setSkin(new MyButtonSkin(up));
+       
     
         //Switch pour les boutons de jeu, in-game.
         gameScene.setOnKeyPressed(ev -> {
@@ -486,11 +590,11 @@ public class App {
             } else if(s == "ESCAPE"){
                 if(!GameView.pause && !GameView.finGame){
                     root.getChildren().add(imageV);
-                    root.getChildren().addAll(Quitter, Reprendre, Recommencer);
+                    root.getChildren().addAll(Quitter, Reprendre, Recommencer, up, down);
                     GameView.pause = true;
             }else{
                     if(!GameView.finGame){
-                        root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+                        root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
                         GameView.pause = false ; 
                     }
                 }    
@@ -527,9 +631,25 @@ public class App {
 
         //Action du bouton Reprendre
         Reprendre.setOnAction(ev1 ->{
-            root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
+            root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer, up, down);
             GameView.pause = false ; 
         });
+
+        Menu.gainControl = (FloatControl) Start.son.line.getControl(FloatControl.Type.MASTER_GAIN);
+        down.setOnAction(ev1 ->{
+            if(Menu.gainControl.getValue() > -80){
+                float cVol = Menu.gainControl.getValue();
+                cVol -= 10f;
+                Menu.gainControl.setValue(cVol);
+            }
+         });
+         up.setOnAction(ev1 ->{
+            if(Menu.gainControl.getValue() < -3){
+                float cVol1 = Menu.gainControl.getValue();
+                cVol1 += 10f;
+                Menu.gainControl.setValue(cVol1);    
+            }
+         });
 
         //Action du bouton Recommencer
         Recommencer.setOnAction(ev1 ->{
@@ -542,7 +662,7 @@ public class App {
                 root.getChildren().remove(root.getChildren().size()-3) ; 
                 root.getChildren().remove(root.getChildren().size()-3) ;  
             } 
-            root.getChildren().removeAll(Quitter, Reprendre, Recommencer);
+            root.getChildren().removeAll(Quitter, Reprendre, Recommencer, up, down);
             court.refresh();
             GameView.pause = false ; 
             GameView.finGame = false;

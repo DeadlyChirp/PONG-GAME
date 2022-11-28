@@ -6,12 +6,20 @@ import javax.sound.sampled.*;
  
 public class Audio extends Thread{
      
-     
+    String path;
     AudioInputStream audioInputStream = null;
     SourceDataLine line;
+
+    
      
+    public Audio(String path) {
+        this.path = path;
+    }
+
+
+
     public void run(){
-        File fichier = new File("src/Audio/MonsterCo.wav");
+        File fichier = new File(path);
         try {
         AudioFileFormat format = AudioSystem.getAudioFileFormat(fichier);
         } catch (UnsupportedAudioFileException e1) {

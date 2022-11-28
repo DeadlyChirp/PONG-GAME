@@ -8,11 +8,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
+import java.io.*;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.sound.sampled.*;;
+import javax.sound.sampled.*;
 /* ------------------------------------------------------------------------------------------------------*/
 
 //Menu principale du Jeu 
@@ -22,6 +21,7 @@ public class Menu {
 
     public Pane root;
     public Scene gameScene;
+    static FloatControl gainControl = new FloatControl(null, 0, 0, 0, 0, 0, null){}; //Stati
 
     Menu(Pane root, Scene a){
         this.root = root;
@@ -79,11 +79,8 @@ public class Menu {
         
 
         //Ajout des boutons sur le stage
-        
         root.getChildren().addAll(imageView, play, option, quitter, Easter) ;
         primaryStage.setScene(gameScene);
-        Audio son = new Audio();
-        son.start();
         primaryStage.show();
         
         
@@ -91,7 +88,7 @@ public class Menu {
         //Action du bouton option
         option.setOnAction(ev2 ->{
             root.getChildren().removeAll(play, option, quitter);
-            
+
             Button Theme = new Button("Theme");
             Theme.setLayoutX(704);
             Theme.setLayoutY(590);
@@ -119,6 +116,19 @@ public class Menu {
                 a.start(primaryStage);
             });
 
+             //Controle du volume 
+             gainControl = (FloatControl) Start.son.line.getControl(FloatControl.Type.MASTER_GAIN);  //pour pouvoir régler le volume
+             Button down = new Button("DOWN");
+             down.setLayoutX(540);
+             down.setLayoutY(700);
+             down.setEffect(new ImageInput(new Image("file:src/Pictures/Down.png")));
+             down.setSkin(new MyButtonSkin(down));
+
+             Button up = new Button("UP");
+             up.setLayoutX(600);
+             up.setLayoutY(700);
+             up.setEffect(new ImageInput(new Image("file:src/Pictures/Up.png")));
+             up.setSkin(new MyButtonSkin(up));
 
             Button Stat = new Button("option");
             Stat.setLayoutX(421);
@@ -139,12 +149,29 @@ public class Menu {
             Retour.setEffect(new ImageInput(new Image("file:src/Pictures/retour.png")));
             Retour.setSkin(new MyButtonSkin(Retour));
 
-            root.getChildren().addAll(Commande, Stat, Retour, Theme) ;
+            root.getChildren().addAll(Commande, Stat, Retour, Theme, up, down) ;
 
             Retour.setOnAction(ev3 ->{
-                root.getChildren().removeAll(Commande, Stat, Retour, Theme);
+                root.getChildren().removeAll(Commande, Stat, Retour, Theme, up, down);
                 root.getChildren().addAll(play, option, quitter);
             });
+
+            
+            down.setOnAction(ev1 ->{
+                if(gainControl.getValue() > -80){
+                    float cVol = gainControl.getValue();
+                    cVol -= 10f;
+                    gainControl.setValue(cVol);
+                }
+             });
+             up.setOnAction(ev1 ->{
+                if(gainControl.getValue() < -3){
+                    float cVol1 = gainControl.getValue();
+                    cVol1 += 10f;
+                    gainControl.setValue(cVol1);    
+                }
+             });
+            
 
             //ici, on ne fait que supprimer les anciens boutons pour en placer de nouveau. Pas de changement de root. 
 
@@ -162,7 +189,9 @@ public class Menu {
         
         //Action du bouton Quitter
         quitter.setOnAction(ev3 ->{
-            son.interrupt();
+            if(Start.son.isAlive()){
+                Start.son.interrupt();
+            }
             System.exit(0);
         });
        
