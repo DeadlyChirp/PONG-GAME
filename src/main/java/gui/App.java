@@ -173,7 +173,7 @@ public class App {
 
     }
 
-    public void startLifemode(Stage primarStage, int limit) {
+    public void startLifemode(Stage primaryStage, int limit) {
         class Player implements RacketController {
             State state = State.IDLE;
 
@@ -259,6 +259,13 @@ public class App {
         });
 
         gameView.animate();
+        // Action du bouton Quitter
+        Quitter.setOnAction(ev1 -> {
+            Pane root1 = new Pane();
+            gameScene.setRoot(root1);
+            Menu a = new Menu(root1, gameScene);
+            a.start(primaryStage);
+        });
     }
 
     // pour le timer de timermode

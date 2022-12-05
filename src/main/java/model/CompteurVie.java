@@ -13,8 +13,6 @@ public class CompteurVie extends Court {
 
     public CompteurVie(RacketController playerA, RacketController playerB, double width, double height, int t) {
         super(playerA, playerB, width, height, t);
-        s1 = new Text("3");
-        s2 = new Text("3");
     }
 
     public void addCompteurVie1() {
@@ -26,10 +24,6 @@ public class CompteurVie extends Court {
     }
 
     public void LimiteVie() {
-        if (s2.getText().equals("0") || s1.getText().equals("0")) {
-            s1.setText("3");
-            s2.setText("3");
-        }
     }
 
     public void setFill(Color valueOf) {
