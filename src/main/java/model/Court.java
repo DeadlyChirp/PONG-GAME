@@ -1,19 +1,8 @@
 package model;
+import java.util.Random;
 
 import gui.GameView;
-import javafx.scene.image.ImageView;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import model.Court;
-import model.RacketController;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.scene.image.*;
-import javafx.scene.effect.ImageInput;
 
 public class Court {
     // instance parameters
@@ -26,16 +15,11 @@ public class Court {
     private double racketA; // playerOnePos.Y
     private double racketB; // playerOnePos.Y
     private double ballX, ballY; // position de la balle
-    private double ballSpeedX, ballSpeedY;
+    private double ballSpeedX , ballSpeedY ; 
     private Score score;
-    public CompteurVie scoreVie;
 
-    public Score getScore() {
+    public Score getScore(){
         return this.score;
-    }
-
-    public Score getPlayerA() {
-        return (Score) this.playerA;
     }
 
     public Court(RacketController playerA, RacketController playerB, double width, double height, int limit) {
@@ -44,36 +28,44 @@ public class Court {
         this.width = width;
         this.height = height;
         this.score = new Score(limit);
-        this.scoreVie = new CompteurVie();
         reset();
     }
 
-    public void setBallX(double ballX) {
-        this.ballX = ballX;
+    public Court(RacketController playerA, RacketController playerB, double width, double height) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        this.width = width;
+        this.height = height;
+        this.score = new Score(-1); 
+        reset();
     }
 
-    public void setBallY(double ballY) {
-        this.ballY = ballY;
+    public void setBallX (double ballX) {
+        this.ballX = ballX ; 
     }
 
-    public double getBallSpeedX() {
-        return ballSpeedX;
+    public void setBallY (double ballY) {
+        this.ballY = ballY ; 
     }
 
-    public double getBallSpeedY() {
-        return ballSpeedY;
+    public double getBallSpeedX () {
+        return ballSpeedX ; 
     }
 
-    public void setBallSpeedX(double ballSpeedX) {
-        this.ballSpeedX = ballSpeedX;
+    public double getBallSpeedY () {
+        return ballSpeedY ; 
     }
 
-    public void setBallSpeedY(double ballSpeedY) {
-        this.ballSpeedY = ballSpeedY;
+    public void setBallSpeedX (double ballSpeedX) {
+        this.ballSpeedX = ballSpeedX ; 
     }
 
-    public double getRacketSpeed() {
-        return this.racketSpeed;
+    public void setBallSpeedY (double ballSpeedY) {
+        this.ballSpeedY = ballSpeedY ; 
+    }
+
+    public double getRacketSpeed () {
+        return this.racketSpeed ; 
     }
 
     public double getWidth() {
@@ -108,106 +100,86 @@ public class Court {
 
         switch (playerA.getState()) {
             case GOING_UP:
-                racketA -= racketSpeed * deltaT;
-                if (racketA < 0.0)
-                    racketA = 0.0;
+                racketA -= racketSpeed * deltaT; 
+                if (racketA < 0.0) racketA = 0.0; 
                 break;
             case IDLE:
                 break;
             case GOING_DOWN:
                 racketA += racketSpeed * deltaT;
-                if (racketA + racketSize > height)
-                    racketA = height - racketSize;
+                if (racketA + racketSize > height) racketA = height - racketSize; 
                 break;
         }
         switch (playerB.getState()) {
             case GOING_UP:
                 racketB -= racketSpeed * deltaT;
-                if (racketB < 0.0)
-                    racketB = 0.0;
+                if (racketB < 0.0) racketB = 0.0;
                 break;
             case IDLE:
                 break;
             case GOING_DOWN:
                 racketB += racketSpeed * deltaT;
-                if (racketB + racketSize > height)
-                    racketB = height - racketSize;
+                if (racketB + racketSize > height) racketB = height - racketSize;
                 break;
         }
-        if (updateBall(deltaT))
-            reset();
+        if (updateBall(deltaT)) reset();
     }
+
 
     /**
      * @return true if a player lost
      */
-    static Image fin = new Image("file:src/Pictures/WinJ22.png");
-    public static ImageView finJ2 = new ImageView(fin);
-    static Image fin1 = new Image("file:src/Pictures/WinJ11.png");
-    public static ImageView finJ1 = new ImageView(fin1);
-    static Image smoke = new Image("file:src/Pictures/whitesmoke.png");
-    public static ImageView whitesmoke = new ImageView(smoke);
-
-    private boolean updateBall(double deltaT) {
+    
+    public boolean updateBall(double deltaT) {
         // first, compute possible next position if nothing stands in the way
         double nextBallX = ballX + deltaT * ballSpeedX;
         double nextBallY = ballY + deltaT * ballSpeedY;
         // next, see if the ball would meet some obstacle
         if (nextBallY < 0 || nextBallY > height) {
-            ballSpeedY = -ballSpeedY;
-            nextBallY = ballY + deltaT * ballSpeedY;
+            ballSpeedY = -ballSpeedY; 
+            nextBallY = ballY + deltaT * ballSpeedY ;
+            nextBallX = ballX + ((ballSpeedX<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedX)); 
         }
 
-        if ((nextBallX < 0 && nextBallY > racketA && nextBallY < racketA + racketSize)
-                || (nextBallX > width && nextBallY > racketB && nextBallY < racketB + racketSize)) {
-            ballSpeedX = -ballSpeedX;
-            nextBallX = ballX + deltaT * ballSpeedX;
-        } else if (nextBallX < 0) {
-            scoreVie.addCompteurVie1();
+        if ((nextBallX < 0 && nextBallY > racketA && nextBallY < racketA + racketSize)  || (nextBallX > width && nextBallY > racketB && nextBallY < racketB + racketSize)) { 
+            ballSpeedX = -ballSpeedX; 
+            nextBallX = ballX + deltaT * ballSpeedX ;
+            nextBallY = ballY +  ((ballSpeedY<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedY)); 
+        }else if (nextBallX < 0) { 
             score.addScore1();
-
-            if (score.endGame() == 1) {
-                GameView.finGame = true;
-                gui.App.root.getChildren().add(whitesmoke);
-                gui.App.root.getChildren().add(finJ2);
-                gui.App.Quitter.setLayoutX(370);
-                gui.App.Recommencer.setLayoutX(695);
-                gui.App.Recommencer.setLayoutY(400);
-                gui.App.Quitter.setLayoutY(390);
-                gui.App.root.getChildren().addAll(gui.App.Quitter, gui.App.Recommencer);
+            if (score.endGame() == 1){
+                GameView.finGame = true ;
+                GameView.endGame(1);
             }
             return true;
-        } else if (nextBallX > width) {
-            scoreVie.addCompteurVie2();
+        }else if (nextBallX > width) { 
             score.addScore2();
-            if (score.endGame() == 1) {
-                GameView.finGame = true;
-                gui.App.root.getChildren().add(whitesmoke);
-                gui.App.root.getChildren().add(finJ1);
-                gui.App.Quitter.setLayoutX(370);
-                gui.App.Recommencer.setLayoutX(695);
-                gui.App.Recommencer.setLayoutY(400);
-                gui.App.Quitter.setLayoutY(390);
-                gui.App.root.getChildren().addAll(gui.App.Quitter, gui.App.Recommencer);
+            if (score.endGame() == 1){
+                GameView.finGame = true ;
+                GameView.endGame(2);
             }
             return true;
-        } else if ((CompteurVie.s2.getText().equals("0") || CompteurVie.s1.getText().equals("0"))) {
-            scoreVie.LimiteVie();
         }
         ballX = nextBallX;
         ballY = nextBallY;
         return false;
     }
+    
 
     public double getBallRadius() {
         return ballRadius;
     }
 
+    public void refresh () {
+        score.reset(); 
+        reset();
+    }
+
     public void reset() {
         this.racketA = height / 2;
         this.racketB = height / 2;
-        this.ballSpeedX = 200.0;
-        this.ballSpeedY = 200.0;
+        this.ballSpeedX = (((int)(Math.random()*10))>5)?-200:200;
+        this.ballSpeedY = (((int)(Math.random()*10))>5)?200:-200;
         this.ballX = width / 2;
         this.ballY = height / 2;
     }
