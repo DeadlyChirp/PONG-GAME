@@ -24,8 +24,7 @@ public class CompteurVie extends Court {
     }
 
     public void LimiteVie() {
-    }
-
-    public void setFill(Color valueOf) {
+        if (s2.getText().equals("0") || s1.getText().equals("0")) {
+        }
     }
 }
