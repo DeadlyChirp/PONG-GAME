@@ -53,12 +53,12 @@ public class ModeDeJeu {
         twoVStwo.setEffect(new ImageInput(new Image("file:src/Pictures/2vs2.png")));
         twoVStwo.setSkin(new MyButtonSkin(twoVStwo));
 
-        //Bouton OneVSOneVSoneVSone
-        Button OneVSOneVSOneVSOne = new Button("1vs1vs1vs1");
-        OneVSOneVSOneVSOne.setLayoutX(950);
-        OneVSOneVSOneVSOne.setLayoutY(570);
-        OneVSOneVSOneVSOne.setEffect(new ImageInput(new Image("file:src/Pictures/1vs1vs1vs1.png")));
-        OneVSOneVSOneVSOne.setSkin(new MyButtonSkin(OneVSOneVSOneVSOne));
+        //Bouton quatreJ
+        Button quatreJ = new Button("1vs1vs1vs1");
+        quatreJ.setLayoutX(950);
+        quatreJ.setLayoutY(570);
+        quatreJ.setEffect(new ImageInput(new Image("file:src/Pictures/1vs1vs1vs1.png")));
+        quatreJ.setSkin(new MyButtonSkin(quatreJ));
 
         Button Retour= new Button("Retour") ;
         Retour.setLayoutX(1100);
@@ -72,7 +72,7 @@ public class ModeDeJeu {
         root.setBackground(bGround);
 
         root.getChildren().add(imageView);
-        root.getChildren().addAll(oneVSone, oneVSBot, twoVStwo, Retour, OneVSOneVSOneVSOne);
+        root.getChildren().addAll(oneVSone, oneVSBot, twoVStwo, Retour, quatreJ);
 
         Retour.setOnAction(ev1 -> {
             Pane root1 = new Pane();
@@ -93,6 +93,13 @@ public class ModeDeJeu {
             gameScene.setRoot(root1);
             App a = new App(root1, gameScene);
             a.start2C2(primaryStage);
+        });
+
+        quatreJ.setOnAction(ev1 -> {    
+            Pane root1 = new Pane();
+            gameScene.setRoot(root1);
+            App a = new App(root1, gameScene);
+            a.start4J(primaryStage);
         });
 
     }
