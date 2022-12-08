@@ -113,7 +113,7 @@ public class MenuTheme extends Application{
 
         Button save = new Button("Sauvegarder");
         save.setOnAction(evl -> {
-            GameView.theme = themeListe[current].nom;
+            GameView.theme = themeListe[current];
             Pane root1 = new Pane();
                     gameScene.setRoot(root1);
                     Menu a = new Menu(root1, gameScene);
