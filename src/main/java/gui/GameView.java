@@ -1,4 +1,5 @@
 package gui;
+
 import javafx.scene.text.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -10,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import model.Court;
+import model.CompteurVie;
 import model.CourtObstacles.Obstacle;
 import model.*;
 
@@ -19,175 +21,268 @@ import model.*;
 
 public class GameView {
 
-   
     // class parameters
     private final Court court;
     private final Pane gameRoot; // main node of the game
     private final double scale;
     private final double margin = 100.0, racketThickness = 10.0, inTerface = 100.0; // pixels
-    public static String theme ; 
+    public static String theme;
 
     // children of the game main node
     private final Rectangle racketA, racketB;
     private final Circle ball;
     public static boolean finGame;
-    public static boolean pause ;
+    public static boolean pause;
+    public static Image image = new Image("file:src/Pictures/Coeur.png");
+    public static Image image2 = new Image("file:src/Pictures/Coeur.png");
+    public static Image image3 = new Image("file:src/Pictures/Coeur.png");
+    public static Image image4 = new Image("file:src/Pictures/Coeur.png");
+    public static Image image5 = new Image("file:src/Pictures/Coeur.png");
+    public static ImageView coeur = new ImageView(image);
+    public static ImageView coeur2 = new ImageView(image2);
+    public static ImageView coeur3 = new ImageView(image3);
+    public static ImageView coeur4 = new ImageView(image4);
+    public static ImageView coeur5 = new ImageView(image5);
+    public static Image imagead = new Image("file:src/Pictures/Coeur.png");
+    public static Image image2ad = new Image("file:src/Pictures/Coeur.png");
+    public static Image image3ad = new Image("file:src/Pictures/Coeur.png");
+    public static Image image4ad = new Image("file:src/Pictures/Coeur.png");
+    public static Image image5ad = new Image("file:src/Pictures/Coeur.png");
+    public static ImageView coeurad = new ImageView(image);
+    public static ImageView coeur2ad = new ImageView(image2);
+    public static ImageView coeur3ad = new ImageView(image3);
+    public static ImageView coeur4ad = new ImageView(image4);
+    public static ImageView coeur5ad = new ImageView(image5);
 
-    int Timer = 60; //2sec
-
-
-
+    int Timer = 60; // 2sec
 
     /**
-     * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
-     * @pic boolean pause ;aram root  le nœud racine dans la scène JavaFX dans lequel le jeu sera affiché
-     * @param scale le facteur d'échelle entre les distances du modèle et le nombre de pixels correspondants dans la vue
+     * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout
+     *              ce qu'il y a dessus)
+     * @pic boolean pause ;aram root le nœud racine dans la scène JavaFX dans lequel
+     *      le jeu sera affiché
+     * @param scale le facteur d'échelle entre les distances du modèle et le nombre
+     *              de pixels correspondants dans la vue
      */
-    public GameView(Court court, Pane root, double scale ) {
+    public GameView(Court court, Pane root, double scale) {
         this.court = court;
         this.gameRoot = root;
-        this.scale = scale; 
+        this.scale = scale;
 
-        pause = false ; 
-        finGame = false ; 
+        pause = false;
+        finGame = false;
 
         root.setMinWidth(court.getWidth() * scale + 2 * margin);
         root.setMinHeight(court.getHeight() * scale + margin + inTerface);
 
-        //Affichage de la balle et des raquettes
+        // Affichage de la balle et des raquettes
 
-            racketA = new Rectangle();
-            racketA.setHeight(court.getRacketSize() * scale);
-            racketA.setWidth(racketThickness);
-            racketA.setFill(Color.valueOf("#375745"));
+        racketA = new Rectangle();
+        racketA.setHeight(court.getRacketSize() * scale);
+        racketA.setWidth(racketThickness);
+        racketA.setFill(Color.valueOf("#375745"));
 
-            racketA.setX(margin - racketThickness);
-            racketA.setY(court.getRacketA() * scale + inTerface + margin/2);
+        racketA.setX(margin - racketThickness);
+        racketA.setY(court.getRacketA() * scale + inTerface + margin / 2);
 
-            racketB = new Rectangle();
-            racketB.setHeight(court.getRacketSize() * scale);
-            racketB.setWidth(racketThickness);
-            racketB.setFill(Color.valueOf("#375745"));
+        racketB = new Rectangle();
+        racketB.setHeight(court.getRacketSize() * scale);
+        racketB.setWidth(racketThickness);
+        racketB.setFill(Color.valueOf("#375745"));
 
-            racketB.setX(court.getWidth() * scale + margin);
-            racketB.setY(court.getRacketB() * scale + inTerface + margin/2);
+        racketB.setX(court.getWidth() * scale + margin);
+        racketB.setY(court.getRacketB() * scale + inTerface + margin / 2);
 
-            ball = new Circle();
-            ball.setRadius(court.getBallRadius());
-            ball.setFill(Color.valueOf("#375745"));
+        ball = new Circle();
+        ball.setRadius(court.getBallRadius());
+        ball.setFill(Color.valueOf("#375745"));
 
-            ball.setCenterX(court.getBallX() * scale + margin);
-            ball.setCenterY(court.getBallY() * scale + inTerface +  margin/2);
+        ball.setCenterX(court.getBallX() * scale + margin);
+        ball.setCenterY(court.getBallY() * scale + inTerface + margin / 2);
 
+        // Affichage de l'interface
 
-        //Affichage de l'interface
+        Group inter = new Group();
 
-            Group inter = new Group();
+        Rectangle cadre = new Rectangle();
+        cadre.setX(margin / 2);
+        cadre.setY(margin / 4);
+        cadre.setWidth(court.getWidth() + margin);
+        cadre.setHeight(inTerface);
+        cadre.setStroke(Color.valueOf("#375745"));
+        cadre.setStrokeWidth(5);
+        cadre.setFill(null);
+        inter.getChildren().addAll(cadre);
 
-                Rectangle cadre = new Rectangle();
-                cadre.setX(margin/2);
-                cadre.setY(margin/4);
-                cadre.setWidth(court.getWidth() + margin );
-                cadre.setHeight(inTerface);
-                cadre.setStroke(Color.valueOf("#375745"));
-                cadre.setStrokeWidth(5);
-                cadre.setFill(null);      
-                inter.getChildren().addAll(cadre);
+        Line l1 = new Line();
+        l1.setStartX(margin / 2);
+        l1.setStartY(inTerface + margin / 2 - ball.getRadius());
+        l1.setEndX(margin + margin / 2 + court.getWidth());
+        l1.setEndY(inTerface + margin / 2 - ball.getRadius());
+        l1.setStroke(Color.valueOf("#375745"));
+        l1.setStrokeWidth(5);
 
-                Line l1 = new Line();
-                l1.setStartX(margin/2);
-                l1.setStartY(inTerface + margin/2 - ball.getRadius());
-                l1.setEndX(margin + margin/2 + court.getWidth());
-                l1.setEndY(inTerface + margin/2 - ball.getRadius());
-                l1.setStroke(Color.valueOf("#375745"));
-                l1.setStrokeWidth(5);
+        Line l2 = new Line();
+        l2.setStartX(margin / 2);
+        l2.setStartY(inTerface + margin / 2 + court.getHeight() + ball.getRadius());
+        l2.setEndX(margin + margin / 2 + court.getWidth());
+        l2.setEndY(inTerface + margin / 2 + court.getHeight() + ball.getRadius());
+        l2.setStroke(Color.valueOf("#375745"));
+        l2.setStrokeWidth(5);
 
-                Line l2 = new Line();
-                l2.setStartX(margin/2);
-                l2.setStartY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
-                l2.setEndX(margin + margin/2 + court.getWidth());
-                l2.setEndY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
-                l2.setStroke(Color.valueOf("#375745"));
-                l2.setStrokeWidth(5);
+        Rectangle zoneDeJeu = new Rectangle();
+        zoneDeJeu.setX(margin);
+        zoneDeJeu.setY(inTerface + margin / 2);
+        zoneDeJeu.setWidth(court.getWidth());
+        zoneDeJeu.setHeight(court.getHeight());
+        zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
+        // Player1
+        court.getScore().getS1().setStyle("-fx-font: 60 arial;");
+        court.getScore().getS1().setX(1030);
+        court.getScore().getS1().setY(95);
+        // Player2
+        court.getScore().getS2().setStyle("-fx-font: 60 arial;");
+        court.getScore().getS2().setX(130);
+        court.getScore().getS2().setY(95);
 
-                Rectangle zoneDeJeu = new Rectangle();
-                zoneDeJeu.setX(margin);
-                zoneDeJeu.setY(inTerface + margin/2);
-                zoneDeJeu.setWidth(court.getWidth());
-                zoneDeJeu.setHeight(court.getHeight());
-                zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
-                //Player1
-                court.getScore().getS1().setStyle("-fx-font: 60 arial;");
-                court.getScore().getS1().setX(1030);
-                court.getScore().getS1().setY(95);
-                //Player2
-                court.getScore().getS2().setStyle("-fx-font: 60 arial;");
-                court.getScore().getS2().setX(130);
-                court.getScore().getS2().setY(95);
+        if (court instanceof CompteurVie) {
+            CompteurVie cv = (CompteurVie) court;
+            court.getScore().getS1().setX(0);
+            court.getScore().getS1().setY(0);
+            court.getScore().getS2().setX(0);
+            court.getScore().getS2().setY(0);
+            if (cv.limiteVie == 1) {
+                coeur.setLayoutX(105);
+                coeur.setLayoutY(40);
+                coeurad.setLayoutX(1005);
+                coeurad.setLayoutY(40);
+            }
+            if (cv.limiteVie == 2) {
+                coeur.setLayoutX(105);
+                coeur.setLayoutY(40);
+                coeurad.setLayoutX(1005);
+                coeurad.setLayoutY(40);
+                coeur2.setLayoutX(195);
+                coeur2.setLayoutY(40);
+                coeur2ad.setLayoutX(915);
+                coeur2ad.setLayoutY(40);
+                gameRoot.getChildren().add(coeur2);
+                gameRoot.getChildren().add(coeur2ad);
+            }
+            if (cv.limiteVie == 3) {
+                coeur.setLayoutX(105);
+                coeur.setLayoutY(40);
+                coeur2.setLayoutX(195);
+                coeur2.setLayoutY(40);
+                coeur3.setLayoutX(290);
+                coeur3.setLayoutY(40);
+                coeurad.setLayoutX(1005);
+                coeurad.setLayoutY(40);
+                coeur2ad.setLayoutX(915);
+                coeur2ad.setLayoutY(40);
+                coeur3ad.setLayoutX(825);
+                coeur3ad.setLayoutY(40);
+                gameRoot.getChildren().addAll(coeur2, coeur3, coeur2ad, coeur3ad);
+            }
+            if (cv.limiteVie == 4) {
+                coeur.setLayoutX(105);
+                coeur.setLayoutY(40);
+                coeur2.setLayoutX(195);
+                coeur2.setLayoutY(40);
+                coeur3.setLayoutX(290);
+                coeur3.setLayoutY(40);
+                coeur4.setLayoutX(380);
+                coeur4.setLayoutY(40);
+                coeurad.setLayoutX(1005);
+                coeurad.setLayoutY(40);
+                coeur2ad.setLayoutX(915);
+                coeur2ad.setLayoutY(40);
+                coeur3ad.setLayoutX(825);
+                coeur3ad.setLayoutY(40);
+                coeur4ad.setLayoutX(730);
+                coeur4ad.setLayoutY(40);
+
+                gameRoot.getChildren().addAll(coeur2, coeur3, coeur4, coeur2ad, coeur3ad, coeur4ad);
+            }
+
+            cv.getS1().setStyle("-fx-font: 60 arial;");
+            cv.getS1().setX(1030);
+            cv.getS1().setY(95);
+
+            cv.getS2().setStyle("-fx-font: 60 arial;");
+            cv.getS2().setX(130);
+            cv.getS2().setY(95);
+
+            gameRoot.getChildren().addAll(cv.getS2(), cv.getS1(), zoneDeJeu, l1, l2, racketA,
+                    racketB, ball, inter, coeur, coeurad);
+            return;
+
+        }
 
         if (court instanceof TimeMode) {
-            TimeMode t = (TimeMode)court;
+            TimeMode t = (TimeMode) court;
             t.getTmp().setStyle("-fx-font: 60 arial;");
             t.getTmp().setX(515);
             t.getTmp().setY(95);
 
             t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
-            
-            gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA, racketB, ball, inter, t.getTmp()); 
-            return ;          
+
+            gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2,
+                    racketA, racketB, ball, inter, t.getTmp());
+            return;
         }
-        
-        gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA, racketB, ball, inter);
+
+        gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA,
+                racketB, ball, inter);
 
         if (court instanceof CourtObstacles) {
-            ((CourtObstacles)court).setGameView(this);
-            Obstacle [] t = ((CourtObstacles)court).getObstacles() ; 
+            ((CourtObstacles) court).setGameView(this);
+            Obstacle[] t = ((CourtObstacles) court).getObstacles();
             for (int i = 0; i < t.length; i++) {
                 addObst(t[i]);
             }
-            return ; 
+            return;
         }
+
     }
 
-    public void addObst (Obstacle obst) {//done
+    public void addObst(Obstacle obst) {// done
         obst.getShape().setStroke(Color.BLACK);
         if (obst.isDestroyable()) {
-            // transparent avec bordures noires option 
+            // transparent avec bordures noires option
             // requires avis !
-            //obst.getShape().setFill(Color.rgb(0, 0, 0 , 0));
-            obst.getShape().setFill(Color.rgb(51, 204, 00 , 0.4));
-        }else{
-            obst.getShape().setFill(Color.rgb(240, 40, 14 , 0.4));            
+            // obst.getShape().setFill(Color.rgb(0, 0, 0 , 0));
+            obst.getShape().setFill(Color.rgb(51, 204, 00, 0.4));
+        } else {
+            obst.getShape().setFill(Color.rgb(240, 40, 14, 0.4));
         }
         if (obst.getId() == 0) {
-            Rectangle rec = ((Rectangle)obst.getShape()) ; 
-            rec.setX(obst.getPosX()*scale + margin);
-            rec.setY(obst.getPosY()*scale + margin/2 + inTerface);
-            gameRoot.getChildren().addAll(rec) ; 
-        }else{
-            Circle cir = ((Circle)obst.getShape()) ; 
-            cir.setCenterX(obst.getPosX()*scale + margin);
-            cir.setCenterY(obst.getPosY()*scale + margin/2 + inTerface);
-            gameRoot.getChildren().addAll(cir) ; 
+            Rectangle rec = ((Rectangle) obst.getShape());
+            rec.setX(obst.getPosX() * scale + margin);
+            rec.setY(obst.getPosY() * scale + margin / 2 + inTerface);
+            gameRoot.getChildren().addAll(rec);
+        } else {
+            Circle cir = ((Circle) obst.getShape());
+            cir.setCenterX(obst.getPosX() * scale + margin);
+            cir.setCenterY(obst.getPosY() * scale + margin / 2 + inTerface);
+            gameRoot.getChildren().addAll(cir);
         }
     }
 
-    public void destroyObst (Obstacle obst) {//done
-        gameRoot.getChildren().removeAll((obst.getId() == 0)?(Rectangle)obst.getShape():(Circle)obst.getShape()) ; 
+    public void destroyObst(Obstacle obst) {// done
+        gameRoot.getChildren().removeAll((obst.getId() == 0) ? (Rectangle) obst.getShape() : (Circle) obst.getShape());
     }
 
-    public void updateObstacle (Obstacle obstacle) {//done
-        if (obstacle.getId() == 0 ) {
-            ((Rectangle)obstacle.getShape()).setY(obstacle.getPosY() + margin/2 + inTerface );
-            return ; 
+    public void updateObstacle(Obstacle obstacle) {// done
+        if (obstacle.getId() == 0) {
+            ((Rectangle) obstacle.getShape()).setY(obstacle.getPosY() + margin / 2 + inTerface);
+            return;
         }
-        ((Circle)obstacle.getShape()).setCenterY(obstacle.getPosY() + margin/2 + inTerface);
+        ((Circle) obstacle.getShape()).setCenterY(obstacle.getPosY() + margin / 2 + inTerface);
     }
 
-
-
-    public static void endGame (int player) {
-        Image fin = new Image((player==1)?"file:src/Pictures/WinJ22.png":"file:src/Pictures/WinJ11.png");
+    public static void endGame(int player) {
+        Image fin = new Image((player == 1) ? "file:src/Pictures/WinJ22.png" : "file:src/Pictures/WinJ11.png");
         ImageView finJ = new ImageView(fin);
         Image smoke = new Image("file:src/Pictures/whitesmoke.png");
         ImageView whitesmoke = new ImageView(smoke);
@@ -206,22 +301,21 @@ public class GameView {
 
             @Override
             public void handle(long now) {
-                if(!pause && !finGame){
+                if (!pause && !finGame) {
 
                     if (last == 0) { // ignore the first tick, just compute the first deltaT
                         last = now;
                         return;
                     }
-                    
-                    
+
                     court.update((now - last) * 1.0e-9); // convert nanoseconds to seconds
                     last = now;
-                    racketA.setY(court.getRacketA() * scale + margin/2 + inTerface);
-                    racketB.setY(court.getRacketB() * scale + margin/2 + inTerface);
+                    racketA.setY(court.getRacketA() * scale + margin / 2 + inTerface);
+                    racketB.setY(court.getRacketB() * scale + margin / 2 + inTerface);
                     ball.setCenterX(court.getBallX() * scale + margin);
-                    ball.setCenterY(court.getBallY() * scale + margin/2 + inTerface);
-                }else{
-                    last = 0 ; 
+                    ball.setCenterY(court.getBallY() * scale + margin / 2 + inTerface);
+                } else {
+                    last = 0;
                 }
                 Timer--;
             }

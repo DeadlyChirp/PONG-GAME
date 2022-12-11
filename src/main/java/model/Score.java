@@ -8,52 +8,61 @@ public class Score {
 
     private int limitePoint;
 
-    public Text getS1(){
+    public Text getS1() {
         return this.s1;
     }
 
-    public Text getS2(){
+    public Text getS2() {
         return this.s2;
     }
 
-    Score(){
+    Score() {
         s1 = new Text("0");
         s2 = new Text("0");
     }
 
-    Score (int limit) {
-        this() ;
-        this.limitePoint = limit ; 
+    Score(int limit) {
+        this();
+        this.limitePoint = limit;
     }
 
-    public int getLimit(){
+    public int getLimit() {
         return this.limitePoint;
     }
 
-    public void addScore1(){
-        s1.setText(String.valueOf(Integer.valueOf(s1.getText())+1));
+    public void addScore1() {
+        s1.setText(String.valueOf(Integer.valueOf(s1.getText()) + 1));
     }
 
     public void descreaseScore2() { // added
-        if(!s2.getText().equals("0")) s2.setText(String.valueOf(Integer.valueOf(s1.getText())-1));
+        if (!s2.getText().equals("0"))
+            s2.setText(String.valueOf(Integer.valueOf(s1.getText()) - 1));
     }
 
-    public void addScore2(){
-        s2.setText(String.valueOf(Integer.valueOf(s2.getText())+1));
+    public void addScore2() {
+        s2.setText(String.valueOf(Integer.valueOf(s2.getText()) + 1));
     }
 
-    public void descreaseScore1() {//done
-        if (!s1.getText().equals("0")) s1.setText(String.valueOf(Integer.valueOf(s1.getText())-1));
+    public void descreaseScore1() {// done
+        if (!s1.getText().equals("0"))
+            s1.setText(String.valueOf(Integer.valueOf(s1.getText()) - 1));
     }
 
     public int endGame() {
-        if (Integer.valueOf(s1.getText()) == limitePoint) return 1 ; 
-        if (Integer.valueOf(s2.getText()) == limitePoint) return 1 ; 
-        return -1 ; 
+        if (Integer.valueOf(s1.getText()) == limitePoint)
+            return 1;
+        if (Integer.valueOf(s2.getText()) == limitePoint)
+            return 1;
+        return -1;
     }
 
-    public void reset(){
+    public void reset() {
         s1.setText("0");
         s2.setText("0");
+    }
+
+    public void setScore(int n) {
+        s1.setText(String.valueOf(n));
+        s2.setText(String.valueOf(n));
     }
 }

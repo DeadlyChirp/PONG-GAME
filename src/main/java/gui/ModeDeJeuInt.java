@@ -151,34 +151,27 @@ public class ModeDeJeuInt {
         });
 
         lifemode.setOnAction(ev1 -> {
-            TextInputDialog dialog = new TextInputDialog("1");
-            dialog.initOwner(primaryStage);
-            dialog.setTitle("Choix De La Vie");
-            dialog.setHeaderText("Vous Pouvez choisir le nombre de points de vie  !");
-            dialog.setContentText("Veuillez entrer une limite de vie valide : \n" +
-                    "Tapez 'infini' si vous voulez pas de limite !");
-            dialog.setResizable(false);
+            ArrayList<Integer> limiteS = new ArrayList<Integer>();
+            limiteS.add(1);
+            limiteS.add(2);
+            limiteS.add(3);
+            limiteS.add(4);
 
-            int limit = 0;
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()) {
-                if (result.get().equals("infini")) {
-                    limit = -1;
-                } else {
-                    try {
-                        limit = Integer.valueOf(result.get().strip());
-                    } catch (NumberFormatException e) {
-                        dialog.setContentText("Veuillez entrer un nombre !");
-                        limit = 0;
-                    }
-                }
-                if (limit == -1 || limit > 0) {
-                    Pane root1 = new Pane();
-                    gameScene.setRoot(root1);
-                    App app = new App(root1, gameScene, limit);
-                    app.startLifemode(primaryStage, limit);
-                }
-            }
+            ChoiceDialog<Integer> limiteVie = new ChoiceDialog<Integer>(2, limiteS);
+            limiteVie.initOwner(primaryStage);
+            limiteVie.setTitle("Limite de Vie");
+            limiteVie.setHeaderText("Veuillez choisir un nombre de points de vies maximum");
+            limiteVie.setContentText("Nombre : ");
+
+            Optional<Integer> limitVie = limiteVie.showAndWait();
+
+            limitVie.ifPresent(limite -> {
+                Pane root1 = new Pane();
+                gameScene.setRoot(root1);
+                App a = new App(root1, gameScene, limite); // Appel de la classe App classique qui permet de lancer le
+                                                           // mode de score (définir la limite du score au début)
+                a.startLifemode(primaryStage, limite);
+            });
 
             // Utilser lifemode d'Emir
         });
