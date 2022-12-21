@@ -466,7 +466,7 @@ public class GameView {
                         case 0:
                             if (fireMode.getPlayerA().increaseSizeLevelP1()) {
                                 sizeLvAText.setText("Level: " + fireMode.getPlayerA().getSizeLevel());
-                                if (fireMode.getPlayerA().getSizeLevel() == 2) {
+                                 if (fireMode.getPlayerA().getSizeLevel() == 2) {
                                     ImagePattern lvl1 = new ImagePattern(new Image("file:src/Pictures/Racketlvl1.png"));
                                     racketA.setFill(lvl1);
                                 } else if (fireMode.getPlayerA().getSizeLevel() == 3) {
@@ -483,6 +483,21 @@ public class GameView {
                             if (fireMode.getPlayerA().increaseSpeedLevelP1()) {
                                 speedLvAText.setText("Level: " + fireMode.getPlayerA().getSpeedLevel());
                                 //verify that if size level is 2 and if speed level is to then change image of racket else change image of racket
+                                if ( fireMode.getPlayerA().getSpeedLevel() == 2){
+                                    //size 0 speed 1
+                                    ImagePattern sp1 = new ImagePattern(new Image("file:src/Pictures/RacketSkinsFire/sp1.png"));
+                                    racketA.setFill(sp1);
+
+                                } else if (fireMode.getPlayerA().getSpeedLevel() == 3){
+                                    //sz 0 sp 2
+                                    ImagePattern sp2 = new ImagePattern(new Image("file:src/Pictures/RacketSkinsFire/sp2.png"));
+                                    racketA.setFill(sp2);
+
+                                } else if ( fireMode.getPlayerA().getSpeedLevel() == 4) {
+                                    //size 0 speed 3
+                                    ImagePattern sp3 = new ImagePattern(new Image("file:src/Pictures/RacketSkinsFire/sp3.png"));
+                                    racketA.setFill(sp3);
+                                }
 
 
                             }
@@ -491,6 +506,22 @@ public class GameView {
                         case 2:
                             if (fireMode.getPlayerA().increasePowerAmountP1()) {
                                 powerAmountAText.setText("Level: " + fireMode.getPlayerA().getPowerAmount());
+                                if ( fireMode.getPlayerA().getPowerAmount() == 1) {
+                                    //size 1 pw 1
+                                    ImagePattern pw1 = new ImagePattern(new Image("file:src/Pictures/RacketSkinsFire/pw1.png"));
+                                    racketA.setFill(pw1);
+
+                                } else if ( fireMode.getPlayerA().getPowerAmount() == 2) {
+                                    //size 1 pw 2
+                                    ImagePattern pw2 = new ImagePattern(new Image("file:src/Pictures/RacketSkinsFire/pw2.png"));
+                                    racketA.setFill(pw2);
+
+                                }else if ( fireMode.getPlayerA().getPowerAmount() == 3) {
+                                    //size 1 pw3
+                                    ImagePattern pw3 = new ImagePattern(new Image("file:src/Pictures/RacketSkinsFire/pw3.png"));
+                                    racketA.setFill(pw3);
+
+                                }
                             }
                             break;
                     }
