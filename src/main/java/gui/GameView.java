@@ -34,25 +34,16 @@ public class GameView {
     public static boolean finGame;
     public static boolean pause;
     public static Image image = new Image("file:src/Pictures/Coeur.png");
-    public static Image image2 = new Image("file:src/Pictures/Coeur.png");
-    public static Image image3 = new Image("file:src/Pictures/Coeur.png");
-    public static Image image4 = new Image("file:src/Pictures/Coeur.png");
-    public static Image image5 = new Image("file:src/Pictures/Coeur.png");
     public static ImageView coeur = new ImageView(image);
-    public static ImageView coeur2 = new ImageView(image2);
-    public static ImageView coeur3 = new ImageView(image3);
-    public static ImageView coeur4 = new ImageView(image4);
-    public static ImageView coeur5 = new ImageView(image5);
-    public static Image imagead = new Image("file:src/Pictures/Coeur.png");
-    public static Image image2ad = new Image("file:src/Pictures/Coeur.png");
-    public static Image image3ad = new Image("file:src/Pictures/Coeur.png");
-    public static Image image4ad = new Image("file:src/Pictures/Coeur.png");
-    public static Image image5ad = new Image("file:src/Pictures/Coeur.png");
+    public static ImageView coeur2 = new ImageView(image);
+    public static ImageView coeur3 = new ImageView(image);
+    public static ImageView coeur4 = new ImageView(image);
+    public static ImageView coeur5 = new ImageView(image);
     public static ImageView coeurad = new ImageView(image);
-    public static ImageView coeur2ad = new ImageView(image2);
-    public static ImageView coeur3ad = new ImageView(image3);
-    public static ImageView coeur4ad = new ImageView(image4);
-    public static ImageView coeur5ad = new ImageView(image5);
+    public static ImageView coeur2ad = new ImageView(image);
+    public static ImageView coeur3ad = new ImageView(image);
+    public static ImageView coeur4ad = new ImageView(image);
+    public static ImageView coeur5ad = new ImageView(image);
 
     int Timer = 60; // 2sec
 
@@ -136,21 +127,27 @@ public class GameView {
         zoneDeJeu.setWidth(court.getWidth());
         zoneDeJeu.setHeight(court.getHeight());
         zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
-        // Player1
-        court.getScore().getS1().setStyle("-fx-font: 60 arial;");
-        court.getScore().getS1().setX(1030);
-        court.getScore().getS1().setY(95);
-        // Player2
-        court.getScore().getS2().setStyle("-fx-font: 60 arial;");
-        court.getScore().getS2().setX(130);
-        court.getScore().getS2().setY(95);
+
+        if (court instanceof CompteurVie) {
+            court.getScore().getS1().setVisible(false);
+            court.getScore().getS2().setVisible(false);
+            court.getScore().getS1().setX(4000);
+            court.getScore().getS1().setY(4000);
+            court.getScore().getS2().setX(4000);
+            court.getScore().getS2().setY(4000);
+        } else {
+            // Player1
+            court.getScore().getS1().setStyle("-fx-font: 60 arial;");
+            court.getScore().getS1().setX(1030);
+            court.getScore().getS1().setY(95);
+            // Player2
+            court.getScore().getS2().setStyle("-fx-font: 60 arial;");
+            court.getScore().getS2().setX(130);
+            court.getScore().getS2().setY(95);
+        }
 
         if (court instanceof CompteurVie) {
             CompteurVie cv = (CompteurVie) court;
-            court.getScore().getS1().setX(0);
-            court.getScore().getS1().setY(0);
-            court.getScore().getS2().setX(0);
-            court.getScore().getS2().setY(0);
             if (cv.limiteVie == 1) {
                 coeur.setLayoutX(105);
                 coeur.setLayoutY(40);

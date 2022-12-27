@@ -138,20 +138,18 @@ public class CompteurVie extends Court {
         } else if (nextBallX < 0 && limiteVie == 3) {
             // decreaseCompteurVie2();
             if (compt == 3) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie1();
-                GameView.coeur3.setImage(null);
+                // GameView.coeur3.setImage(null);
+                GameView.coeur3.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (compt == 2) {
-                System.out.print("Compt 2");
                 decreaseCompteurVie1();
-                GameView.coeur2.setImage(null);
+                GameView.coeur2.setVisible(false);
             }
             if (compt == 1) {
-                System.out.print("Compt 1");
                 decreaseCompteurVie1();
-                GameView.coeur.setImage(null);
+                GameView.coeur.setVisible(false);
 
             }
             if (s1.getText().equals("0")) {
@@ -168,27 +166,23 @@ public class CompteurVie extends Court {
         } else if (nextBallX < 0 && limiteVie == 4) {
             // decreaseCompteurVie2();
             if (compt4 == 4) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie1();
-                GameView.coeur4.setImage(null);
+                GameView.coeur4.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (compt4 == 3) {
-                System.out.print("Compt 2");
                 decreaseCompteurVie1();
-                GameView.coeur3.setImage(null);
-                ;
+                GameView.coeur3.setVisible(false);
+
             }
             if (compt4 == 2) {
-                System.out.print("Compt 1");
                 decreaseCompteurVie1();
-                GameView.coeur2.setImage(null);
+                GameView.coeur2.setVisible(false);
 
             }
             if (compt4 == 1) {
-                System.out.print("Compt 1");
                 decreaseCompteurVie1();
-                GameView.coeur.setImage(null);
+                GameView.coeur.setVisible(false);
 
             }
             if (s1.getText().equals("0")) {
@@ -204,15 +198,13 @@ public class CompteurVie extends Court {
         } else if (nextBallX < 0 && limiteVie == 2) {
             // decreaseCompteurVie2();
             if (compt2 == 2) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie1();
-                GameView.coeur2.setImage(null);
+                GameView.coeur2.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (compt2 == 1) {
-                System.out.print("Compt 2");
                 decreaseCompteurVie1();
-                GameView.coeur.setImage(null);
+                GameView.coeur.setVisible(false);
             }
             if (s1.getText().equals("0")) {
                 GameView.finGame = true;
@@ -227,9 +219,8 @@ public class CompteurVie extends Court {
         } else if (nextBallX < 0 && limiteVie == 1) {
             // decreaseCompteurVie2();
             if (compt1 == 1) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie1();
-                GameView.coeur.setImage(null);
+                GameView.coeur.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (s1.getText().equals("0")) {
@@ -241,34 +232,26 @@ public class CompteurVie extends Court {
                 GameView.finGame = true;
                 GameView.endGame(1);
             }
-            if (s2.getText().equals("0") || s1.getText().equals("0")) {
-
-            }
             desCompt1();
             return true;
         } else if (nextBallX > this.getWidth() && limiteVie == 4) {
             if (compt4ad == 4) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie2();
-                GameView.coeur4ad.setImage(null);
+                GameView.coeur4ad.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (compt4ad == 3) {
-                System.out.print("Compt 2");
                 decreaseCompteurVie2();
-                GameView.coeur3ad.setImage(null);
-                ;
+                GameView.coeur3ad.setVisible(false);
             }
             if (compt4ad == 2) {
-                System.out.print("Compt 1");
                 decreaseCompteurVie2();
-                GameView.coeur2ad.setImage(null);
+                GameView.coeur2ad.setVisible(false);
 
             }
             if (compt4ad == 1) {
-                System.out.print("Compt 1");
                 decreaseCompteurVie2();
-                GameView.coeurad.setImage(null);
+                GameView.coeurad.setVisible(false);
 
             }
             if (s2.getText().equals("0")) {
@@ -285,19 +268,17 @@ public class CompteurVie extends Court {
             if (comptad == 3) {
                 System.out.print("Compt 3");
                 decreaseCompteurVie2();
-                GameView.coeur3ad.setImage(null);
+                GameView.coeur3ad.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (comptad == 2) {
-                System.out.print("Compt 2");
                 decreaseCompteurVie2();
-                GameView.coeur2ad.setImage(null);
+                GameView.coeur2ad.setVisible(false);
                 ;
             }
             if (comptad == 1) {
-                System.out.print("Compt 1");
                 decreaseCompteurVie2();
-                GameView.coeurad.setImage(null);
+                GameView.coeurad.setVisible(false);
 
             }
             if (s2.getText().equals("0")) {
@@ -312,32 +293,33 @@ public class CompteurVie extends Court {
             return true;
         } else if (nextBallX > this.getWidth() && limiteVie == 2) {
             if (compt2ad == 2) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie2();
-                GameView.coeur2ad.setImage(null);
+                GameView.coeur2ad.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (compt2ad == 1) {
-                System.out.print("Compt 2");
                 decreaseCompteurVie2();
-                GameView.coeurad.setImage(null);
+                GameView.coeurad.setVisible(false);
                 ;
             }
             if (s2.getText().equals("0")) {
                 GameView.finGame = true;
+                GameView.coeurad.setVisible(true);
+                GameView.coeur2ad.setVisible(true);
                 GameView.endGame(1);
             }
             if (s1.getText().equals("0")) {
                 GameView.finGame = true;
+                GameView.coeurad.setVisible(true);
+                GameView.coeur2ad.setVisible(true);
                 GameView.endGame(2);
             }
             desCompt2ad();
             return true;
         } else if (nextBallX > this.getWidth() && limiteVie == 1) {
             if (compt1ad == 1) {
-                System.out.print("Compt 3");
                 decreaseCompteurVie2();
-                GameView.coeurad.setImage(null);
+                GameView.coeurad.setVisible(false);
             }
             // GameView.coeur3.setImage(null);
             if (s2.getText().equals("0")) {

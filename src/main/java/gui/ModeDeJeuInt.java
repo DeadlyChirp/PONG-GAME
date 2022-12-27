@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import java.util.Optional;
 import javafx.scene.image.ImageView;
 
+
 /*********************************************************************************************************************** */
 
 // Menu pour les différents modes de jeu interne. Il reste timer mode, fire mode
@@ -168,8 +169,7 @@ public class ModeDeJeuInt {
             limitVie.ifPresent(limite -> {
                 Pane root1 = new Pane();
                 gameScene.setRoot(root1);
-                App a = new App(root1, gameScene, limite); // Appel de la classe App classique qui permet de lancer le
-                                                           // mode de score (définir la limite du score au début)
+                App a = new App(root1, gameScene, limite); 
                 a.startLifemode(primaryStage, limite);
             });
 
