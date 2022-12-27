@@ -275,7 +275,6 @@ public class App {
 
         // Action du bouton Recommencer
         Recommencer.setOnAction(ev1 -> {
-            court.getScore().reset();
             Quitter.setLayoutX(320);
             Recommencer.setLayoutX(695);
             Recommencer.setLayoutY(350);

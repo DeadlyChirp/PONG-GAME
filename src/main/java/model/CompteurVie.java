@@ -6,6 +6,7 @@ import gui.GameView;
 import model.Court;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import model.Score;
 
 public class CompteurVie extends Court {
     private Text s1;
@@ -208,10 +209,22 @@ public class CompteurVie extends Court {
             }
             if (s1.getText().equals("0")) {
                 GameView.finGame = true;
+                this.getScore().reset();
+                restart();
+                GameView.coeur.setVisible(true);
+                GameView.coeur2.setVisible(true);
+                GameView.coeurad.setVisible(true);
+                GameView.coeur2ad.setVisible(true);
                 GameView.endGame(2);
             }
             if (s2.getText().equals("0")) {
                 GameView.finGame = true;
+                this.getScore().reset();
+                restart();
+                GameView.coeur.setVisible(true);
+                GameView.coeur2.setVisible(true);
+                GameView.coeurad.setVisible(true);
+                GameView.coeur2ad.setVisible(true);
                 GameView.endGame(1);
             }
             desCompt2();
@@ -304,14 +317,22 @@ public class CompteurVie extends Court {
             }
             if (s2.getText().equals("0")) {
                 GameView.finGame = true;
+                this.getScore().reset();
+                restart();
                 GameView.coeurad.setVisible(true);
                 GameView.coeur2ad.setVisible(true);
+                GameView.coeur.setVisible(true);
+                GameView.coeur2.setVisible(true);
                 GameView.endGame(1);
             }
             if (s1.getText().equals("0")) {
                 GameView.finGame = true;
+                this.getScore().reset();
+                restart();
                 GameView.coeurad.setVisible(true);
                 GameView.coeur2ad.setVisible(true);
+                GameView.coeur.setVisible(true);
+                GameView.coeur2.setVisible(true);
                 GameView.endGame(2);
             }
             desCompt2ad();
