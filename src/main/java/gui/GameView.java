@@ -37,7 +37,7 @@ public class GameView {
     private final Pane gameRoot; // main node of the game
     private double scale;
     private final double margin = 100.0, racketThickness = 10.0, inTerface = 100.0; // pixels
-    public static Theme theme = Theme.t0 ;
+    public static Theme theme = Theme.t0 ; 
 
     // children of the game main node
     private final Rectangle racketA, racketB;
@@ -58,7 +58,7 @@ public class GameView {
         this.gameRoot = root;
         this.scale = scale; 
 
-        pause = true ; 
+        pause = false ; 
         finGame = false ; 
 
         root.setMinWidth(court.getWidth() * scale + 2 * margin);
@@ -130,7 +130,6 @@ public class GameView {
             p2Skill.setX(600);
             p2Skill.setY(45);
 
-            defaultTheme();
 
             fireMode.getPlayerA().getPointText().setStyle("-fx-font: 60 arial;-fx-fill: #ff5252;");
             fireMode.getPlayerA().getPointText().setX(330);
@@ -159,9 +158,13 @@ public class GameView {
             racketA.setX(margin - racketThickness * 2.5);
 
             gameRoot.getChildren().addAll(fireMode.getPlayerA().getPointText(), fireMode.getPlayerB().getPointText(), p1,p2, p1Skill,p2Skill, fireMode.getPlayerB().getPowerAmountText(),fireMode.getPlayerA().getPowerAmountText());
-
+        
             return;
         }
+
+
+        setTheme();
+
 
         if (court instanceof TimeMode) {
             TimeMode t = (TimeMode)court;
@@ -185,18 +188,18 @@ public class GameView {
             t.getNbManche().setX(855);
             t.getNbManche().setY(95);
 
-            t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-
             setTheme(afficheT, t.getTmp(), t1, t.getNbManche());
+
+            t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+    
 
             gameRoot.getChildren().addAll(t.getTmp(), t1, t.getNbManche(), afficheT);
         }
 
-        setTheme();
+        gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), racketA, racketB, ball);
 
-        gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), racketA, racketB, ball);
 
-        if (court instanceof CourtObstacles) {
+        if(court instanceof CourtObstacles) {
             ((CourtObstacles)court).setGameView(this);
             Obstacle [] t = ((CourtObstacles)court).getObstacles() ; 
             for (int i = 0; i < t.length; i++) {
@@ -283,6 +286,8 @@ public class GameView {
             coinsA.setFill(Color.YELLOW);
             coinsA.setX(110);
             coinsA.setY(100);
+
+
 
 
             //Box menu buy
