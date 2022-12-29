@@ -1,5 +1,4 @@
 package gui;
-import java.util.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -9,13 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Optional;
-import javafx.scene.image.ImageView;
 
 /*********************************************************************************************************************** */
 
@@ -208,24 +202,11 @@ public class ModeDeJeuInt {
                     }
                 }
                 if (limit == -1 || limit >0) {
-                    TextInputDialog di = new TextInputDialog() ;
-                    di.setTitle("Choix Des Options");
-                    di.initOwner(primaryStage);
-                    GridPane gp = new GridPane() ;
-                    gp.add(new Label("Veuillez choisir vos options de jeu"), 0, 0);
-                    CheckBox vitesse = new CheckBox("Vitese") ;
-                    gp.add(vitesse, 0, 1);
-                    di.getDialogPane().setContent(gp);
-                    if (di.showAndWait().isPresent()) {
                         Pane root1 = new Pane() ;
                         gameScene.setRoot(root1);
                         App app = new App(root1, gameScene, limit) ;
-                        if (vitesse.isSelected()){
-                            app.startObstacles(primaryStage, true);
-                        }else{
-                            app.startObstacles(primaryStage, false);
-                        }
-                    }
+                        app.startObstacles(primaryStage);
+                    
                 }
             }
 
