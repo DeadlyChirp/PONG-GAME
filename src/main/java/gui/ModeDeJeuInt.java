@@ -101,52 +101,58 @@ public class ModeDeJeuInt {
         });
 
         scoreMode.setOnAction(ev1 -> {
+            TextInputDialog dialog = new TextInputDialog("1");
+            dialog.initOwner(primaryStage);
+            dialog.setTitle("Choix Du Score");
+            dialog.setHeaderText("Vous Pouvez choisir le nombre de points à atteindre !");
+            dialog.setContentText("Veuillez entrer un score valide : ");
+            dialog.setResizable(false);
 
-            ArrayList<Integer> limiteS = new ArrayList<Integer>();
-            limiteS.add(2);
-            limiteS.add(4);
-            limiteS.add(6);
-            limiteS.add(8);
-
-            ChoiceDialog<Integer> limiteScore = new ChoiceDialog<Integer>(2, limiteS);
-            limiteScore.initOwner(primaryStage);
-            limiteScore.setTitle("Limite de Score");
-            limiteScore.setHeaderText("Veuillez choisir un nombre points maximum");
-            limiteScore.setContentText("Nombre : ");
-
-            Optional<Integer> limitScore = limiteScore.showAndWait();
-
-            limitScore.ifPresent(limite -> {
-                Pane root1 = new Pane();
-                gameScene.setRoot(root1);
-                App a = new App(root1, gameScene, limite); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
-                a.start(primaryStage);
-            });   
+            int limit = 0 ;
+            Optional<String> result = dialog.showAndWait() ;
+            if (result.isPresent()){
+                    try {
+                        limit = Integer.valueOf(result.get().strip()) ;
+                    } catch (NumberFormatException e) {
+                       dialog.setContentText("Veuillez entrer un nombre !");
+                       limit = 0 ;
+                    }
+                if (limit >0) {
+                    Pane root1 = new Pane();
+                    gameScene.setRoot(root1);
+                    App a = new App(root1, gameScene, limit); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
+                    a.start(primaryStage);
+                }
+            }   
         });
 
         speedmode.setOnAction(ev1->{
 
-            ArrayList<Integer> limiteS = new ArrayList<Integer>();
-            limiteS.add(2);
-            limiteS.add(4);
-            limiteS.add(6);
-            limiteS.add(8);
+            TextInputDialog dialog = new TextInputDialog("1");
+            dialog.initOwner(primaryStage);
+            dialog.setTitle("Choix Du Score");
+            dialog.setHeaderText("Vous Pouvez choisir le nombre de points à atteindre !");
+            dialog.setContentText("Veuillez entrer un score valide : ");
+            dialog.setResizable(false);
 
-            ChoiceDialog<Integer> limiteScore = new ChoiceDialog<Integer>(2, limiteS);
-            limiteScore.initOwner(primaryStage);
-            limiteScore.setTitle("Limite de Score");
-            limiteScore.setHeaderText("Veuillez choisir un nombre points maximum");
-            limiteScore.setContentText("Nombre : ");
-
-            Optional<Integer> limitScore = limiteScore.showAndWait();
-
-            limitScore.ifPresent(limite -> {
-                Pane root1 = new Pane();
-                gameScene.setRoot(root1);
-                App a = new App(root1, gameScene, limite); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
-                a.startSpeed(primaryStage);
-            });   
-        });
+            int limit = 0 ;
+            Optional<String> result = dialog.showAndWait() ;
+            if (result.isPresent()){
+                    try {
+                        limit = Integer.valueOf(result.get().strip()) ;
+                    } catch (NumberFormatException e) {
+                       dialog.setContentText("Veuillez entrer un nombre !");
+                       limit = 0 ;
+                    }
+                if (limit >0) {
+                    Pane root1 = new Pane();
+                    gameScene.setRoot(root1);
+                    App a = new App(root1, gameScene, limit); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
+                    a.startSpeed(primaryStage);
+                }
+            }
+        });   
+        
 
         lifemode.setOnAction(ev1->{
 
@@ -154,29 +160,31 @@ public class ModeDeJeuInt {
         });
 
         firemode.setOnAction(ev1-> {
-                    ArrayList<Integer> limiteS = new ArrayList<Integer>();
-                    limiteS.add(4);
-                    limiteS.add(6);
-                    limiteS.add(8);
-                    limiteS.add(15);
+            TextInputDialog dialog = new TextInputDialog("1");
+            dialog.initOwner(primaryStage);
+            dialog.setTitle("Choix Du Score");
+            dialog.setHeaderText("Vous Pouvez choisir le nombre de points à atteindre !");
+            dialog.setContentText("Veuillez entrer un score valide : ");
+            dialog.setResizable(false);
 
-                    ChoiceDialog<Integer> limiteScore = new ChoiceDialog<Integer>(6, limiteS);
-                    limiteScore.initOwner(primaryStage);
-                    limiteScore.setTitle("Limite de Score");
-                    limiteScore.setHeaderText("Veuillez choisir un nombre points maximum");
-                    limiteScore.setContentText("Nombre : ");
-
-                    Optional<Integer> limitScore = limiteScore.showAndWait();
-
-                    limitScore.ifPresent(limite -> {
+            int limit = 0 ;
+            Optional<String> result = dialog.showAndWait() ;
+            if (result.isPresent()){
+                    try {
+                        limit = Integer.valueOf(result.get().strip()) ;
+                    } catch (NumberFormatException e) {
+                       dialog.setContentText("Veuillez entrer un nombre !");
+                       limit = 0 ;
+                    }
+                if (limit >0) {
                         Pane root1 = new Pane();
                         gameScene.setRoot(root1);
-                        App a = new App(root1, gameScene, limite); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
+                        App a = new App(root1, gameScene, limit); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
                         a.startFire(primaryStage);
                         //dialog to choose
-
-                    });
-                });
+                }
+            }
+        });
 
 
         obstaclemode.setOnAction(ev1->{
