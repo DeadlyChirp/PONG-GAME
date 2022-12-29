@@ -8,11 +8,11 @@ import javafx.scene.text.*;
 public class TimeMode extends Court {
 
   private Text tmp;
-  private Timer timer;
+  private static Timer timer;
   private int limit;
   private Score scoreFinal;
   private Score scoreManche;
-  private int nbManche;
+  private Text nbManche;
   private int nbMancheInitial;
  
 
@@ -23,7 +23,7 @@ public class TimeMode extends Court {
     limit = t;
     timer = new Timer();
    
-    this.nbManche = nbManche;
+    this.nbManche = new Text("1");
     this.nbMancheInitial = nbManche;
    
     scoreManche = this.getScore();
@@ -33,7 +33,7 @@ public class TimeMode extends Court {
   
 @Override
 public boolean updateBall(double deltaT) {
-          if (nbManche == 0) {
+          if (Integer.valueOf(nbManche.getText()) == nbMancheInitial+1) {
             GameView.finGame = true;
             GameView.endGame(winner());
             
@@ -60,10 +60,10 @@ public boolean updateBall(double deltaT) {
               setBallSpeedX(ballSpeedX);
               nextBallX = ballX + deltaT * ballSpeedX ;
               nextBallY = ballY +  ((ballSpeedY<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedY)); 
-          }else if (nextBallX < 0) { 
+          }else if (getScore() != null && nextBallX < 0) { 
               getScore().addScore1();
               return true;
-          }else if (nextBallX > getWidth()) { 
+          }else if (getScore() != null && nextBallX > getWidth()) { 
               getScore().addScore2();
               return true;
           }
@@ -101,7 +101,7 @@ public boolean updateBall(double deltaT) {
   
 
   public void resetNbManche() {
-    nbManche = nbMancheInitial;
+    nbManche.setText(String.valueOf("1"));
   }
 
 
@@ -109,12 +109,13 @@ public boolean updateBall(double deltaT) {
     return limit;
   }
 
-  public int getNbManche() {
-    return nbManche;
+  public Text getNbManche() {
+   return nbManche;
   }
 
-  public void closeTimer() {
-    timer.cancel();
+
+  public static void closeTimer() {
+    if (timer != null) timer.cancel();
   }
 
   public Text getTmp() {
@@ -124,6 +125,7 @@ public boolean updateBall(double deltaT) {
   public int winner() {
     int s1 = Integer.valueOf(scoreFinal.getS1().getText());
     int s2 = Integer.valueOf(scoreFinal.getS2().getText());
+    if (s1 == s2) return 0;
 
     return (Math.max(s1, s2)==s1)?1:2; 
     
@@ -142,21 +144,10 @@ public boolean updateBall(double deltaT) {
       scoreFinal.addScore2();
     }
     scoreManche.reset();
-    nbManche--;
+    nbManche.setText(String.valueOf(Integer.valueOf(nbManche.getText()) +1));
 
     
   }
-
-
-  // public void afficheVictoire() {
-  //   Text a = new Text(winner());
-  //   a.setStyle("-fx-font: 60 arial;");
-  //   a.setX(getWidth() /2);
-  //   a.setY(getHeight() /2);
-  //   root.getChildren().addAll(a); 
-  // }
-  
-
 
 
 }

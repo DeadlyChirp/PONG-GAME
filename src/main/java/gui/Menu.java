@@ -60,6 +60,7 @@ public class Menu {
         Easter.setOpacity(0);
 
         //Mise en place du background animé
+
         root.setStyle("-fx-background-image: url('file:src/Pictures/fond1.gif');");
         root.getStyleClass().addAll("root");
 
@@ -71,6 +72,7 @@ public class Menu {
         primaryStage.setTitle("Pong");
 
         //Ajout des boutons sur le stage
+        
         root.getChildren().addAll(imageView, play, option, quitter, Easter) ;
         primaryStage.setScene(gameScene);
         primaryStage.show(); 
@@ -91,6 +93,7 @@ public class Menu {
                 a.start(primaryStage);
 
             });
+
 
             //Creation des boutons stats et commande pour les menus
             Button Commande= new Button("play") ;

@@ -1,44 +1,17 @@
 package gui;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import javafx.application.Application;
-import javafx.event.Event;
-import javafx.stage.Stage;
-import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
-import model.Court;
-import model.RacketController;
-import java.io.InputStream;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.image.ImageView;
 
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.Stage;
-import java.io.File; 
-import java.io.IOException; 
-import java.util.Scanner;
-
-import javax.swing.ImageIcon;
 
 /* ------------------------------------------------------------------------------------------------------*/
 
@@ -48,7 +21,7 @@ public class MenuTheme extends Application{
 
     public Pane root;
     public Scene gameScene;
-    Theme[] themeListe = {Theme.t0, Theme.t1, Theme.t2, Theme.t3};
+    Theme[] themeListe = {Theme.t0, Theme.t1, Theme.t2, Theme.t3, Theme.t4};
     static int current = 0;
    
     MenuTheme(Pane root, Scene a){
@@ -73,12 +46,23 @@ public class MenuTheme extends Application{
         Retour.setEffect(new ImageInput(new Image("file:src/Pictures/retour.png")));
         Retour.setSkin(new MyButtonSkin(Retour));
         
-        ImageView preview = new ImageView(new Image(themeListe[current].fichier));
+        // root.setStyle("-fx-background-image: url('file:src/Pictures/fond1.gif');");
+
+        ImageView preview = new ImageView(new Image(themeListe[current].preview));
+        preview.setX(300);
+        preview.setY(70);
 
         Text nom = new Text(themeListe[current].nom);
         nom.setStyle("-fx-font: 30 arial;");
-        nom.setX(500);
-        nom.setY(490);
+        nom.setX(400);
+        nom.setY(510);
+
+        Rectangle r = new Rectangle();
+        r.setWidth(500);
+        r.setHeight(49);
+        r.setX(350);
+        r.setY(470);
+        r.setFill(Color.valueOf("#cdd1cf"));
 
         Button prev = new Button("prev") ;
         prev.setOnAction(evl -> {
@@ -88,10 +72,10 @@ public class MenuTheme extends Application{
                 current --;
             }
             nom.setText(themeListe[current].nom);
-            preview.setImage(new Image(themeListe[current].fichier));
+            preview.setImage(new Image(themeListe[current].preview));
         });
-        prev.setLayoutX(489);
-        prev.setLayoutY(580);
+        prev.setLayoutX(300);
+        prev.setLayoutY(470);
         prev.setEffect(new ImageInput(new Image("file:src/Pictures/prev.png")));
         prev.setSkin(new MyButtonSkin(prev));
 
@@ -103,10 +87,10 @@ public class MenuTheme extends Application{
                 current ++;
             }
             nom.setText(themeListe[current].nom);
-            preview.setImage(new Image(themeListe[current].fichier));
+            preview.setImage(new Image(themeListe[current].preview));
         });
-        next.setLayoutX(650);
-        next.setLayoutY(580);
+        next.setLayoutX(875);
+        next.setLayoutY(470);
         next.setEffect(new ImageInput(new Image("file:src/Pictures/next.png")));
         next.setSkin(new MyButtonSkin(next));
 
@@ -124,7 +108,7 @@ public class MenuTheme extends Application{
         save.setEffect(new ImageInput(new Image("file:src/Pictures/enregistrer.png")));
         save.setSkin(new MyButtonSkin(save));
 
-        root.getChildren().addAll(Retour, preview, nom, prev, next, save);
+        root.getChildren().addAll(Retour, preview, r, nom, prev, next, save);
     }
 
 }
