@@ -98,12 +98,9 @@ public boolean updateBall(double deltaT) {
       
   }
 
-  
-
   public void resetNbManche() {
     nbManche.setText(String.valueOf("1"));
   }
-
 
   public int getLimit() {
     return limit;
@@ -112,7 +109,6 @@ public boolean updateBall(double deltaT) {
   public Text getNbManche() {
    return nbManche;
   }
-
 
   public static void closeTimer() {
     if (timer != null) timer.cancel();
@@ -131,8 +127,6 @@ public boolean updateBall(double deltaT) {
     
   }
 
-
-
   public void finManche() {
     int s1 = Integer.valueOf(scoreManche.getS1().getText());
     int s2 = Integer.valueOf(scoreManche.getS2().getText());
@@ -145,9 +139,7 @@ public boolean updateBall(double deltaT) {
     }
     scoreManche.reset();
     nbManche.setText(String.valueOf(Integer.valueOf(nbManche.getText()) +1));
-
-    
+ 
   }
-
 
 }

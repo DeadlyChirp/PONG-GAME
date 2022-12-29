@@ -426,8 +426,8 @@ public class App {
 
     public void startFire(Stage primaryStage) {
             ArrayList<String> firePopA = new ArrayList<String>();
-             firePopA.add("COMPRIS");
-             firePopA.add("PAS COMPRIS");
+            firePopA.add("COMPRIS");
+            firePopA.add("PAS COMPRIS");
             ChoiceDialog<String> firePop = new ChoiceDialog<String>("COMPRIS", firePopA);
             firePop.initOwner(primaryStage);
             firePop.setTitle("Touche du Fire Mode");

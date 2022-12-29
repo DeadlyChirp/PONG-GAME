@@ -104,7 +104,7 @@ public class GameView {
             p1.setText("Coins P1");
             p1.setStyle("-fx-font: 20 arial;");
             p1.setFill(Color.valueOf("#ff5252"));
-            p1.setX(300);
+            p1.setX(290);
             p1.setY(45);
 
             Text p2 = new Text();
@@ -115,40 +115,46 @@ public class GameView {
             p2.setY(45);
 
             Text p1Skill = new Text();
-            p1Skill.setText("Power");
+            p1Skill.setText("Power P1");
             p1Skill.setStyle("-fx-font: 20 arial;");
             p1Skill.setFill(Color.valueOf("#ff5252"));
-            p1Skill.setX(500);
+            p1Skill.setX(480);
             p1Skill.setY(45);
 
             Text p2Skill = new Text();
             p2Skill.setText("Power P2");
             p2Skill.setStyle("-fx-font: 20 arial;");
             p2Skill.setFill(Color.valueOf("#189ad3"));
-            p2Skill.setX(600);
+            p2Skill.setX(620);
             p2Skill.setY(45);
 
             defaultTheme();
-            court.getScore().getS1().setFill(Color.valueOf("#FFFFFF"));
-            court.getScore().getS2().setFill(Color.valueOf("#FFFFFF"));
+            court.getScore().getS1().setFill(Color.valueOf("#189ad3"));
+            court.getScore().getS2().setFill(Color.valueOf("#ff5252"));
 
+            //Coins p1
             fireMode.getPlayerA().getPointText().setStyle("-fx-font: 60 arial;-fx-fill: #ff5252;");
-            fireMode.getPlayerA().getPointText().setX(330);
-            fireMode.getPlayerA().getPointText().setY(95);
+            fireMode.getPlayerA().getPointText().setX(310);
+            fireMode.getPlayerA().getPointText().setY(95);            
 
+            //Coins p2
             fireMode.getPlayerB().getPointText().setStyle("-fx-font: 60 arial;-fx-fill: #189ad3;");
-            fireMode.getPlayerB().getPointText().setX(830);
+            fireMode.getPlayerB().getPointText().setX(810);
             fireMode.getPlayerB().getPointText().setY(95);
+            
 
+            //PowerCount p1
             fireMode.getPlayerA().getPowerAmountText().setStyle("-fx-font: 60 arial;-fx-fill: #ff5252 ;");
-            fireMode.getPlayerA().getPowerAmountText().setX(530);
+            fireMode.getPlayerA().getPowerAmountText().setX(510);
             fireMode.getPlayerA().getPowerAmountText().setY(95);
 
+            //PowerCount p2
             fireMode.getPlayerB().getPowerAmountText().setStyle("-fx-font: 60 arial;-fx-fill: #189ad3;");
-            fireMode.getPlayerB().getPowerAmountText().setX(630);
+            fireMode.getPlayerB().getPowerAmountText().setX(650);
             fireMode.getPlayerB().getPowerAmountText().setY(95);
 
-            racketA.setFill(Color.valueOf("#ff5252")); //Couleur de la raquette
+            //Couleur des raquettes
+            racketA.setFill(Color.valueOf("#ff5252"));
             racketB.setFill(Color.valueOf("#189ad3"));
 
             //resize racketA and racketB thickness
@@ -263,7 +269,7 @@ public class GameView {
         selectionA.setY(A_POINTS[selectionAIndex].y);
         selectionA.setWidth(250);
         selectionA.setHeight(120);
-        selectionA.setStroke(Color.valueOf("#1a34ff")); //blue
+        selectionA.setStroke(Color.valueOf("#f5400a")); //red
         selectionA.setStrokeWidth(5);
         selectionA.setFill(Color.WHITE);
 
@@ -271,7 +277,7 @@ public class GameView {
         selectionB.setY(B_POINTS[selectionBIndex].y);
         selectionB.setWidth(250);
         selectionB.setHeight(120);
-        selectionB.setStroke(Color.valueOf("#f5400a")); //red
+        selectionB.setStroke(Color.valueOf("#1a34ff")); //blue
         selectionB.setStrokeWidth(5);
         selectionB.setFill(Color.WHITE);
 
@@ -280,6 +286,7 @@ public class GameView {
 
             Image image = new Image("file:src/Pictures/MenuFmod.png");
             ImageView imageView = new ImageView(image);
+
             //Box menu buy A
             Text coinsA = new Text("Coins : ");
             coinsA.setStyle("-fx-font: 40 arial;");
@@ -341,7 +348,6 @@ public class GameView {
             coinsB.setFill(Color.YELLOW);
             coinsB.setX(930);
             coinsB.setY(100);
-
 
             Text sizeBText = new Text("Size");
             sizeBText.setStyle("-fx-font: 48 arial;");
