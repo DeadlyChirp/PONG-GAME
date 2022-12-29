@@ -9,7 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.image.ImageView;
 
 
@@ -45,8 +44,6 @@ public class MenuTheme extends Application{
         Retour.setLayoutY(25);
         Retour.setEffect(new ImageInput(new Image("file:src/Pictures/retour.png")));
         Retour.setSkin(new MyButtonSkin(Retour));
-        
-        // root.setStyle("-fx-background-image: url('file:src/Pictures/fond1.gif');");
 
         ImageView preview = new ImageView(new Image(themeListe[current].preview));
         preview.setX(300);

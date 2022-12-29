@@ -96,7 +96,7 @@ public class Menu {
 
 
             //Creation des boutons stats et commande pour les menus
-            Button Commande= new Button("play") ;
+            Button Commande = new Button("play") ;
             Commande.setLayoutX(538);
             Commande.setLayoutY(570);
             Commande.setEffect(new ImageInput(new Image("file:src/Pictures/commande2.png")));

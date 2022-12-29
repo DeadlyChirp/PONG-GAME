@@ -285,7 +285,7 @@ public class App {
         });
     }
 
-    public void setStyleButtons () {
+    public void setStyleButtons(){
         imageV.setX(290);
         imageV.setY(200);
         

@@ -2,7 +2,6 @@ package gui;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -46,7 +45,7 @@ public class GameView {
     public static boolean pause ;
     private final LinkedList<Trail> trails;
 
-    int Timer = 60; //2sec
+    int Timer = 60; 
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
@@ -65,29 +64,28 @@ public class GameView {
         root.setMinHeight(court.getHeight() * scale + margin + inTerface);
 
         //Affichage de la balle et des raquettes
+        racketA = new Rectangle();
+        racketA.setHeight(court.getRacketSize() * scale);
+        racketA.setWidth(racketThickness);
+        racketA.setFill(Color.valueOf("#375745"));
 
-            racketA = new Rectangle();
-            racketA.setHeight(court.getRacketSize() * scale);
-            racketA.setWidth(racketThickness);
-            racketA.setFill(Color.valueOf("#375745"));
+        racketA.setX(margin - racketThickness);
+        racketA.setY(court.getRacketA() * scale + inTerface + margin/2);
 
-            racketA.setX(margin - racketThickness);
-            racketA.setY(court.getRacketA() * scale + inTerface + margin/2);
+        racketB = new Rectangle();
+        racketB.setHeight(court.getRacketSize() * scale);
+        racketB.setWidth(racketThickness);
+        racketB.setFill(Color.valueOf("#375745"));
 
-            racketB = new Rectangle();
-            racketB.setHeight(court.getRacketSize() * scale);
-            racketB.setWidth(racketThickness);
-            racketB.setFill(Color.valueOf("#375745"));
+        racketB.setX(court.getWidth() * scale + margin);
+        racketB.setY(court.getRacketB() * scale + inTerface + margin/2);
 
-            racketB.setX(court.getWidth() * scale + margin);
-            racketB.setY(court.getRacketB() * scale + inTerface + margin/2);
+        ball = new Circle();
+        ball.setRadius(court.getBallRadius());
+        ball.setFill(Color.valueOf("#375745"));
 
-            ball = new Circle();
-            ball.setRadius(court.getBallRadius());
-            ball.setFill(Color.valueOf("#375745"));
-
-            ball.setCenterX(court.getBallX() * scale + margin);
-            ball.setCenterY(court.getBallY() * scale + inTerface +  margin/2);
+        ball.setCenterX(court.getBallX() * scale + margin);
+        ball.setCenterY(court.getBallY() * scale + inTerface +  margin/2);
 
         trails = new LinkedList<>();
 
@@ -130,6 +128,9 @@ public class GameView {
             p2Skill.setX(600);
             p2Skill.setY(45);
 
+            defaultTheme();
+            court.getScore().getS1().setFill(Color.valueOf("#FFFFFF"));
+            court.getScore().getS2().setFill(Color.valueOf("#FFFFFF"));
 
             fireMode.getPlayerA().getPointText().setStyle("-fx-font: 60 arial;-fx-fill: #ff5252;");
             fireMode.getPlayerA().getPointText().setX(330);
@@ -157,7 +158,7 @@ public class GameView {
             //move racketA to the left of the screen
             racketA.setX(margin - racketThickness * 2.5);
 
-            gameRoot.getChildren().addAll(fireMode.getPlayerA().getPointText(), fireMode.getPlayerB().getPointText(), p1,p2, p1Skill,p2Skill, fireMode.getPlayerB().getPowerAmountText(),fireMode.getPlayerA().getPowerAmountText());
+            gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), racketA, racketB, ball, fireMode.getPlayerA().getPointText(), fireMode.getPlayerB().getPointText(), p1,p2, p1Skill,p2Skill, fireMode.getPlayerB().getPowerAmountText(),fireMode.getPlayerA().getPowerAmountText());
         
             return;
         }
@@ -191,7 +192,6 @@ public class GameView {
             setTheme(afficheT, t.getTmp(), t1, t.getNbManche());
 
             t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-    
 
             gameRoot.getChildren().addAll(t.getTmp(), t1, t.getNbManche(), afficheT);
         }
@@ -231,11 +231,11 @@ public class GameView {
         }
     }
 
-    public void destroyObst (Obstacle obst) {//done
+    public void destroyObst (Obstacle obst) {
         gameRoot.getChildren().removeAll((obst.getId() == 0)?(Rectangle)obst.getShape():(Circle)obst.getShape()) ; 
     }
 
-    public void updateObstacle (Obstacle obstacle) {//done
+    public void updateObstacle (Obstacle obstacle) {
         if (obstacle.getId() == 0 ) {
             ((Rectangle)obstacle.getShape()).setY(obstacle.getPosY() + margin/2 + inTerface );
             return ; 
@@ -250,7 +250,7 @@ public class GameView {
     private Rectangle selectionB = new Rectangle();
     private Text sizeLvAText, speedLvAText, powerAmountAText, sizeLvBText, speedLvBText, powerAmountBText;
     private int selectionAIndex, selectionBIndex;
-    public void upgradeRacket() { //thanh
+    public void upgradeRacket() { 
         if (finGame || gameRoot.getScene() == null) {
             return;
         }
@@ -286,9 +286,6 @@ public class GameView {
             coinsA.setFill(Color.YELLOW);
             coinsA.setX(110);
             coinsA.setY(100);
-
-
-
 
             //Box menu buy
             Text sizeAText = new Text("Size");
