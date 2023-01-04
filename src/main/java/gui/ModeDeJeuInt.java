@@ -51,8 +51,8 @@ public class ModeDeJeuInt {
 
         //Bouton firemode
         Button firemode = new Button("Fire Mode");
-        firemode.setLayoutX(820);
-        firemode.setLayoutY(200);
+        firemode.setLayoutX(660);
+        firemode.setLayoutY(570);
         firemode.setEffect(new ImageInput(new Image("file:src/Pictures/firemode.png")));
         firemode.setSkin(new MyButtonSkin(firemode));
 
@@ -72,8 +72,8 @@ public class ModeDeJeuInt {
 
         //Bouton Obstacle Mode
         Button obstaclemode = new Button("obstacle mode");
-        obstaclemode.setLayoutX(660);
-        obstaclemode.setLayoutY(570);
+        obstaclemode.setLayoutX(820);
+        obstaclemode.setLayoutY(200);
         obstaclemode.setEffect(new ImageInput(new Image("file:src/Pictures/obstaclemode.png")));
         obstaclemode.setSkin(new MyButtonSkin(obstaclemode));
 
