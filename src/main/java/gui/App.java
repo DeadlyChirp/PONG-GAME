@@ -440,13 +440,18 @@ public class App {
     public void startTimer(Stage primaryStage, int nbManche, int t , int diff){
         var playerA = new Player();
         var playerB = (diff != -1)?new Bot(diff):new Player() ; 
-        var court = new TimeMode(playerA, playerB, 1000, 600, nbManche, t){
-            @Override
-            public void update(double deltaT) {
-                ((Bot)playerB).play(deltaT*getBallSpeedY()+getBallY());
-                super.update(deltaT);
-            }
-        };
+        Court court = null ; 
+        if (diff != -1) {
+            court = new TimeMode(playerA, playerB, 1000, 600, nbManche, t){
+                @Override
+                public void update(double deltaT) {
+                    ((Bot)playerB).play(deltaT*getBallSpeedY()+getBallY());
+                    super.update(deltaT);
+                }
+            };
+        }else{
+            court = new TimeMode(playerA, playerB, 1000, 600, nbManche, t);
+        }    
         var gameView = new GameView(court, root, 1);
     
         setStyleButtons();
