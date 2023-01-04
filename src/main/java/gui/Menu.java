@@ -82,7 +82,7 @@ public class Menu {
             root.getChildren().removeAll(play, option, quitter);
             
             Button Theme = new Button("Theme");
-            Theme.setLayoutX(704);
+            Theme.setLayoutX(615);
             Theme.setLayoutY(590);
             Theme.setEffect(new ImageInput(new Image("file:src/Pictures/Boutontheme.png")));
             Theme.setSkin(new MyButtonSkin(Theme));
@@ -97,7 +97,7 @@ public class Menu {
 
             //Creation des boutons stats et commande pour les menus
             Button Commande= new Button("play") ;
-            Commande.setLayoutX(538);
+            Commande.setLayoutX(438);
             Commande.setLayoutY(570);
             Commande.setEffect(new ImageInput(new Image("file:src/Pictures/commande2.png")));
             Commande.setSkin(new MyButtonSkin(Commande));
@@ -109,29 +109,16 @@ public class Menu {
             });
 
 
-            Button Stat = new Button("option");
-            Stat.setLayoutX(421);
-            Stat.setLayoutY(580);
-            Stat.setEffect(new ImageInput(new Image("file:src/Pictures/stat.png")));
-            Stat.setSkin(new MyButtonSkin(Stat));
-
-            Stat.setOnAction(ev1 -> {
-                Pane root1 = new Pane();
-                gameScene.setRoot(root1);
-                Stat a = new Stat(root1, gameScene);
-                a.start(primaryStage);
-            });
-
             Button Retour = new Button("quitter");
             Retour.setLayoutX(1100);
             Retour.setLayoutY(25);
             Retour.setEffect(new ImageInput(new Image("file:src/Pictures/retour.png")));
             Retour.setSkin(new MyButtonSkin(Retour));
 
-            root.getChildren().addAll(Commande, Stat, Retour, Theme) ;
+            root.getChildren().addAll(Commande, Retour, Theme) ;
 
             Retour.setOnAction(ev3 ->{
-                root.getChildren().removeAll(Commande, Stat, Retour, Theme);
+                root.getChildren().removeAll(Commande, Retour, Theme);
                 root.getChildren().addAll(play, option, quitter);
             });
 

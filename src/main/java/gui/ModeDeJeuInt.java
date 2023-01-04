@@ -8,7 +8,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.image.ImageView;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /*********************************************************************************************************************** */
@@ -34,12 +33,12 @@ public class ModeDeJeuInt {
         imageView.setLayoutX(50);
         imageView.setLayoutY(190);
 
-        //Bouton lifemode
-        Button lifemode = new Button("Life Mode") ;
-        lifemode.setLayoutX(820);
-        lifemode.setLayoutY(200);
-        lifemode.setEffect(new ImageInput(new Image("file:src/Pictures/lifemode.png")));
-        lifemode.setSkin(new MyButtonSkin(lifemode));
+        // //Bouton lifemode
+        // Button lifemode = new Button("Life Mode") ;
+        // lifemode.setLayoutX(820);
+        // lifemode.setLayoutY(200);
+        // lifemode.setEffect(new ImageInput(new Image("file:src/Pictures/lifemode.png")));
+        // lifemode.setSkin(new MyButtonSkin(lifemode));
 
         //Bouton timermode
         Button timermode = new Button("Timer Mode");
@@ -51,7 +50,7 @@ public class ModeDeJeuInt {
         //Bouton firemode
         Button firemode = new Button("Fire Mode");
         firemode.setLayoutX(820);
-        firemode.setLayoutY(570);
+        firemode.setLayoutY(200);
         firemode.setEffect(new ImageInput(new Image("file:src/Pictures/firemode.png")));
         firemode.setSkin(new MyButtonSkin(firemode));
 
@@ -71,7 +70,7 @@ public class ModeDeJeuInt {
 
         //Bouton Obstacle Mode
         Button obstaclemode = new Button("obstacle mode");
-        obstaclemode.setLayoutX(520);
+        obstaclemode.setLayoutX(660);
         obstaclemode.setLayoutY(570);
         obstaclemode.setEffect(new ImageInput(new Image("file:src/Pictures/obstaclemode.png")));
         obstaclemode.setSkin(new MyButtonSkin(obstaclemode));
@@ -91,7 +90,7 @@ public class ModeDeJeuInt {
 
 
         root.getChildren().add(imageView);
-        root.getChildren().addAll(timermode, lifemode, firemode, speedmode, scoreMode, obstaclemode, Retour);
+        root.getChildren().addAll(timermode, firemode, speedmode, scoreMode, obstaclemode, Retour);
 
         Retour.setOnAction(ev1 -> {
             Pane root1 = new Pane();
@@ -154,10 +153,6 @@ public class ModeDeJeuInt {
         });   
         
 
-        lifemode.setOnAction(ev1->{
-
-            //Utilser lifemode d'Emir
-        });
 
         firemode.setOnAction(ev1-> {
             TextInputDialog dialog = new TextInputDialog("1");
