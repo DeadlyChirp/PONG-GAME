@@ -8,7 +8,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.image.ImageView;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /*********************************************************************************************************************** */
@@ -20,10 +19,12 @@ public class ModeDeJeuInt {
 
     public Pane root;
     public Scene gameScene;
+    public int difficulte ; 
 
-    ModeDeJeuInt(Pane root, Scene a){
+    ModeDeJeuInt(Pane root, Scene a , int diff){
         this.root = root;
         gameScene = a;
+        this.difficulte = diff ; 
     }
 
     public void start(Stage primaryStage) {
@@ -91,7 +92,10 @@ public class ModeDeJeuInt {
 
 
         root.getChildren().add(imageView);
-        root.getChildren().addAll(timermode, lifemode, firemode, speedmode, scoreMode, obstaclemode, Retour);
+        root.getChildren().addAll(timermode, lifemode, speedmode, scoreMode, obstaclemode, Retour);
+        if (difficulte == -1) {
+            root.getChildren().add(firemode);
+        }
 
         Retour.setOnAction(ev1 -> {
             Pane root1 = new Pane();
@@ -148,7 +152,7 @@ public class ModeDeJeuInt {
                     Pane root1 = new Pane();
                     gameScene.setRoot(root1);
                     App a = new App(root1, gameScene, limit); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
-                    a.startSpeed(primaryStage);
+                    a.Start(primaryStage, "Speed", difficulte);
                 }
             }
         });   
@@ -213,7 +217,7 @@ public class ModeDeJeuInt {
                         Pane root1 = new Pane() ;
                         gameScene.setRoot(root1);
                         App app = new App(root1, gameScene, limit) ;
-                        app.startObstacles(primaryStage);
+                        app.Start(primaryStage, "Obstacles", difficulte);
                     
                 }
             }
@@ -290,7 +294,7 @@ public class ModeDeJeuInt {
                     Pane root1 = new Pane();
                     gameScene.setRoot(root1);
                     App a = new App(root1, gameScene);
-                    a.startTimer(primaryStage, Integer.valueOf(limit), Integer.valueOf(time));
+                    a.startTimer(primaryStage, Integer.valueOf(limit), Integer.valueOf(time) , difficulte);
                 });
 
             });

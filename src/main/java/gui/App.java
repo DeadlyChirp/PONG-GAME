@@ -380,87 +380,116 @@ public class App {
         }
     }
 
-    //pour le timer de timermode
-    public void startTimer(Stage primaryStage, int nbManche, int t){
+   public void Start (Stage primaryStage , String gameMode , int diff) {
+        var playerA = new Player() ; 
+        var playerB = (diff == -1)?(new Player()):(new Bot(3)) ; 
+        Court court = null ; 
+        GameView gameView = null; 
+        switch (gameMode) {
+            case "Speed" :
+                if (diff != -1) {
+                    court = new CourtSpeed(playerA, playerB, 1000, 600, limite) {
+                        @Override
+                        public void update(double deltaT) {
+                            ((Bot)playerB).play(deltaT*getBallSpeedY()+getBallY());
+                            super.update(deltaT);
+                        };
+                    } ; 
+                }else {
+                    court = new CourtSpeed(playerA, playerB, 1000, 600, limite);
+                }
+                break ; 
+            case "Obstacles" :
+                if (diff != -1) {
+                    court = new CourtObstacles(playerA, playerB, 1000, 600, this.limite){
+                        @Override
+                        public void update(double deltaT) {
+                            ((Bot)playerB).play(deltaT*getBallSpeedY()+getBallY());
+                            super.update(deltaT);
+                        };
+                    } ; 
+                }else{
+                    court = new CourtObstacles(playerA, playerB, 1000, 600, this.limite) ;
+                }
+                break ; 
+            case "Score" :
+                if (diff != -1) {
+                    court = new Court(playerA, playerB, 1000, 600, limite) {
+                        @Override
+                        public void update(double deltaT) {
+                            ((Bot)playerB).play(deltaT*getBallSpeedY()+getBallY());
+                            super.update(deltaT);
+                        };
+                    }; 
+                }else{
+                    court = new Court(playerA, playerB, 1000, 600, limite) ;
+                }   
+                break ;  
+        }
+        gameView = new GameView(court, root, 1);
+        setStyleButtons();
+        if (diff != -1) {
+            setCommands1Player(playerA);
+        }else{
+            setCommands2Player(playerA, ((Player)playerB));
+        }
+        setActionButtons(court, gameView, primaryStage);
+        gameView.animate();
+   }
+
+    public void startTimer(Stage primaryStage, int nbManche, int t , int diff){
         var playerA = new Player();
-        var playerB = new Player();
-        Image img = new Image("file:src/Pictures/fond.png");
-        BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        Background bGround = new Background(bImg);
-        root.setBackground(bGround);
-        var court = new TimeMode(playerA, playerB, 1000, 600, nbManche, t);
+        var playerB = (diff != -1)?new Bot(diff):new Player() ; 
+        var court = new TimeMode(playerA, playerB, 1000, 600, nbManche, t){
+            @Override
+            public void update(double deltaT) {
+                ((Bot)playerB).play(deltaT*getBallSpeedY()+getBallY());
+                super.update(deltaT);
+            }
+        };
         var gameView = new GameView(court, root, 1);
     
         setStyleButtons();
-        setCommands2Player(playerA, playerB);
-        setActionButtons(court, gameView, primaryStage);
-        gameView.animate();
-        
-    }
-
-    public void startSpeed(Stage primaryStage)  {
-        var playerA = new Player();
-        var playerB = new Player();
-        Image img = new Image("file:src/Pictures/fond.png");
-        BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        Background bGround = new Background(bImg);
-        root.setBackground(bGround);
-        var court = new CourtSpeed(playerA, playerB, 1000, 600, limite);
-        var gameView = new GameView(court, root, 1);
-        setStyleButtons();
-        setCommands2Player(playerA, playerB);
-        setActionButtons(court, gameView, primaryStage);
-        gameView.animate();
-}
-
-    public void startObstacles(Stage primaryStage)  {
-        var playerA = new Player();
-        var playerB = new Player();
-        Image img = new Image("file:src/Pictures/fond.png");
-        BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        Background bGround = new Background(bImg);
-        root.setBackground(bGround);
-        var court = new CourtObstacles(playerA, playerB, 1000, 600, this.limite) ;
-        var gameView = new GameView(court, root, 1);
-        setStyleButtons();
-        setCommands2Player(playerA, playerB);
+        if (diff != -1) {
+            setCommands1Player(playerA);
+        }else{
+            setCommands2Player(playerA, ((Player)playerB));
+        }
         setActionButtons(court, gameView, primaryStage);
         gameView.animate();
     }
 
     public void startFire(Stage primaryStage) {
-            ArrayList<String> firePopA = new ArrayList<String>();
-             firePopA.add("COMPRIS");
-             firePopA.add("PAS COMPRIS");
-            ChoiceDialog<String> firePop = new ChoiceDialog<String>("COMPRIS", firePopA);
-            firePop.initOwner(primaryStage);
-            firePop.setTitle("Touche du Fire Mode");
-            firePop.setHeaderText("TOUCHE DU J1 : A , Q et D (D = Acheter + Activer Skill)  |  TOUCHE DU J2 : P , M et Entrer (Enter = Acheter + Activer Skill )");
-            firePop.setContentText("Vous allez devoir jouer pour obtenir des points, \n Quand la balle touche votre raquette c'est 1 points \n Quand vous marquez un goal, c'est 5 points \n");
-            firePop.setResizable(false);
-            Optional<String> fireok = firePop.showAndWait();
-            if(fireok.isEmpty()){
-                Pane root1 = new Pane();
-                gameScene.setRoot(root1);
-                ModeDeJeu a = new ModeDeJeu(root1, gameScene);
-                a.start(primaryStage);
-            }
-            if (fireok.isPresent()){
-                if(fireok.get().equals("COMPRIS")){
-                    var playerA = new FPlayer();
-                    var playerB = new FPlayer();
-                    Image img = new Image("file:src/Pictures/fondFire.png");
-                    BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-                    Background bGround = new Background(bImg);
-                    root.setBackground(bGround);
-                    var court = new FireMode(playerA, playerB, 1000, 600 , limite);
-                    var gameView = new GameView(court, root, 1);
-
-                    setStyleButtons();
-                    gameView.animate();
-
-                    //Action du bouton Quitter
-                    Quitter.setOnAction(ev1 -> {
+        ArrayList<String> firePopA = new ArrayList<String>();
+        firePopA.add("COMPRIS");
+        firePopA.add("PAS COMPRIS");
+        ChoiceDialog<String> firePop = new ChoiceDialog<String>("COMPRIS", firePopA);
+        firePop.initOwner(primaryStage);
+        firePop.setTitle("Touche du Fire Mode");
+        firePop.setHeaderText("TOUCHE DU J1 : A , Q et D (D = Acheter + Activer Skill)  |  TOUCHE DU J2 : P , M et Entrer (Enter = Acheter + Activer Skill )");
+        firePop.setContentText("Vous allez devoir jouer pour obtenir des points, \n Quand la balle touche votre raquette c'est 1 points \n Quand vous marquez un goal, c'est 5 points \n");
+        firePop.setResizable(false);
+        Optional<String> fireok = firePop.showAndWait();
+        if(fireok.isEmpty()){
+            Pane root1 = new Pane();
+            gameScene.setRoot(root1);
+            ModeDeJeu a = new ModeDeJeu(root1, gameScene);
+            a.start(primaryStage);
+        }
+        if (fireok.isPresent()){
+            if(fireok.get().equals("COMPRIS")){
+                var playerA = new FPlayer();
+                var playerB = new FPlayer();
+                Image img = new Image("file:src/Pictures/fondFire.png");
+                BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                Background bGround = new Background(bImg);
+                root.setBackground(bGround);
+                var court = new FireMode(playerA, playerB, 1000, 600 , limite);
+                var gameView = new GameView(court, root, 1);
+                setStyleButtons();
+                gameView.animate();
+                //Action du bouton Quitter
+                Quitter.setOnAction(ev1 -> {
                         Pane root1 = new Pane();
                         gameScene.setRoot(root1);
                         Menu a = new Menu(root1, gameScene);
@@ -468,13 +497,13 @@ public class App {
                     });
 
                     //Action du bouton Reprendre
-                    Reprendre.setOnAction(ev1 -> {
+                Reprendre.setOnAction(ev1 -> {
                         root.getChildren().removeAll(imageV, Quitter, Reprendre, Recommencer);
                         GameView.pause = false;
                     });
 
                     //Action du bouton Recommencer
-                    Recommencer.setOnAction(ev1 -> {
+                Recommencer.setOnAction(ev1 -> {
                         Quitter.setLayoutX(320);
                         Recommencer.setLayoutX(695);
                         Recommencer.setLayoutY(350);
@@ -500,16 +529,15 @@ public class App {
                         GameView.finGame = false;
                     });
 
-                    court.setGameView(gameView);
-                    court.setKeyEvent(gameScene);
-                }
-                if(fireok.get().equals("PAS COMPRIS")){
-                    Pane root1 = new Pane();
-                    gameScene.setRoot(root1);
-                    ModeDeJeu a = new ModeDeJeu(root1, gameScene);
-                    a.start(primaryStage);
-                }
-
-                }
+                court.setGameView(gameView);
+                court.setKeyEvent(gameScene);
             }
+            if(fireok.get().equals("PAS COMPRIS")){
+                Pane root1 = new Pane();
+                gameScene.setRoot(root1);
+                ModeDeJeu a = new ModeDeJeu(root1, gameScene);
+                a.start(primaryStage);
+            }
+        }
+    }
 }
