@@ -126,7 +126,7 @@ public class ModeDeJeuInt {
                     Pane root1 = new Pane();
                     gameScene.setRoot(root1);
                     App a = new App(root1, gameScene, limit); //Appel de la classe App classique qui permet de lancer le mode de score (définir la limite du score au début)
-                    a.start(primaryStage);
+                    a.Start(primaryStage , "Score" , difficulte);
                 }
             }   
         });
