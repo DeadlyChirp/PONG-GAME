@@ -92,7 +92,10 @@ public class ModeDeJeuInt {
 
 
         root.getChildren().add(imageView);
-        root.getChildren().addAll(timermode, firemode, speedmode, scoreMode, obstaclemode, Retour);
+        root.getChildren().addAll(timermode, speedmode, scoreMode, obstaclemode, Retour);
+        if(difficulte == -1){
+            root.getChildren().add(firemode);
+        }
         
 
         Retour.setOnAction(ev1 -> {
