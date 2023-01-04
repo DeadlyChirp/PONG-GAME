@@ -2,7 +2,6 @@ package gui;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -37,7 +36,7 @@ public class GameView {
     private final Pane gameRoot; // main node of the game
     private double scale;
     private final double margin = 100.0, racketThickness = 10.0, inTerface = 100.0; // pixels
-    public static String theme ; 
+    public static Theme theme = Theme.t0 ; 
 
     // children of the game main node
     private final Rectangle racketA, racketB;
@@ -46,7 +45,7 @@ public class GameView {
     public static boolean pause ;
     private final LinkedList<Trail> trails;
 
-    int Timer = 60; //2sec
+    int Timer = 60; 
 
     /**
      * @param court le "modèle" de cette vue (le terrain de jeu de raquettes et tout ce qu'il y a dessus)
@@ -65,68 +64,31 @@ public class GameView {
         root.setMinHeight(court.getHeight() * scale + margin + inTerface);
 
         //Affichage de la balle et des raquettes
+        racketA = new Rectangle();
+        racketA.setHeight(court.getRacketSize() * scale);
+        racketA.setWidth(racketThickness);
+        racketA.setFill(Color.valueOf("#375745"));
 
-            racketA = new Rectangle();
-            racketA.setHeight(court.getRacketSize() * scale);
-            racketA.setWidth(racketThickness);
-            racketA.setFill(Color.valueOf("#375745"));
+        racketA.setX(margin - racketThickness);
+        racketA.setY(court.getRacketA() * scale + inTerface + margin/2);
 
-            racketA.setX(margin - racketThickness);
-            racketA.setY(court.getRacketA() * scale + inTerface + margin/2);
+        racketB = new Rectangle();
+        racketB.setHeight(court.getRacketSize() * scale);
+        racketB.setWidth(racketThickness);
+        racketB.setFill(Color.valueOf("#375745"));
 
-            racketB = new Rectangle();
-            racketB.setHeight(court.getRacketSize() * scale);
-            racketB.setWidth(racketThickness);
-            racketB.setFill(Color.valueOf("#375745"));
+        racketB.setX(court.getWidth() * scale + margin);
+        racketB.setY(court.getRacketB() * scale + inTerface + margin/2);
 
-            racketB.setX(court.getWidth() * scale + margin);
-            racketB.setY(court.getRacketB() * scale + inTerface + margin/2);
+        ball = new Circle();
+        ball.setRadius(court.getBallRadius());
+        ball.setFill(Color.valueOf("#375745"));
 
-            ball = new Circle();
-            ball.setRadius(court.getBallRadius());
-            ball.setFill(Color.valueOf("#375745"));
-
-            ball.setCenterX(court.getBallX() * scale + margin);
-            ball.setCenterY(court.getBallY() * scale + inTerface +  margin/2);
+        ball.setCenterX(court.getBallX() * scale + margin);
+        ball.setCenterY(court.getBallY() * scale + inTerface +  margin/2);
 
         trails = new LinkedList<>();
 
-        //Affichage de l'interface
-
-            Group inter = new Group();
-
-                Rectangle cadre = new Rectangle();
-                cadre.setX(margin/2);
-                cadre.setY(margin/4);
-                cadre.setWidth(court.getWidth() + margin );
-                cadre.setHeight(inTerface);
-                cadre.setStroke(Color.valueOf("#375745"));
-                cadre.setStrokeWidth(5);
-                cadre.setFill(null);      
-                inter.getChildren().addAll(cadre);
-
-                Line l1 = new Line();
-                l1.setStartX(margin/2);
-                l1.setStartY(inTerface + margin/2 - ball.getRadius());
-                l1.setEndX(margin + margin/2 + court.getWidth());
-                l1.setEndY(inTerface + margin/2 - ball.getRadius());
-                l1.setStroke(Color.valueOf("#375745"));
-                l1.setStrokeWidth(5);
-
-                Line l2 = new Line();
-                l2.setStartX(margin/2);
-                l2.setStartY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
-                l2.setEndX(margin + margin/2 + court.getWidth());
-                l2.setEndY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
-                l2.setStroke(Color.valueOf("#375745"));
-                l2.setStrokeWidth(5);
-
-                Rectangle zoneDeJeu = new Rectangle();
-                zoneDeJeu.setX(margin);
-                zoneDeJeu.setY(inTerface + margin/2);
-                zoneDeJeu.setWidth(court.getWidth());
-                zoneDeJeu.setHeight(court.getHeight());
-                zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
         //Player1
         court.getScore().getS1().setStyle("-fx-font: 60 arial;");
         court.getScore().getS1().setX(1030);
@@ -142,7 +104,7 @@ public class GameView {
             p1.setText("Coins P1");
             p1.setStyle("-fx-font: 20 arial;");
             p1.setFill(Color.valueOf("#ff5252"));
-            p1.setX(300);
+            p1.setX(290);
             p1.setY(45);
 
             Text p2 = new Text();
@@ -153,37 +115,46 @@ public class GameView {
             p2.setY(45);
 
             Text p1Skill = new Text();
-            p1Skill.setText("Power");
+            p1Skill.setText("Power P1");
             p1Skill.setStyle("-fx-font: 20 arial;");
             p1Skill.setFill(Color.valueOf("#ff5252"));
-            p1Skill.setX(500);
+            p1Skill.setX(480);
             p1Skill.setY(45);
 
             Text p2Skill = new Text();
             p2Skill.setText("Power P2");
             p2Skill.setStyle("-fx-font: 20 arial;");
             p2Skill.setFill(Color.valueOf("#189ad3"));
-            p2Skill.setX(600);
+            p2Skill.setX(620);
             p2Skill.setY(45);
 
+            defaultTheme();
+            court.getScore().getS1().setFill(Color.valueOf("#189ad3"));
+            court.getScore().getS2().setFill(Color.valueOf("#ff5252"));
 
+            //Coins p1
             fireMode.getPlayerA().getPointText().setStyle("-fx-font: 60 arial;-fx-fill: #ff5252;");
-            fireMode.getPlayerA().getPointText().setX(330);
-            fireMode.getPlayerA().getPointText().setY(95);
+            fireMode.getPlayerA().getPointText().setX(310);
+            fireMode.getPlayerA().getPointText().setY(95);            
 
+            //Coins p2
             fireMode.getPlayerB().getPointText().setStyle("-fx-font: 60 arial;-fx-fill: #189ad3;");
-            fireMode.getPlayerB().getPointText().setX(830);
+            fireMode.getPlayerB().getPointText().setX(810);
             fireMode.getPlayerB().getPointText().setY(95);
+            
 
+            //PowerCount p1
             fireMode.getPlayerA().getPowerAmountText().setStyle("-fx-font: 60 arial;-fx-fill: #ff5252 ;");
-            fireMode.getPlayerA().getPowerAmountText().setX(530);
+            fireMode.getPlayerA().getPowerAmountText().setX(510);
             fireMode.getPlayerA().getPowerAmountText().setY(95);
 
+            //PowerCount p2
             fireMode.getPlayerB().getPowerAmountText().setStyle("-fx-font: 60 arial;-fx-fill: #189ad3;");
-            fireMode.getPlayerB().getPowerAmountText().setX(630);
+            fireMode.getPlayerB().getPowerAmountText().setX(650);
             fireMode.getPlayerB().getPowerAmountText().setY(95);
 
-            racketA.setFill(Color.valueOf("#ff5252")); //Couleur de la raquette
+            //Couleur des raquettes
+            racketA.setFill(Color.valueOf("#ff5252"));
             racketB.setFill(Color.valueOf("#189ad3"));
 
             //resize racketA and racketB thickness
@@ -193,23 +164,20 @@ public class GameView {
             //move racketA to the left of the screen
             racketA.setX(margin - racketThickness * 2.5);
 
-
-
-
-
-
-
-
-
-            gameRoot.getChildren().addAll(fireMode.getPlayerA().getPointText(), fireMode.getPlayerB().getPointText(), p1,p2, p1Skill,p2Skill, fireMode.getPlayerB().getPowerAmountText(),fireMode.getPlayerA().getPowerAmountText());
+            gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), racketA, racketB, ball, fireMode.getPlayerA().getPointText(), fireMode.getPlayerB().getPointText(), p1,p2, p1Skill,p2Skill, fireMode.getPlayerB().getPowerAmountText(),fireMode.getPlayerA().getPowerAmountText());
+        
+            return;
         }
+
+
+        setTheme();
 
 
         if (court instanceof TimeMode) {
             TimeMode t = (TimeMode)court;
             Text afficheT = new Text("Temps : ");
 
-           afficheT.setStyle("-fx-font: 40 arial;");
+            afficheT.setStyle("-fx-font: 40 arial;");
             afficheT.setX(265);
             afficheT.setY(95);
 
@@ -227,26 +195,22 @@ public class GameView {
             t.getNbManche().setX(855);
             t.getNbManche().setY(95);
 
-
-
+            setTheme(afficheT, t.getTmp(), t1, t.getNbManche());
 
             t.getTmp().setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-    
 
-            gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA, racketB, ball, inter, t.getTmp(), t1, t.getNbManche(), afficheT);
-            return;
+            gameRoot.getChildren().addAll(t.getTmp(), t1, t.getNbManche(), afficheT);
         }
 
-        gameRoot.getChildren().addAll( court.getScore().getS2(), court.getScore().getS1(), zoneDeJeu, l1, l2, racketA, racketB, ball, inter);
+        gameRoot.getChildren().addAll(court.getScore().getS2(), court.getScore().getS1(), racketA, racketB, ball);
 
 
-         if (court instanceof CourtObstacles) {
+        if(court instanceof CourtObstacles) {
             ((CourtObstacles)court).setGameView(this);
             Obstacle [] t = ((CourtObstacles)court).getObstacles() ; 
             for (int i = 0; i < t.length; i++) {
                 addObst(t[i]);
             }
-            return ; 
         }
     }
 
@@ -273,11 +237,11 @@ public class GameView {
         }
     }
 
-    public void destroyObst (Obstacle obst) {//done
+    public void destroyObst (Obstacle obst) {
         gameRoot.getChildren().removeAll((obst.getId() == 0)?(Rectangle)obst.getShape():(Circle)obst.getShape()) ; 
     }
 
-    public void updateObstacle (Obstacle obstacle) {//done
+    public void updateObstacle (Obstacle obstacle) {
         if (obstacle.getId() == 0 ) {
             ((Rectangle)obstacle.getShape()).setY(obstacle.getPosY() + margin/2 + inTerface );
             return ; 
@@ -292,7 +256,7 @@ public class GameView {
     private Rectangle selectionB = new Rectangle();
     private Text sizeLvAText, speedLvAText, powerAmountAText, sizeLvBText, speedLvBText, powerAmountBText;
     private int selectionAIndex, selectionBIndex;
-    public void upgradeRacket() { //thanh
+    public void upgradeRacket() { 
         if (finGame || gameRoot.getScene() == null) {
             return;
         }
@@ -305,7 +269,7 @@ public class GameView {
         selectionA.setY(A_POINTS[selectionAIndex].y);
         selectionA.setWidth(250);
         selectionA.setHeight(120);
-        selectionA.setStroke(Color.valueOf("#1a34ff")); //blue
+        selectionA.setStroke(Color.valueOf("#f5400a")); //red
         selectionA.setStrokeWidth(5);
         selectionA.setFill(Color.WHITE);
 
@@ -313,7 +277,7 @@ public class GameView {
         selectionB.setY(B_POINTS[selectionBIndex].y);
         selectionB.setWidth(250);
         selectionB.setHeight(120);
-        selectionB.setStroke(Color.valueOf("#f5400a")); //red
+        selectionB.setStroke(Color.valueOf("#1a34ff")); //blue
         selectionB.setStrokeWidth(5);
         selectionB.setFill(Color.WHITE);
 
@@ -322,14 +286,6 @@ public class GameView {
 
             Image image = new Image("file:src/Pictures/MenuFmod.png");
             ImageView imageView = new ImageView(image);
-            //Box menu buy A
-            Text coinsA = new Text("Coins : ");
-            coinsA.setStyle("-fx-font: 40 arial;");
-            coinsA.setFill(Color.YELLOW);
-            coinsA.setX(110);
-            coinsA.setY(100);
-
-
 
 
             //Box menu buy
@@ -381,13 +337,6 @@ public class GameView {
             powerAmountAText.setY(600);
 
             //Buy player B
-            Text coinsB = new Text("Coins : ");
-            coinsB.setStyle("-fx-font: 40 arial;");
-            coinsB.setFill(Color.YELLOW);
-            coinsB.setX(930);
-            coinsB.setY(100);
-
-
             Text sizeBText = new Text("Size");
             sizeBText.setStyle("-fx-font: 48 arial;");
             sizeBText.setX(900);
@@ -680,6 +629,231 @@ public class GameView {
                 Timer--;
             }
         }.start();
+    }
+
+    void setTheme(){
+
+        gameRoot.setStyle("-fx-background-image: url('" + theme.fichier + "');"); 
+
+        switch(theme.nom){
+            case "Défaut" :
+
+                defaultTheme();
+                break;
+
+            case "Night étoilée":
+
+                racketA.setFill(Color.valueOf("#FFFFFF"));
+                racketB.setFill(Color.valueOf("#FFFFFF"));
+                ball.setFill(Color.valueOf("#FFFFFF"));
+
+                court.getScore().getS1().setFill(Color.valueOf("#FFFFFF"));
+                court.getScore().getS2().setFill(Color.valueOf("#FFFFFF"));
+
+                break;
+
+            case "Aurores Boeréales":
+
+                racketA.setFill(Color.valueOf("#cdd1cf"));
+                racketB.setFill(Color.valueOf("#cdd1cf"));
+                ball.setFill(Color.valueOf("#cdd1cf"));
+
+                court.getScore().getS1().setFill(Color.valueOf("#cdd1cf"));
+                court.getScore().getS2().setFill(Color.valueOf("#cdd1cf"));
+
+                Rectangle cadre = new Rectangle();
+                cadre.setX(margin/2);
+                cadre.setY(margin/4);
+                cadre.setWidth(court.getWidth() + margin );
+                cadre.setHeight(inTerface);
+                cadre.setStroke(Color.valueOf("#cdd1cf"));
+                cadre.setStrokeWidth(5);
+                cadre.setFill(null);      
+
+                Line l1 = new Line();
+                l1.setStartX(margin/2);
+                l1.setStartY(inTerface + margin/2 - ball.getRadius());
+                l1.setEndX(margin + margin/2 + court.getWidth());
+                l1.setEndY(inTerface + margin/2 - ball.getRadius());
+                l1.setStroke(Color.valueOf("#cdd1cf"));
+                l1.setStrokeWidth(5);
+
+                Line l2 = new Line();
+                l2.setStartX(margin/2);
+                l2.setStartY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
+                l2.setEndX(margin + margin/2 + court.getWidth());
+                l2.setEndY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
+                l2.setStroke(Color.valueOf("#cdd1cf"));
+                l2.setStrokeWidth(5);
+
+                Rectangle zoneDeJeu = new Rectangle();
+                zoneDeJeu.setX(margin);
+                zoneDeJeu.setY(inTerface + margin/2);
+                zoneDeJeu.setWidth(court.getWidth());
+                zoneDeJeu.setHeight(court.getHeight());
+                zoneDeJeu.setFill(Color.valueOf("#FFFFFF"));
+                zoneDeJeu.setOpacity(0.3);
+
+                gameRoot.getChildren().addAll(cadre, l1, l2, zoneDeJeu);
+
+                break; 
+
+            case "Forêt" :
+
+                racketA.setFill(Color.valueOf("#6d8c92"));
+                racketB.setFill(Color.valueOf("#6d8c92"));
+                ball.setFill(Color.valueOf("#6d8c92"));
+
+                court.getScore().getS1().setFill(Color.valueOf("#6d8c92"));
+                court.getScore().getS2().setFill(Color.valueOf("#6d8c92"));
+
+                Rectangle cadre2 = new Rectangle();
+                cadre2.setX(margin/2);
+                cadre2.setY(margin/4);
+                cadre2.setWidth(court.getWidth() + margin );
+                cadre2.setHeight(inTerface);
+                cadre2.setStroke(Color.valueOf("#012235"));
+                cadre2.setStrokeWidth(5);
+                cadre2.setFill(null);      
+
+                Rectangle zoneDeJeu2 = new Rectangle();
+                zoneDeJeu2.setX(margin);
+                zoneDeJeu2.setY(inTerface + margin/2 - 10);
+                zoneDeJeu2.setWidth(court.getWidth());
+                zoneDeJeu2.setHeight(court.getHeight() + 20);
+                zoneDeJeu2.setFill(Color.valueOf("#012235"));
+                zoneDeJeu2.setOpacity(0.4);
+
+                gameRoot.getChildren().addAll(cadre2, zoneDeJeu2);
+
+                break;
+            
+            case "Rétro" : 
+
+                racketA.setFill(Color.valueOf("#290543"));
+                racketA.setStroke(Color.valueOf("#eb37e7"));
+
+                racketB.setFill(Color.valueOf("#290543"));
+                racketB.setStroke(Color.valueOf("#eb37e7"));
+
+                ball.setFill(Color.valueOf("#290543"));
+                ball.setStroke(Color.valueOf("#eb37e7"));
+
+                court.getScore().getS1().setFill(Color.valueOf("#eb37e7"));
+                court.getScore().getS2().setFill(Color.valueOf("#eb37e7"));
+
+                Rectangle cadre3 = new Rectangle();
+                cadre3.setX(margin/2);
+                cadre3.setY(margin/4);
+                cadre3.setWidth(court.getWidth() + margin );
+                cadre3.setHeight(inTerface);
+                cadre3.setStroke(Color.valueOf("#eb37e7"));
+                cadre3.setStrokeWidth(5);
+                cadre3.setFill(null);      
+
+                Line l3 = new Line();
+                l3.setStartX(margin/2);
+                l3.setStartY(inTerface + margin/2 - ball.getRadius());
+                l3.setEndX(margin + margin/2 + court.getWidth());
+                l3.setEndY(inTerface + margin/2 - ball.getRadius());
+                l3.setStroke(Color.valueOf("#eb37e7"));
+                l3.setStrokeWidth(5);
+
+                Line l4 = new Line();
+                l4.setStartX(margin/2);
+                l4.setStartY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
+                l4.setEndX(margin + margin/2 + court.getWidth());
+                l4.setEndY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
+                l4.setStroke(Color.valueOf("#eb37e7"));
+                l4.setStrokeWidth(5);
+
+                gameRoot.getChildren().addAll(cadre3, l3, l4);
+
+                break;
+        }
+    }
+
+    void setTheme(Text t1, Text t2, Text t3, Text t4){
+
+        switch(theme.nom){
+
+            case "Night étoilée":
+
+                t1.setFill(Color.valueOf("#FFFFFF"));
+                t2.setFill(Color.valueOf("#FFFFFF"));
+                t3.setFill(Color.valueOf("#FFFFFF"));
+                t4.setFill(Color.valueOf("#FFFFFF"));
+
+                break;
+
+            case "Aurores Boeréales":
+
+                t1.setFill(Color.valueOf("#cdd1cf"));
+                t2.setFill(Color.valueOf("#cdd1cf"));
+                t3.setFill(Color.valueOf("#cdd1cf"));
+                t4.setFill(Color.valueOf("#cdd1cf"));
+
+                break;
+
+            case "Forêt" :
+
+                t1.setFill(Color.valueOf("#6d8c92"));
+                t2.setFill(Color.valueOf("#6d8c92"));
+                t3.setFill(Color.valueOf("#6d8c92"));
+                t4.setFill(Color.valueOf("#6d8c92"));
+
+                break;
+            
+            case "Rétro" : 
+
+                t1.setFill(Color.valueOf("#FC4855"));
+                t2.setFill(Color.valueOf("#FC4855"));
+                t3.setFill(Color.valueOf("#FC4855"));
+                t4.setFill(Color.valueOf("#FC4855"));
+
+                break;
+        }
+    }
+
+    void defaultTheme(){
+        racketA.setFill(Color.valueOf("#375745"));
+        racketB.setFill(Color.valueOf("#375745"));
+        ball.setFill(Color.valueOf("#375745"));
+
+        Rectangle cadre = new Rectangle();
+        cadre.setX(margin/2);
+        cadre.setY(margin/4);
+        cadre.setWidth(court.getWidth() + margin );
+        cadre.setHeight(inTerface);
+        cadre.setStroke(Color.valueOf("#375745"));
+        cadre.setStrokeWidth(5);
+        cadre.setFill(null);      
+
+        Line l1 = new Line();
+        l1.setStartX(margin/2);
+        l1.setStartY(inTerface + margin/2 - ball.getRadius());
+        l1.setEndX(margin + margin/2 + court.getWidth());
+        l1.setEndY(inTerface + margin/2 - ball.getRadius());
+        l1.setStroke(Color.valueOf("#375745"));
+        l1.setStrokeWidth(5);
+
+        Line l2 = new Line();
+        l2.setStartX(margin/2);
+        l2.setStartY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
+        l2.setEndX(margin + margin/2 + court.getWidth());
+        l2.setEndY(inTerface + margin/2 + court.getHeight() + ball.getRadius());
+        l2.setStroke(Color.valueOf("#375745"));
+        l2.setStrokeWidth(5);
+
+        Rectangle zoneDeJeu = new Rectangle();
+        zoneDeJeu.setX(margin);
+        zoneDeJeu.setY(inTerface + margin/2);
+        zoneDeJeu.setWidth(court.getWidth());
+        zoneDeJeu.setHeight(court.getHeight());
+        zoneDeJeu.setFill(Color.valueOf("#aeb8b2"));
+        zoneDeJeu.setOpacity(0.7);
+
+        gameRoot.getChildren().addAll(cadre, l1, l2, zoneDeJeu);
     }
 
     public Circle getBall() { return this.ball; }

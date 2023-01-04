@@ -18,7 +18,6 @@ public class GameViewDeuxContreDeux extends GameView {
 		racketC = new Rectangle();
 		racketC.setHeight(court.getRacketSize() * scale);
 		racketC.setWidth(getRacketThickness());
-		racketC.setFill(Color.LIGHTBLUE);
 		
 		racketC.setX(getMargin() - getRacketThickness());
 		racketC.setY(court.getRacketC() * scale + getInTerface() + getMargin()/2);
@@ -26,14 +25,50 @@ public class GameViewDeuxContreDeux extends GameView {
 		racketD = new Rectangle();
 		racketD.setHeight(court.getRacketSize() * scale);
 		racketD.setWidth(getRacketThickness());
-		racketD.setFill(Color.LIGHTBLUE);
 		
 		racketD.setX(court.getWidth() * scale + getMargin());
 		racketD.setY(court.getRacketD() * scale + getInTerface() + getMargin()/2);
 
         ball2 = new Circle();
         ball2.setRadius(court.getBallRadius());
-        ball2.setFill(Color.LIGHTBLUE);
+
+        switch(theme.nom){
+            case "Défaut" :
+                racketC.setFill(Color.LIGHTBLUE);
+                racketD.setFill(Color.LIGHTBLUE);
+                ball2.setFill(Color.LIGHTBLUE);
+                break;
+
+            case "Night étoilée":
+                racketC.setFill(Color.valueOf("#d2dbfc"));
+                racketD.setFill(Color.valueOf("#d2dbfc"));
+                ball2.setFill(Color.valueOf("#d2dbfc"));
+                break;
+
+            case "Aurores Boeréales":
+                racketC.setFill(Color.valueOf("#99ffb9"));
+                racketD.setFill(Color.valueOf("#99ffb9"));
+                ball2.setFill(Color.valueOf("#99ffb9"));
+                break; 
+
+            case "Forêt" :
+                racketC.setFill(Color.valueOf("#aad3e3"));
+                racketD.setFill(Color.valueOf("#aad3e3"));
+                ball2.setFill(Color.valueOf("#aad3e3"));
+                break;
+            
+            case "Rétro" : 
+                racketC.setStroke(Color.valueOf("#FC4855"));
+                racketC.setFill(Color.valueOf("#290543"));
+
+                racketD.setStroke(Color.valueOf("#FC4855"));
+                racketD.setFill(Color.valueOf("#290543"));
+
+                ball2.setStroke(Color.valueOf("#FC4855"));
+                ball2.setFill(Color.valueOf("#290543"));
+                
+                break;
+        }
 
         ball2.setCenterX(court.getBallX() * scale + getMargin());
         ball2.setCenterY(court.getBallY() * scale + getInTerface() +  getMargin()/2);

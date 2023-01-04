@@ -89,7 +89,7 @@ public class Menu {
             Theme.setOnAction(ev1->{
                 Pane root1 = new Pane();
                 gameScene.setRoot(root1);
-                Theme a = new Theme(root1, gameScene);
+                MenuTheme a = new MenuTheme(root1, gameScene);
                 a.start(primaryStage);
 
             });
