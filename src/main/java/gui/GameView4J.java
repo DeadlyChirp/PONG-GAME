@@ -25,16 +25,16 @@ public class GameView4J extends GameView {
 		racketC.setHeight(getRacketThickness());
 		racketC.setFill(Color.LIGHTBLUE);
 		
-		racketC.setX(getMargin()/2 - getRacketThickness());
-		racketC.setY(court.getRacketC() * scale + getInTerface() + getMargin()/2.5);
+		racketC.setX(court.getRacketC() * scale + getMargin()/2);
+		racketC.setY(getInTerface() + getMargin()/2 - getRacketThickness());
 		    
 		racketD = new Rectangle();
 		racketD.setWidth(court.getRacketSize() * scale);
 		racketD.setHeight(getRacketThickness());
 		racketD.setFill(Color.LIGHTBLUE);
 		
-		racketD.setX(court.getRacketD() * scale);
-		racketD.setY(court.getRacketD() * scale + getInTerface() + getMargin()/2 + court.getHeight()); //A descendre
+		racketD.setX(court.getRacketD() * scale + getMargin()/2);
+		racketD.setY(getInTerface() + getMargin()/2 + court.getHeight() + getRacketThickness());
 
         ball2 = new Circle();
         ball2.setRadius(court.getBallRadius());
@@ -60,8 +60,8 @@ public class GameView4J extends GameView {
                     last = now;
                     getRacketA().setY(getCourt().getRacketA() * getScale() + getMargin()/2 + getInTerface());
                     getRacketB().setY(getCourt().getRacketB() * getScale() + getMargin()/2 + getInTerface());
-                    racketC.setX(court.getRacketC() * getScale() + getMargin()/2 + getInTerface());
-                    racketD.setX(court.getRacketD() * getScale() + getMargin()/2 + getInTerface());
+                    racketC.setX(getMargin() + court.getRacketC() * getScale());
+                    racketD.setX(getMargin() + court.getRacketD() * getScale());
                     getBall().setCenterX(getCourt().getBallX() * getScale() + getMargin());
                     getBall().setCenterY(getCourt().getBallY() * getScale() + getMargin()/2 + getInTerface());
                     ball2.setCenterX(court.getBallX2() * getScale() + getMargin());
@@ -73,4 +73,7 @@ public class GameView4J extends GameView {
             }
         }.start();
     }
+
+
+
 }
