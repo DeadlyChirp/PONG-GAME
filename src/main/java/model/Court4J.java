@@ -29,9 +29,7 @@ public class Court4J extends Court{
     }
     
     public RacketController getPlayerC() {return playerC;}    
-    public RacketController getPlayerD() {return playerD;}    
-    public void setRacketC(double r) {this.racketC = r;}    
-    public void setRacketD(double r) {this.racketD = r;}    
+    public RacketController getPlayerD() {return playerD;} 
     public double getRacketC() {return racketC;}    
     public double getRacketD() {return racketD;}
     public double getBallX2() {return ballX2;}    
@@ -42,25 +40,25 @@ public class Court4J extends Court{
         switch (playerC.getState()) {
         	case GOING_UP:
 	            racketC -= getRacketSpeed() * deltaT;
-	            if (racketC < -50.00) racketC = -50.00;
+	            if (racketC < 0.00) racketC = 0.00;
 	            break;
         	case IDLE:
         		break;
         	case GOING_DOWN:
         		racketC += getRacketSpeed() * deltaT;
-        		if (racketC + getRacketSize() > getWidth() - 50.00) racketC = getWidth() - getRacketSize() - 50.00;
+        		if (racketC + getRacketSize() > getWidth()) racketC = getWidth() - getRacketSize();
         		break;
         }
         switch (playerD.getState()) {
 	        case GOING_UP:
 	            racketD -= getRacketSpeed() * deltaT;
-	            if (racketD < -50.00) racketD = -50.00;
+	            if (racketD < 0.00) racketD = 0.00;
 	            break;
 	        case IDLE:
 	            break;
 	        case GOING_DOWN:
 	            racketD += getRacketSpeed() * deltaT;
-	            if (racketD + getRacketSize() > getWidth() - 50.00) racketD = getWidth() - getRacketSize() - 50.00;
+	            if (racketD + getRacketSize() > getWidth()) racketD = getWidth() - getRacketSize();
 	            break;
         }
     }
@@ -69,42 +67,13 @@ public class Court4J extends Court{
     /**
      * @return true if a player lost
      */
-    public boolean updateBall(double deltaT) {
-        double nextBallX = getBallX() + deltaT * getBallSpeedX();
-        double nextBallY = getBallY() + deltaT * getBallSpeedY();
-        double nextBallX2 = ballX2 + deltaT * ballSpeedX2;
-        double nextBallY2 = ballY2 + deltaT * ballSpeedY2;
-        if ((nextBallY < 0 && nextBallX > racketC+50 && nextBallX < racketC+50 + getRacketSize()) 
-        || (nextBallY > getHeight() && nextBallX > racketD+50 && nextBallX < racketD+50 + getRacketSize())){
-            setBallSpeedY(-getBallSpeedY());
-            nextBallY = getBallY() + deltaT * getBallSpeedY();
-            nextBallX = getBallX() + ((getBallSpeedX()<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(getBallSpeedX())); 
-        }
-        else if (nextBallY < 0 || nextBallY > getHeight()) {
-            return true; 
-        }
-        if ((nextBallX < 0 && nextBallY > getRacketA() && nextBallY < getRacketA() + getRacketSize())
-                || (nextBallX > getWidth() && nextBallY > getRacketB() && nextBallY < getRacketB() + getRacketSize())) {
-            setBallSpeedX(-getBallSpeedX());
-            nextBallX = getBallX() + deltaT * getBallSpeedX();
-        }else if (nextBallX < 0) {
-            getScore().addScore1();
-            if (getScore().endGame() == 1){
-                GameView.finGame = true ;
-                GameView.endGame(1);
-            }
-            return true;
-        }else if (nextBallX > getWidth()) {
-            getScore().addScore2();
-            if (getScore().endGame() == 1){
-                GameView.finGame = true ;
-                GameView.endGame(2);
-            }
-            return true;
-        }
-        if ((nextBallY2 < 0 && nextBallX2 > racketC+50 && nextBallX2 < racketC+50 + getRacketSize()) 
-        || (nextBallY2 > getHeight() && nextBallX2 > racketD+50 && nextBallX2 < racketD+50 + getRacketSize())){
-            ballSpeedY2 = -getBallSpeedY();
+
+    public boolean updateBall2(double deltaT) {
+        double nextBallX2 = ballX2 + deltaT * ballSpeedX2 * 0.75;
+        double nextBallY2 = ballY2 + deltaT * ballSpeedY2 * 0.75;
+        if ((nextBallY2 < 0 && nextBallX2 > racketC && nextBallX2 < racketC + getRacketSize()) 
+        || (nextBallY2 > getHeight() && nextBallX2 > racketD && nextBallX2 < racketD + getRacketSize())){
+            ballSpeedY2 = -ballSpeedY2;
             nextBallY2 = ballY2 + deltaT * ballSpeedY2;
             nextBallX2 = ballX2 + ((ballSpeedX2<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedX2)); 
         }
@@ -134,6 +103,41 @@ public class Court4J extends Court{
         }
         ballX2 = nextBallX2;
         ballY2 = nextBallY2;
+        return false;
+    }
+
+    public boolean updateBall(double deltaT) {
+        if (updateBall2(deltaT)) return true;
+        double nextBallX = getBallX() + deltaT * getBallSpeedX();
+        double nextBallY = getBallY() + deltaT * getBallSpeedY();
+        if ((nextBallY < 0 && nextBallX > racketC && nextBallX < racketC + getRacketSize()) 
+        || (nextBallY > getHeight() && nextBallX > racketD && nextBallX < racketD + getRacketSize())){
+            setBallSpeedY(-getBallSpeedY());
+            nextBallY = getBallY() + deltaT * getBallSpeedY();
+            nextBallX = getBallX() + ((getBallSpeedX()<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(getBallSpeedX())); 
+        }
+        else if (nextBallY < 0 || nextBallY > getHeight()) {
+            return true; 
+        }
+        if ((nextBallX < 0 && nextBallY > getRacketA() && nextBallY < getRacketA() + getRacketSize())
+                || (nextBallX > getWidth() && nextBallY > getRacketB() && nextBallY < getRacketB() + getRacketSize())) {
+            setBallSpeedX(-getBallSpeedX());
+            nextBallX = getBallX() + deltaT * getBallSpeedX();
+        }else if (nextBallX < 0) {
+            getScore().addScore1();
+            if (getScore().endGame() == 1){
+                GameView.finGame = true ;
+                GameView.endGame(1);
+            }
+            return true;
+        }else if (nextBallX > getWidth()) {
+            getScore().addScore2();
+            if (getScore().endGame() == 1){
+                GameView.finGame = true ;
+                GameView.endGame(2);
+            }
+            return true;
+        }
         setBallX(nextBallX);
         setBallY(nextBallY);
         return false;
@@ -141,11 +145,11 @@ public class Court4J extends Court{
 
     public void reset() {
     	super.reset();
-        //this.racketC = getWidth() / 2;
-        //this.racketD = getWidth() / 2;        
-        this.ballSpeedX2 = (((int)(Math.random()*10))>5)?-200:200;
-        this.ballSpeedY2 = (((int)(Math.random()*10))>5)?200:-200;
-        this.ballX2 = getWidth() / 6;
-        this.ballY2 = getHeight() / 4;
+        this.racketC = getWidth()/2 - getRacketSize()/2;
+        this.racketD = getWidth()/2 - getRacketSize()/2;
+        this.ballSpeedX2 = 200;
+        this.ballSpeedY2 = -200;
+        this.ballX2 = getWidth() / 2;
+        this.ballY2 = getHeight() / 2;
     }
 }
