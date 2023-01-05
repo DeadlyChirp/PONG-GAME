@@ -327,6 +327,61 @@ public class App {
     }
 
     //Start pour le 2 contre 2
+    public void start4J(Stage primaryStage) {
+        var playerA = new Player();
+        var playerB = new Player();
+        var playerC = new Player();
+        var playerD = new Player();
+        Image img = new Image("file:src/Pictures/fond.png");
+        BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        Background bGround = new Background(bImg);
+        root.setBackground(bGround);
+        ArrayList<Integer> limiteS = new ArrayList<Integer>();
+        limiteS.add(2);
+        limiteS.add(4);
+        limiteS.add(6);
+        limiteS.add(8);
+
+        ChoiceDialog<Integer> limiteScore = new ChoiceDialog<Integer>(2, limiteS);
+        limiteScore.initOwner(primaryStage);
+        limiteScore.setTitle("Limite de Score");
+        limiteScore.setHeaderText("Veuillez choisir le nombre de vie");
+        limiteScore.setContentText("Nombre : ");
+
+        Optional<Integer> limitScore = limiteScore.showAndWait();
+        limitScore.ifPresent(limite -> {
+            this.limite = limite;
+        });
+
+        ArrayList<String> pop = new ArrayList<String>();
+        pop.add("COMPRIS");
+        pop.add("PAS COMPRIS");
+        ChoiceDialog<String> pop2 = new ChoiceDialog<String>("COMPRIS", pop);
+        pop2.initOwner(primaryStage);
+        pop2.setTitle("Touches du Joueur 3 & 4:");
+        pop2.setHeaderText("TOUCHE DU J3 : E et R  |  TOUCHE DU J4: J et K");
+        pop2.setResizable(false);
+        Optional<String> popOk = pop2.showAndWait();
+        if (popOk.isEmpty()) {
+            Pane root1 = new Pane();
+            gameScene.setRoot(root1);
+            ModeDeJeu a = new ModeDeJeu(root1, gameScene);
+            a.start(primaryStage);
+        }
+        if (popOk.isPresent()) {
+            if (popOk.get().equals("COMPRIS")) {
+                var court = new Court4J(playerA, playerB, playerC, playerD, 1000, 600, limite);
+                var gameView = new GameView4J(court, root, 1);
+                court.setGameView(gameView);
+                setStyleButtons();
+                setCommands4Player(playerA, playerB, playerC, playerD);
+                setActionButtons(court, gameView, primaryStage);
+                gameView.animate();
+            }
+        }
+    }
+
+    //Start pour le 2 contre 2
     public void start2C2(Stage primaryStage) {
         var playerA = new Player();
         var playerB = new Player();
