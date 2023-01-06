@@ -69,41 +69,14 @@ public class CourtDeuxContreDeux extends Court{
     /**
      * @return true if a player lost
      */
-    public boolean updateBall(double deltaT) {
-        double nextBallX = getBallX() + deltaT * getBallSpeedX();
-        double nextBallY = getBallY() + deltaT * getBallSpeedY();
+
+    public boolean updateBall2(double deltaT) {
         double nextBallX2 = ballX2 + deltaT * ballSpeedX2;
         double nextBallY2 = ballY2 + deltaT * ballSpeedY2;
-        if (nextBallY < 0 || nextBallY > getHeight()) {
-            setBallSpeedY(-getBallSpeedY());
-            nextBallY = getBallY() + deltaT * getBallSpeedY();
-            nextBallX = getBallX() + ((getBallSpeedX()<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(getBallSpeedX())); 
-        }
         if (nextBallY2 < 0 || nextBallY2 > getHeight()) {
             ballSpeedY2 = -ballSpeedY2;
             nextBallY2 = ballY2 + deltaT * ballSpeedY2;
             nextBallX2 = ballX2 + ((ballSpeedX2<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(ballSpeedX2)); 
-        }
-        if ((nextBallX < 0 && nextBallY > getRacketA() && nextBallY < getRacketA() + getRacketSize())
-        		|| (nextBallX < 0 && nextBallY > racketC && nextBallY < racketC + getRacketSize())
-                || (nextBallX > getWidth() && nextBallY > getRacketB() && nextBallY < getRacketB() + getRacketSize())
-                || (nextBallX > getWidth() && nextBallY > racketD && nextBallY < racketD + getRacketSize())) {
-            setBallSpeedX(-getBallSpeedX());
-            nextBallX = getBallX() + deltaT * getBallSpeedX();
-        }else if (getScore() != null && nextBallX < 0) {
-            getScore().addScore1();
-            if (getScore().endGame() == 1){
-                GameView.finGame = true ;
-                GameView.endGame(1);
-            }
-            return true;
-        }else if (getScore() != null && nextBallX > getWidth()) {
-            getScore().addScore2();
-            if (getScore().endGame() == 1){
-                GameView.finGame = true ;
-                GameView.endGame(2);
-            }
-            return true;
         }
         if ((nextBallX2 < 0 && nextBallY2 > getRacketA() && nextBallY2 < getRacketA() + getRacketSize())
                 || (nextBallX2 < 0 && nextBallY2 > racketC && nextBallY2 < racketC + getRacketSize())
@@ -128,6 +101,39 @@ public class CourtDeuxContreDeux extends Court{
         }
         ballX2 = nextBallX2;
         ballY2 = nextBallY2;
+        return false;
+    }
+
+    public boolean updateBall(double deltaT) {
+        if (updateBall2(deltaT)) return true;
+        double nextBallX = getBallX() + deltaT * getBallSpeedX();
+        double nextBallY = getBallY() + deltaT * getBallSpeedY();
+        if (nextBallY < 0 || nextBallY > getHeight()) {
+            setBallSpeedY(-getBallSpeedY());
+            nextBallY = getBallY() + deltaT * getBallSpeedY();
+            nextBallX = getBallX() + ((getBallSpeedX()<0)?-1:+1)*deltaT * (new Random()).nextDouble(Math.abs(getBallSpeedX())); 
+        }
+        if ((nextBallX < 0 && nextBallY > getRacketA() && nextBallY < getRacketA() + getRacketSize())
+        		|| (nextBallX < 0 && nextBallY > racketC && nextBallY < racketC + getRacketSize())
+                || (nextBallX > getWidth() && nextBallY > getRacketB() && nextBallY < getRacketB() + getRacketSize())
+                || (nextBallX > getWidth() && nextBallY > racketD && nextBallY < racketD + getRacketSize())) {
+            setBallSpeedX(-getBallSpeedX());
+            nextBallX = getBallX() + deltaT * getBallSpeedX();
+        }else if (getScore() != null && nextBallX < 0) {
+            getScore().addScore1();
+            if (getScore().endGame() == 1){
+                GameView.finGame = true ;
+                GameView.endGame(1);
+            }
+            return true;
+        }else if (getScore() != null && nextBallX > getWidth()) {
+            getScore().addScore2();
+            if (getScore().endGame() == 1){
+                GameView.finGame = true ;
+                GameView.endGame(2);
+            }
+            return true;
+        }
         setBallX(nextBallX);
         setBallY(nextBallY);
         return false;

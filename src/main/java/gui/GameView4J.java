@@ -20,10 +20,6 @@ public class GameView4J extends GameView {
     public Rectangle getRacketC(){return racketC;}
     public Rectangle getRacketD(){return racketD;}
 
-    public void reload(){
-        getGameRoot().getChildren().addAll(racketC, racketD, getRacketA(), getRacketB());
-    }
-
     public GameView4J(Court4J court, Pane root, double scale) {
         super(court,root,scale);
         this.court = court;

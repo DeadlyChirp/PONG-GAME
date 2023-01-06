@@ -248,7 +248,13 @@ public class App {
             if (GameView.finGame){
                 root.getChildren().remove(root.getChildren().size()-3) ; 
                 root.getChildren().remove(root.getChildren().size()-3) ;  
-            } 
+            }
+            if (court instanceof Court4J) {
+                Pane root1 = new Pane();
+                gameScene.setRoot(root1);
+                App a = new App(root1, gameScene);
+                a.start4J(primaryStage);
+            }
             root.getChildren().removeAll(Quitter, Reprendre, Recommencer);
             court.refresh(); 
             GameView.pause = false ; 
@@ -344,7 +350,7 @@ public class App {
 
         ChoiceDialog<Integer> limiteScore = new ChoiceDialog<Integer>(2, limiteS);
         limiteScore.initOwner(primaryStage);
-        limiteScore.setTitle("Limite de Score");
+        limiteScore.setTitle("Nombre de Vie");
         limiteScore.setHeaderText("Veuillez choisir le nombre de vie");
         limiteScore.setContentText("Nombre : ");
 

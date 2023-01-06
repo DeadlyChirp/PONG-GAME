@@ -17,15 +17,6 @@ public class Court4J extends Court{
     private double ballSpeedX2, ballSpeedY2;
     private boolean joueuru, joueurd, joueurt, joueurq;
 
-    public void refresh(){
-        joueuru = true;
-        joueurd = true;
-        joueurt = true;
-        joueurq = true;
-        getScore().load4J();
-        gm.reload();
-    }
-
     public Court4J(RacketController playerA, RacketController playerB, RacketController playerC, RacketController playerD, double width, double height, int limit) {
     	super(playerA, playerB, width, height,limit);
         getScore().load4J();
@@ -209,7 +200,6 @@ public class Court4J extends Court{
     }
 
     private void isItOver(){
-        System.out.println("Test " + joueuru + " " + joueurd + " " + joueurt + " " + joueurq);
         if (!joueuru && !joueurd && !joueurt) fin(4);
         if (!joueuru && !joueurd && !joueurq) fin(3);
         if (!joueuru && !joueurt && !joueurq) fin(1);
