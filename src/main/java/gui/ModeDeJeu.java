@@ -131,6 +131,13 @@ public class ModeDeJeu {
             a.start2C2(primaryStage);
         });
 
+        OneVSOneVSOneVSOne.setOnAction(ev1 -> {
+            Pane root1 = new Pane();
+            gameScene.setRoot(root1);
+            App a = new App(root1, gameScene);
+            a.start4J(primaryStage);
+        });
+
     }
 
 }
